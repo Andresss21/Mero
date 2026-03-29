@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mero — La tienda de PC más poderosa de El Salvador</title>
+  <meta name="description" content="La tienda de componentes PC más poderosa de El Salvador. CPU, GPU, RAM, Almacenamiento y más. Hecho para los que construyen. Impulsado por Mero." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+  <style>
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-base:    #07081a;
+      --bg-mid:     #0c0e28;
+      --bg-surface: #111330;
+      --bg-gaming:  #0e1030;
+      --blue:       #5BC4E5;
+      --blue-dim:   rgba(91,196,229,0.10);
+      --blue-glow:  rgba(91,196,229,0.35);
+      --white:      #ffffff;
+      --white-dim:  rgba(255,255,255,0.55);
+      --white-xs:   rgba(255,255,255,0.07);
+      --font-d: 'Syne', sans-serif;
+      --font-m: 'JetBrains Mono', monospace;
+    }
+    html { scroll-behavior: auto; }
+    body {
+      background: var(--bg-base);
+      color: var(--white);
+      font-family: var(--font-m);
+      overflow-x: hidden;
+      cursor: none;
+    }
+    body.loading { overflow: hidden; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ── CURSOR ── */
+    #cursor-dot, #cursor-ring {
+      position: fixed; top: 0; left: 0;
+      border-radius: 50%; pointer-events: none;
+      z-index: 9999; transform: translate(-50%,-50%);
+      will-change: transform;
+    }
+    #cursor-dot { width:8px; height:8px; background:var(--white); transition:width .2s,height .2s,background .2s; }
+    #cursor-ring { width:32px; height:32px; border:1.5px solid rgba(255,255,255,0.5); transition:opacity .2s; }
+    body.cursor-hover #cursor-dot  { width:18px; height:18px; background:var(--blue); }
+    body.cursor-hover #cursor-ring { opacity:0; }
+    @media(max-width:768px){ #cursor-dot,#cursor-ring{display:none;} body{cursor:auto;} }
+
+    /* ── PRELOADER ── */
+    #preloader {
+      position:fixed; inset:0; background:var(--bg-base);
+      display:flex; align-items:center; justify-content:center;
+      z-index:9000; flex-direction:column; gap:24px;
+    }
+    #preloader-icon    { width:80px; opacity:0; transform:scale(0.7); }
+    #preloader-wordmark{ height:40px; opacity:0; }
+    #preloader-bar     { width:200px; height:1px; background:var(--white-xs); overflow:hidden; border-radius:1px; }
+    #preloader-bar-fill{ height:100%; width:0%; background:var(--blue); border-radius:1px; }
+    /* bottom progress bar */
+    #preloader-progress {
+      position:absolute; bottom:0; left:0; right:0; height:2px;
+      background: var(--white-xs);
+    }
+    #preloader-progress-fill {
+      height:100%; width:0%; background:var(--blue);
+      transition: none;
+    }
+
+    /* ── CLIP REVEAL ── */
+    #page-wrap { clip-path: inset(0 0 100% 0); }
+
+    /* ── NAV ── */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:800;
+      padding:20px 48px; display:flex; align-items:center; justify-content:space-between;
+    }
+    nav::before {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(to bottom,rgba(7,8,26,0.9) 0%,transparent 100%);
+      pointer-events:none;
+    }
+    .nav-logo  { height:32px; position:relative; z-index:1; }
+    .nav-links { display:flex; gap:36px; list-style:none; font-size:12px; letter-spacing:.1em; text-transform:uppercase; position:relative; z-index:1; }
+    .nav-links a { color:var(--white-dim); transition:color .2s; }
+    .nav-links a:hover { color:var(--blue); }
+    .nav-cta {
+      position:relative; z-index:1; font-family:var(--font-m); font-size:12px;
+      letter-spacing:.08em; color:var(--bg-base); background:var(--blue);
+      padding:9px 22px; border-radius:4px; transition:box-shadow .25s,transform .2s;
+    }
+    .nav-cta:hover { box-shadow:0 0 24px var(--blue-glow); transform:translateY(-1px); }
+    @media(max-width:768px){ nav{padding:16px 20px;} .nav-links{display:none;} }
+
+    /* ── HERO ── */
+    #hero {
+      position:relative; min-height:100vh; background:var(--bg-base);
+      display:flex; align-items:center; justify-content:center; overflow:hidden; padding:0 48px;
+    }
+    .hero-bg-mark {
+      position:absolute; width:60vw; height:60vw; left:50%; top:50%;
+      transform:translate(-50%,-50%); opacity:.035; pointer-events:none;
+      animation:slowRotate 80s linear infinite; user-select:none;
+    }
+    @keyframes slowRotate { to { transform:translate(-50%,-50%) rotate(360deg); } }
+    .hero-orb {
+      position:absolute; width:600px; height:600px; border-radius:50%;
+      background:radial-gradient(circle,rgba(91,196,229,.18) 0%,transparent 70%);
+      pointer-events:none; transform:translate(-50%,-50%); top:50%; left:50%;
+      will-change:transform; filter:blur(40px);
+    }
+    .hero-content { position:relative; z-index:10; text-align:center; max-width:960px; }
+    .hero-headline {
+      font-family:var(--font-d); font-weight:800;
+      font-size:clamp(42px,7.5vw,96px); line-height:1.0; letter-spacing:-.02em; overflow:hidden;
+    }
+    .hero-headline .word { display:inline-block; margin-right:.22em; transform:translateY(110%); opacity:0; }
+    .hero-subline { margin-top:28px; font-size:clamp(13px,1.4vw,16px); color:var(--blue); letter-spacing:.06em; opacity:0; transform:translateY(20px); }
+    .hero-cta-wrap { margin-top:52px; opacity:0; transform:translateY(20px); }
+    .btn-magnetic {
+      display:inline-block; font-family:var(--font-m); font-size:14px; letter-spacing:.1em;
+      color:var(--bg-base); background:var(--blue); padding:16px 40px; border-radius:4px;
+      transition:box-shadow .3s; will-change:transform;
+    }
+    .btn-magnetic:hover { box-shadow:0 0 40px var(--blue-glow); }
+    .scroll-hint {
+      position:absolute; bottom:40px; left:50%; transform:translateX(-50%);
+      display:flex; flex-direction:column; align-items:center; gap:8px; opacity:0;
+    }
+    .scroll-hint span { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--white-dim); }
+    .scroll-hint-line {
+      width:1px; height:48px;
+      background:linear-gradient(to bottom,var(--blue),transparent);
+      animation:scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse { 0%,100%{opacity:.4;transform:scaleY(1);} 50%{opacity:1;transform:scaleY(1.15);} }
+    @media(max-width:768px){ #hero{padding:0 20px;} .hero-headline .word{transform:none;opacity:1;} }
+
+    /* ── MARQUEE ── */
+    #marquee { background:var(--bg-mid); border-top:1px solid var(--white-xs); border-bottom:1px solid var(--white-xs); overflow:hidden; padding:18px 0; }
+    .marquee-track { display:flex; width:max-content; animation:marquee 22s linear infinite; }
+    .marquee-item { font-family:var(--font-d); font-weight:800; font-size:13px; letter-spacing:.18em; text-transform:uppercase; white-space:nowrap; padding:0 32px; color:var(--white); }
+    .marquee-item.outline { -webkit-text-stroke:1px var(--white); color:transparent; }
+    @keyframes marquee { 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
+
+    /* ── CATEGORIES ── */
+    #categories { background:var(--bg-base); padding:120px 48px; }
+    .section-label { font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--blue); margin-bottom:56px; }
+    .section-label::before { content:'// '; }
+    .cards-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+    .cat-card {
+      background:var(--bg-mid); border:1px solid rgba(91,196,229,.2); border-radius:8px;
+      padding:40px 28px 32px; position:relative; overflow:hidden; cursor:pointer;
+      opacity:0; transform:translateY(40px);
+      transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;
+    }
+    .cat-card:hover { transform:translateY(-8px) !important; border-color:var(--blue); box-shadow:0 0 36px rgba(91,196,229,.22),inset 0 0 24px rgba(91,196,229,.04); }
+    .cat-card:hover .cat-icon { transform:scale(1.18); opacity:.18; }
+    .cat-icon { position:absolute; right:-16px; bottom:-16px; width:130px; height:130px; opacity:.07; transition:transform .4s ease,opacity .4s ease; pointer-events:none; }
+    .cat-label { font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--blue); margin-bottom:12px; }
+    .cat-name  { font-family:var(--font-d); font-weight:800; font-size:28px; letter-spacing:-.01em; line-height:1.1; }
+    .cat-count { margin-top:20px; font-size:11px; color:var(--white-dim); }
+    .cat-arrow { position:absolute; top:28px; right:28px; font-size:18px; color:var(--blue); opacity:0; transform:translateX(-6px); transition:opacity .2s,transform .2s; }
+    .cat-card:hover .cat-arrow { opacity:1; transform:translateX(0); }
+    @media(max-width:900px){ .cards-grid{grid-template-columns:repeat(2,1fr);} }
+    @media(max-width:480px){ #categories{padding:80px 20px;} .cards-grid{grid-template-columns:1fr;} }
+
+    /* ── WHY MERO ── */
+    #why { background:var(--bg-mid); padding:120px 48px; }
+    .why-inner { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; max-width:1200px; margin:0 auto; }
+    .why-stats { display:flex; flex-direction:column; gap:48px; }
+    .stat-number { font-family:var(--font-d); font-weight:800; font-size:clamp(56px,7vw,88px); line-height:1; letter-spacing:-.03em; }
+    .stat-number span { color:var(--blue); }
+    .stat-desc  { margin-top:8px; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--white-dim); }
+    .why-statement { position:relative; padding-left:32px; }
+    .why-accent-line { position:absolute; left:0; top:4px; bottom:4px; width:3px; background:var(--blue); transform:scaleY(0); transform-origin:top; border-radius:2px; }
+    .why-text { font-family:var(--font-d); font-weight:800; font-size:clamp(28px,3.5vw,46px); line-height:1.15; letter-spacing:-.02em; opacity:0; transform:translateY(30px); }
+    @media(max-width:768px){ #why{padding:80px 20px;} .why-inner{grid-template-columns:1fr;gap:56px;} }
+
+    /* ── RIG BUILDER ── */
+    #rig-builder {
+      background:var(--bg-base); min-height:100vh;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      padding:100px 48px; position:relative; overflow:hidden;
+    }
+    .rig-label { position:absolute; top:48px; left:48px; font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--blue); }
+    .rig-label::before { content:'// '; }
+    .rig-diagram {
+      position:relative; width:560px; height:480px;
+      flex-shrink:0;
+    }
+    /* connection lines SVG */
+    .rig-lines {
+      position:absolute; inset:0; width:100%; height:100%; pointer-events:none;
+    }
+    .rig-line {
+      stroke:rgba(91,196,229,.35); stroke-width:1; fill:none;
+      stroke-dasharray:300; stroke-dashoffset:300;
+    }
+    /* slots */
+    .rig-slot {
+      position:absolute; width:148px; padding:18px 20px;
+      background:var(--bg-surface); border:1px solid rgba(91,196,229,.25);
+      border-radius:10px; cursor:pointer; opacity:0;
+      transition:border-color .3s,box-shadow .3s,transform .25s;
+      user-select:none;
+    }
+    .rig-slot:hover { border-color:var(--blue); box-shadow:0 0 28px rgba(91,196,229,.25); transform:scale(1.06) !important; }
+    .rig-slot:hover .rig-ring { animation:ringPulse .6s ease infinite; }
+    /* positioning */
+    #slot-cpu     { left:50%; top:50%; transform:translate(-50%,-50%); }
+    #slot-gpu     { right:0; top:50%; transform:translateY(-50%); }
+    #slot-ram     { left:50%; top:0; transform:translateX(-50%); }
+    #slot-storage { left:50%; bottom:0; transform:translateX(-50%); }
+    /* float animations */
+    @keyframes floatA { 0%,100%{transform:translate(-50%,-50%) translateY(0px);}   50%{transform:translate(-50%,-50%) translateY(-8px);} }
+    @keyframes floatB { 0%,100%{transform:translateY(-50%) translateX(0px);}       50%{transform:translateY(-50%) translateX(6px);} }
+    @keyframes floatC { 0%,100%{transform:translateX(-50%) translateY(0px);}       50%{transform:translateX(-50%) translateY(-6px);} }
+    @keyframes floatD { 0%,100%{transform:translateX(-50%) translateY(0px);}       50%{transform:translateX(-50%) translateY(6px);} }
+    #slot-cpu.floating     { animation:floatA 4.2s ease-in-out infinite; }
+    #slot-gpu.floating     { animation:floatB 3.7s ease-in-out infinite; }
+    #slot-ram.floating     { animation:floatC 4.8s ease-in-out infinite; }
+    #slot-storage.floating { animation:floatD 4.0s ease-in-out infinite; }
+    .rig-ring {
+      position:absolute; inset:-8px; border-radius:16px;
+      border:1px solid rgba(91,196,229,.3); pointer-events:none;
+    }
+    @keyframes ringPulse {
+      0%  { box-shadow:0 0 0 0 rgba(91,196,229,.4); }
+      70% { box-shadow:0 0 0 8px rgba(91,196,229,0); }
+      100%{ box-shadow:0 0 0 0 rgba(91,196,229,0); }
+    }
+    .rig-slot-label { font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--blue); margin-bottom:6px; }
+    .rig-slot-name  { font-family:var(--font-d); font-weight:800; font-size:16px; line-height:1.1; }
+    /* tooltip */
+    .rig-tooltip {
+      position:absolute; bottom:calc(100% + 12px); left:50%; transform:translateX(-50%);
+      background:var(--bg-mid); border:1px solid var(--blue);
+      border-radius:6px; padding:10px 14px; white-space:nowrap;
+      font-size:11px; line-height:1.5; pointer-events:none;
+      opacity:0; transition:opacity .2s; z-index:20;
+    }
+    .rig-slot:hover .rig-tooltip { opacity:1; }
+    .rig-tooltip strong { display:block; font-family:var(--font-d); font-size:13px; color:var(--white); }
+    .rig-tooltip span   { color:var(--blue); }
+    /* rig headline */
+    .rig-headline-wrap {
+      margin-top:64px; text-align:center; overflow:hidden;
+      clip-path:inset(100% 0 0 0);
+    }
+    .rig-headline {
+      font-family:var(--font-d); font-weight:800;
+      font-size:clamp(24px,3vw,40px); letter-spacing:-.02em;
+    }
+    .rig-cta-wrap { margin-top:32px; opacity:0; transform:translateY(16px); }
+    @media(max-width:768px){
+      #rig-builder { padding:80px 20px; min-height:auto; }
+      .rig-diagram { width:320px; height:320px; }
+      .rig-slot { width:110px; padding:14px 16px; }
+      .rig-slot-name { font-size:13px; }
+    }
+
+    /* ── PRODUCT CARDS (Horizontal Scroll — sticky approach) ── */
+    /* outer: tall enough to give scroll room */
+    #h-scroll-outer { background:var(--bg-base); }
+
+    /* sticky viewport window */
+    #h-scroll-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+    #h-scroll-label {
+      position:absolute; top:40px; left:48px; z-index:10;
+      font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--blue);
+    }
+    #h-scroll-label::before { content:'// '; }
+
+    /* the row of cards — translated by JS */
+    #h-scroll-track {
+      display:flex; align-items:center; gap:28px;
+      padding:0 80px; flex-shrink:0;
+      will-change:transform;
+    }
+    .prod-card {
+      flex-shrink:0; width:340px;
+      background:var(--bg-surface);
+      border-left:2px solid rgba(91,196,229,.3);
+      border-top:1px solid rgba(255,255,255,.05);
+      border-right:1px solid rgba(255,255,255,.04);
+      border-bottom:1px solid rgba(255,255,255,.04);
+      border-radius:10px; overflow:hidden; cursor:pointer;
+      transition:border-left-color .3s, box-shadow .3s, transform .3s;
+    }
+    .prod-card:hover {
+      border-left-color:var(--blue);
+      box-shadow:0 0 24px rgba(91,196,229,.3), -4px 0 16px rgba(91,196,229,.15);
+      transform:scale(1.02);
+    }
+    /* image zone */
+    .prod-img-zone {
+      width:100%; height:180px; background:rgba(91,196,229,.05);
+      display:flex; align-items:center; justify-content:center;
+      position:relative; overflow:hidden;
+      border-bottom:1px solid rgba(91,196,229,.08);
+    }
+    .prod-img-zone img.prod-photo {
+      width:100%; height:100%; object-fit:contain; padding:16px;
+      position:absolute; inset:0;
+    }
+    .prod-img-fallback {
+      display:flex; align-items:center; justify-content:center; width:100%; height:100%;
+    }
+    .prod-img-fallback svg { opacity:.15; }
+    .prod-body { padding:28px 28px 24px; }
+    .prod-cat-label { font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--blue); margin-bottom:14px; }
+    .prod-name  { font-family:var(--font-d); font-weight:800; font-size:22px; line-height:1.15; letter-spacing:-.01em; margin-bottom:8px; }
+    .prod-spec  { font-size:10px; color:var(--white-dim); margin-bottom:24px; line-height:1.8; }
+    .prod-footer{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .prod-price { font-family:var(--font-d); font-weight:800; font-size:28px; letter-spacing:-.02em; }
+    .prod-price sup { font-size:14px; vertical-align:super; }
+    .btn-cart {
+      font-family:var(--font-m); font-size:10px; letter-spacing:.12em; text-transform:uppercase;
+      border:1px solid var(--blue); color:var(--blue); padding:9px 16px; border-radius:4px;
+      transition:background .2s,color .2s,box-shadow .2s; cursor:pointer; background:transparent;
+      white-space:nowrap;
+    }
+    .btn-cart:hover { background:var(--blue); color:var(--bg-base); box-shadow:0 0 20px var(--blue-glow); }
+
+    @media(max-width:768px){
+      #h-scroll-outer  { height:auto !important; }
+      #h-scroll-sticky { position:static; height:auto; overflow:visible; flex-direction:column; align-items:stretch; padding-top:80px; }
+      #h-scroll-track  { flex-direction:column; padding:20px 20px 40px; gap:20px; transform:none !important; }
+      .prod-card       { width:100%; }
+    }
+
+    /* ── GAMING ── */
+    #gaming {
+      background:var(--bg-gaming); padding:140px 48px;
+      text-align:center; position:relative; overflow:hidden;
+    }
+    /* scanlines */
+    #gaming::before {
+      content:''; position:absolute; inset:0; pointer-events:none;
+      background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(255,255,255,.012) 3px,rgba(255,255,255,.012) 4px);
+    }
+    /* hex grid SVG bg */
+    #gaming-hex-bg {
+      position:absolute; inset:0; width:100%; height:100%;
+      opacity:.03; pointer-events:none; overflow:hidden;
+    }
+    .gaming-headline { font-family:var(--font-d); font-weight:800; font-size:clamp(38px,7vw,96px); letter-spacing:-.025em; line-height:1.05; position:relative; z-index:1; opacity:0; transform:translateY(30px); }
+    .gaming-line { display:block; }
+    .gaming-sub  { margin-top:28px; font-size:clamp(12px,1.3vw,14px); color:var(--blue); letter-spacing:.08em; position:relative; z-index:1; opacity:0; transform:translateY(20px); }
+    .gaming-pills{ margin-top:32px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; position:relative; z-index:1; opacity:0; transform:translateY(16px); }
+    .gaming-pill { font-size:11px; letter-spacing:.08em; border:1px solid var(--blue); color:var(--blue); padding:8px 18px; border-radius:100px; transition:background .2s,color .2s; }
+    .gaming-pill:hover { background:var(--blue); color:var(--bg-base); }
+    @media(max-width:768px){ #gaming{padding:100px 20px;} .gaming-pills{flex-direction:column;align-items:center;} }
+
+    /* ── FOOTER ── */
+    footer { background:var(--bg-base); border-top:1px solid var(--blue); padding:56px 48px 40px; }
+    .footer-top { display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap; }
+    .footer-logo { height:28px; }
+    .footer-nav  { display:flex; gap:32px; list-style:none; font-size:12px; letter-spacing:.1em; text-transform:uppercase; }
+    .footer-nav a { color:var(--white-dim); transition:color .2s; }
+    .footer-nav a:hover { color:var(--blue); }
+    .footer-socials { display:flex; gap:20px; }
+    .footer-socials a { width:36px; height:36px; border:1px solid rgba(255,255,255,.15); border-radius:4px; display:flex; align-items:center; justify-content:center; color:var(--white-dim); font-size:14px; transition:border-color .2s,color .2s,box-shadow .2s; }
+    .footer-socials a:hover { border-color:var(--blue); color:var(--blue); box-shadow:0 0 14px rgba(91,196,229,.3); }
+    .footer-bottom { margin-top:48px; padding-top:24px; border-top:1px solid var(--white-xs); font-size:11px; color:var(--white-dim); letter-spacing:.08em; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+    @media(max-width:768px){ footer{padding:48px 20px 32px;} .footer-top{flex-direction:column;align-items:flex-start;} .footer-nav{flex-wrap:wrap;gap:20px;} }
+
+    /* ── MOBILE OVERRIDES ── */
+    @media(max-width:768px){
+      .cat-card,.gaming-headline,.gaming-sub,.gaming-pills,.why-text,.rig-slot{ opacity:1!important; transform:none!important; }
+      .rig-headline-wrap{ clip-path:none!important; }
+      .rig-cta-wrap{ opacity:1!important; transform:none!important; }
+    }
+  </style>
+</head>
+<body class="loading">
+
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- PRELOADER -->
+  <div id="preloader">
+    <img id="preloader-icon"     src="public/logo/mero-logo-reduced-blue.png" alt="me." />
+    <img id="preloader-wordmark" src="public/logo/mero-logo-white.png"        alt="mero" />
+    <div id="preloader-bar"><div id="preloader-bar-fill"></div></div>
+    <div id="preloader-progress"><div id="preloader-progress-fill"></div></div>
+  </div>
+
+  <div id="page-wrap">
+
+    <!-- NAV -->
+    <nav>
+      <img src="public/logo/mero-logo-white.png" alt="Mero" class="nav-logo" />
+      <ul class="nav-links">
+        <li><a href="#">Inicio</a></li>
+        <li><a href="#">Productos</a></li>
+        <li><a href="#">Comunidad</a></li>
+        <li><a href="#">Contacto</a></li>
+      </ul>
+      <a href="#" class="nav-cta">Ver productos</a>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero">
+      <img src="public/logo/mero-logo-reduced-blue.png" alt="" class="hero-bg-mark" aria-hidden="true" />
+      <div class="hero-orb" id="hero-orb"></div>
+      <div class="hero-content">
+        <h1 class="hero-headline" aria-label="La tienda de PC más poderosa de El Salvador.">
+          <span class="word">La</span>
+          <span class="word">tienda</span>
+          <span class="word">de PC</span>
+          <span class="word">más</span>
+          <span class="word">poderosa</span><br/>
+          <span class="word">de El Salvador.</span>
+        </h1>
+        <p class="hero-subline">// hecho para los que construyen. impulsado por mero.</p>
+        <div class="hero-cta-wrap">
+          <a href="#" class="btn-magnetic" id="hero-cta">Ver productos →</a>
+        </div>
+      </div>
+      <div class="scroll-hint" id="scroll-hint">
+        <span>Bajar</span>
+        <div class="scroll-hint-line"></div>
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <section id="marquee">
+      <div class="marquee-track">
+        <span class="marquee-item">MERO</span>
+        <span class="marquee-item outline">COMPONENTES PC</span>
+        <span class="marquee-item">EL SALVADOR</span>
+        <span class="marquee-item outline">GAMING</span>
+        <span class="marquee-item">ARMA TU RIG</span>
+        <span class="marquee-item outline">MERO</span>
+        <span class="marquee-item">COMPONENTES PC</span>
+        <span class="marquee-item outline">EL SALVADOR</span>
+        <span class="marquee-item">GAMING</span>
+        <span class="marquee-item outline">ARMA TU RIG</span>
+        <span class="marquee-item">MERO</span>
+        <span class="marquee-item outline">COMPONENTES PC</span>
+        <span class="marquee-item">EL SALVADOR</span>
+        <span class="marquee-item outline">GAMING</span>
+        <span class="marquee-item">ARMA TU RIG</span>
+        <span class="marquee-item outline">MERO</span>
+        <span class="marquee-item">COMPONENTES PC</span>
+        <span class="marquee-item outline">EL SALVADOR</span>
+        <span class="marquee-item">GAMING</span>
+        <span class="marquee-item outline">ARMA TU RIG</span>
+      </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section id="categories">
+      <p class="section-label">categorías destacadas</p>
+      <div class="cards-grid">
+
+        <div class="cat-card" data-cat="0">
+          <p class="cat-label">Procesadores</p>
+          <h3 class="cat-name">CPU</h3>
+          <p class="cat-count">120+ modelos disponibles</p>
+          <span class="cat-arrow">→</span>
+          <svg class="cat-icon" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="30" y="30" width="60" height="60" rx="6" stroke="#5BC4E5" stroke-width="2.5"/>
+            <rect x="44" y="44" width="32" height="32" rx="3" fill="none" stroke="#5BC4E5" stroke-width="2"/>
+            <line x1="20" y1="45" x2="30" y2="45" stroke="#5BC4E5" stroke-width="2"/>
+            <line x1="20" y1="57" x2="30" y2="57" stroke="#5BC4E5" stroke-width="2"/>
+            <line x1="20" y1="69" x2="30" y2="69" stroke="#5BC4E5" stroke-width="2"/>
+            <line x1="90" y1="45" x2="100" y2="45" stroke="#5BC4E5" stroke-width="2"/>
+            <line x1="90" y1="57" x2="100" y2="57" stroke="#5BC4E5" stroke-width="2"/>
+            <line x1="90" y1="69" x2="100" y2="69" stroke="#5BC4E5" stroke-width="2"/>
+            <line x1="45" y1="20" x2="45" y2="30" stroke="#5BC4E5" stroke-width="2"/>
+            <line x1="57" y1="20" x2="57" y2="30" stroke="#5BC4E5" stroke-width="2"/>
+            <line x1="69" y1="20" x2="69" y2="30" stroke="#5BC4E5" stroke-width="2"/>
+            <line x1="45" y1="90" x2="45" y2="100" stroke="#5BC4E5" stroke-width="2"/>
+            <line x1="57" y1="90" x2="57" y2="100" stroke="#5BC4E5" stroke-width="2"/>
+            <line x1="69" y1="90" x2="69" y2="100" stroke="#5BC4E5" stroke-width="2"/>
+          </svg>
+        </div>
+
+        <div class="cat-card" data-cat="1">
+          <p class="cat-label">Tarjetas Gráficas</p>
+          <h3 class="cat-name">GPU</h3>
+          <p class="cat-count">85+ modelos disponibles</p>
+          <span class="cat-arrow">→</span>
+          <svg class="cat-icon" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="15" y="38" width="90" height="44" rx="6" stroke="#5BC4E5" stroke-width="2.5"/>
+            <rect x="28" y="50" width="22" height="20" rx="3" stroke="#5BC4E5" stroke-width="2"/>
+            <rect x="58" y="50" width="22" height="20" rx="3" stroke="#5BC4E5" stroke-width="2"/>
+            <line x1="30" y1="82" x2="30" y2="96" stroke="#5BC4E5" stroke-width="2"/>
+            <line x1="46" y1="82" x2="46" y2="96" stroke="#5BC4E5" stroke-width="2"/>
+            <line x1="62" y1="82" x2="62" y2="96" stroke="#5BC4E5" stroke-width="2"/>
+            <line x1="78" y1="82" x2="78" y2="96" stroke="#5BC4E5" stroke-width="2"/>
+            <circle cx="93" cy="60" r="7" stroke="#5BC4E5" stroke-width="2"/>
+            <line x1="93" y1="53" x2="93" y2="38" stroke="#5BC4E5" stroke-width="1.5" stroke-dasharray="3 2"/>
+          </svg>
+        </div>
+
+        <div class="cat-card" data-cat="2">
+          <p class="cat-label">Memoria RAM</p>
+          <h3 class="cat-name">RAM</h3>
+          <p class="cat-count">60+ kits disponibles</p>
+          <span class="cat-arrow">→</span>
+          <svg class="cat-icon" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="35" y="22" width="18" height="76" rx="4" stroke="#5BC4E5" stroke-width="2.5"/>
+            <rect x="67" y="22" width="18" height="76" rx="4" stroke="#5BC4E5" stroke-width="2.5"/>
+            <rect x="39" y="30" width="10" height="8" rx="2" fill="#5BC4E5" opacity="0.6"/>
+            <rect x="39" y="44" width="10" height="8" rx="2" fill="#5BC4E5" opacity="0.6"/>
+            <rect x="39" y="58" width="10" height="8" rx="2" fill="#5BC4E5" opacity="0.6"/>
+            <rect x="71" y="30" width="10" height="8" rx="2" fill="#5BC4E5" opacity="0.6"/>
+            <rect x="71" y="44" width="10" height="8" rx="2" fill="#5BC4E5" opacity="0.6"/>
+            <rect x="71" y="58" width="10" height="8" rx="2" fill="#5BC4E5" opacity="0.6"/>
+            <line x1="16" y1="98" x2="104" y2="98" stroke="#5BC4E5" stroke-width="2" stroke-dasharray="4 3"/>
+          </svg>
+        </div>
+
+        <div class="cat-card" data-cat="3">
+          <p class="cat-label">Almacenamiento</p>
+          <h3 class="cat-name">Storage</h3>
+          <p class="cat-count">70+ opciones disponibles</p>
+          <span class="cat-arrow">→</span>
+          <svg class="cat-icon" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="20" y="30" width="80" height="60" rx="8" stroke="#5BC4E5" stroke-width="2.5"/>
+            <circle cx="88" cy="60" r="14" stroke="#5BC4E5" stroke-width="2"/>
+            <circle cx="88" cy="60" r="5" fill="#5BC4E5" opacity="0.5"/>
+            <line x1="30" y1="46" x2="62" y2="46" stroke="#5BC4E5" stroke-width="2"/>
+            <line x1="30" y1="56" x2="56" y2="56" stroke="#5BC4E5" stroke-width="2"/>
+            <line x1="30" y1="66" x2="62" y2="66" stroke="#5BC4E5" stroke-width="2"/>
+            <line x1="30" y1="76" x2="52" y2="76" stroke="#5BC4E5" stroke-width="2"/>
+          </svg>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- WHY MERO -->
+    <section id="why">
+      <div class="why-inner">
+        <div class="why-stats">
+          <p class="section-label" style="margin-bottom:0">por qué mero</p>
+          <div class="stat-item">
+            <div class="stat-number"><span class="counter" data-target="500">0</span><span>+</span></div>
+            <p class="stat-desc">Productos disponibles</p>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number"><span class="counter" data-target="48">0</span><span>hr</span></div>
+            <p class="stat-desc">Entrega en El Salvador</p>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number"><span>#</span><span class="counter" data-target="1">0</span></div>
+            <p class="stat-desc">Comunidad gamer del país</p>
+          </div>
+        </div>
+        <div class="why-statement">
+          <div class="why-accent-line" id="why-accent"></div>
+          <p class="why-text" id="why-text">
+            No vendemos piezas.<br/>Encendemos<br/>el build.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARMA TU RIG -->
+    <section id="rig-builder">
+      <p class="rig-label">arma tu rig</p>
+
+      <div class="rig-diagram" id="rig-diagram">
+        <!-- SVG connector lines -->
+        <svg class="rig-lines" viewBox="0 0 560 480" xmlns="http://www.w3.org/2000/svg">
+          <!-- CPU center to GPU right -->
+          <line id="line-cpu-gpu" class="rig-line" x1="354" y1="240" x2="412" y2="240"/>
+          <!-- CPU center to RAM top -->
+          <line id="line-cpu-ram" class="rig-line" x1="280" y1="166" x2="280" y2="74"/>
+          <!-- CPU center to Storage bottom -->
+          <line id="line-cpu-storage" class="rig-line" x1="280" y1="314" x2="280" y2="406"/>
+        </svg>
+
+        <!-- CPU -->
+        <div class="rig-slot" id="slot-cpu">
+          <div class="rig-ring"></div>
+          <p class="rig-slot-label">Procesador</p>
+          <p class="rig-slot-name">CPU</p>
+          <div class="rig-tooltip">
+            <strong>i9-14900K</strong>
+            <span>$589 · 24 cores</span>
+          </div>
+        </div>
+
+        <!-- GPU -->
+        <div class="rig-slot" id="slot-gpu">
+          <div class="rig-ring"></div>
+          <p class="rig-slot-label">Gráfica</p>
+          <p class="rig-slot-name">GPU</p>
+          <div class="rig-tooltip">
+            <strong>RTX 4080 Super</strong>
+            <span>$999 · 16GB</span>
+          </div>
+        </div>
+
+        <!-- RAM -->
+        <div class="rig-slot" id="slot-ram">
+          <div class="rig-ring"></div>
+          <p class="rig-slot-label">Memoria</p>
+          <p class="rig-slot-name">RAM</p>
+          <div class="rig-tooltip">
+            <strong>Trident Z5 32GB</strong>
+            <span>$149 · DDR5-6400</span>
+          </div>
+        </div>
+
+        <!-- Storage -->
+        <div class="rig-slot" id="slot-storage">
+          <div class="rig-ring"></div>
+          <p class="rig-slot-label">Almacenamiento</p>
+          <p class="rig-slot-name">Storage</p>
+          <div class="rig-tooltip">
+            <strong>Samsung 990 Pro 2TB</strong>
+            <span>$179 · NVMe PCIe 4.0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rig-headline-wrap" id="rig-headline-wrap">
+        <h2 class="rig-headline">Tu setup ideal, en El Salvador.</h2>
+      </div>
+      <div class="rig-cta-wrap" id="rig-cta-wrap">
+        <a href="#" class="btn-magnetic" id="rig-cta">Explorar componentes →</a>
+      </div>
+    </section>
+
+    <!-- PRODUCTOS DESTACADOS (horizontal scroll) -->
+    <section id="h-scroll-outer">
+      <div id="h-scroll-sticky">
+        <div id="h-scroll-label">productos destacados</div>
+        <div id="h-scroll-track">
+
+          <!-- i9-14900K -->
+          <div class="prod-card">
+            <div class="prod-img-zone">
+              <img class="prod-photo" src="public/products/Intel%20Core%20i9-14900K.png"
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="Intel i9-14900K" />
+              <div class="prod-img-fallback">
+                <svg width="64" height="64" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="30" y="30" width="60" height="60" rx="6" stroke="#5BC4E5" stroke-width="2"/>
+                  <rect x="44" y="44" width="32" height="32" rx="3" fill="none" stroke="#5BC4E5" stroke-width="1.5"/>
+                  <line x1="20" y1="45" x2="30" y2="45" stroke="#5BC4E5" stroke-width="1.5"/>
+                  <line x1="20" y1="57" x2="30" y2="57" stroke="#5BC4E5" stroke-width="1.5"/>
+                  <line x1="20" y1="69" x2="30" y2="69" stroke="#5BC4E5" stroke-width="1.5"/>
+                  <line x1="90" y1="45" x2="100" y2="45" stroke="#5BC4E5" stroke-width="1.5"/>
+                  <line x1="90" y1="57" x2="100" y2="57" stroke="#5BC4E5" stroke-width="1.5"/>
+                  <line x1="90" y1="69" x2="100" y2="69" stroke="#5BC4E5" stroke-width="1.5"/>
+                  <line x1="45" y1="20" x2="45" y2="30" stroke="#5BC4E5" stroke-width="1.5"/>
+                  <line x1="57" y1="20" x2="57" y2="30" stroke="#5BC4E5" stroke-width="1.5"/>
+                  <line x1="69" y1="20" x2="69" y2="30" stroke="#5BC4E5" stroke-width="1.5"/>
+                  <line x1="45" y1="90" x2="45" y2="100" stroke="#5BC4E5" stroke-width="1.5"/>
+                  <line x1="57" y1="90" x2="57" y2="100" stroke="#5BC4E5" stroke-width="1.5"/>
+                  <line x1="69" y1="90" x2="69" y2="100" stroke="#5BC4E5" stroke-width="1.5"/>
+                </svg>
+              </div>
+            </div>
+            <div class="prod-body">
+              <p class="prod-cat-label">// procesador</p>
+              <h3 class="prod-name">Intel Core i9-14900K</h3>
+              <p class="prod-spec">24 núcleos · 5.8GHz boost<br/>125W TDP · LGA1700</p>
+              <div class="prod-footer">
+                <div class="prod-price"><sup>$</sup>589</div>
+                <button class="btn-cart">Agregar →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- RTX 4080 Super -->
+          <div class="prod-card">
+            <div class="prod-img-zone">
+              <img class="prod-photo" src="public/products/RTX%204080%20Super.png"
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="RTX 4080 Super" />
+              <div class="prod-img-fallback">
+                <svg width="64" height="64" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="15" y="38" width="90" height="44" rx="6" stroke="#5BC4E5" stroke-width="2"/>
+                  <rect x="28" y="50" width="22" height="20" rx="3" stroke="#5BC4E5" stroke-width="1.5"/>
+                  <rect x="58" y="50" width="22" height="20" rx="3" stroke="#5BC4E5" stroke-width="1.5"/>
+                  <line x1="30" y1="82" x2="30" y2="96" stroke="#5BC4E5" stroke-width="1.5"/>
+                  <line x1="46" y1="82" x2="46" y2="96" stroke="#5BC4E5" stroke-width="1.5"/>
+                  <line x1="62" y1="82" x2="62" y2="96" stroke="#5BC4E5" stroke-width="1.5"/>
+                  <line x1="78" y1="82" x2="78" y2="96" stroke="#5BC4E5" stroke-width="1.5"/>
+                  <circle cx="93" cy="60" r="7" stroke="#5BC4E5" stroke-width="1.5"/>
+                </svg>
+              </div>
+            </div>
+            <div class="prod-body">
+              <p class="prod-cat-label">// tarjeta gráfica</p>
+              <h3 class="prod-name">RTX 4080 Super</h3>
+              <p class="prod-spec">16GB GDDR6X · DLSS 3.5<br/>Ada Lovelace · lista para 4K</p>
+              <div class="prod-footer">
+                <div class="prod-price"><sup>$</sup>999</div>
+                <button class="btn-cart">Agregar →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- G.Skill Trident Z5 -->
+          <div class="prod-card">
+            <div class="prod-img-zone">
+              <img class="prod-photo" src="public/products/G.Skill%20Trident%20Z5.png"
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="G.Skill Trident Z5" />
+              <div class="prod-img-fallback">
+                <svg width="40" height="64" viewBox="0 0 70 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="10" y="10" width="22" height="100" rx="4" stroke="#5BC4E5" stroke-width="2"/>
+                  <rect x="38" y="10" width="22" height="100" rx="4" stroke="#5BC4E5" stroke-width="2"/>
+                  <rect x="14" y="20" width="14" height="10" rx="2" fill="#5BC4E5" opacity="0.5"/>
+                  <rect x="14" y="36" width="14" height="10" rx="2" fill="#5BC4E5" opacity="0.5"/>
+                  <rect x="42" y="20" width="14" height="10" rx="2" fill="#5BC4E5" opacity="0.5"/>
+                  <rect x="42" y="36" width="14" height="10" rx="2" fill="#5BC4E5" opacity="0.5"/>
+                </svg>
+              </div>
+            </div>
+            <div class="prod-body">
+              <p class="prod-cat-label">// memoria</p>
+              <h3 class="prod-name">G.Skill Trident Z5</h3>
+              <p class="prod-spec">32GB DDR5-6400 · CL32<br/>RGB · Kit dual channel</p>
+              <div class="prod-footer">
+                <div class="prod-price"><sup>$</sup>149</div>
+                <button class="btn-cart">Agregar →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Samsung 990 Pro -->
+          <div class="prod-card">
+            <div class="prod-img-zone">
+              <img class="prod-photo" src="public/products/Samsung%20990%20Pro%202TB.png"
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="Samsung 990 Pro 2TB" />
+              <div class="prod-img-fallback">
+                <svg width="64" height="64" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="20" y="30" width="80" height="60" rx="8" stroke="#5BC4E5" stroke-width="2"/>
+                  <circle cx="88" cy="60" r="14" stroke="#5BC4E5" stroke-width="1.5"/>
+                  <circle cx="88" cy="60" r="5" fill="#5BC4E5" opacity="0.5"/>
+                  <line x1="30" y1="46" x2="62" y2="46" stroke="#5BC4E5" stroke-width="1.5"/>
+                  <line x1="30" y1="56" x2="56" y2="56" stroke="#5BC4E5" stroke-width="1.5"/>
+                  <line x1="30" y1="66" x2="62" y2="66" stroke="#5BC4E5" stroke-width="1.5"/>
+                  <line x1="30" y1="76" x2="52" y2="76" stroke="#5BC4E5" stroke-width="1.5"/>
+                </svg>
+              </div>
+            </div>
+            <div class="prod-body">
+              <p class="prod-cat-label">// almacenamiento</p>
+              <h3 class="prod-name">Samsung 990 Pro 2TB</h3>
+              <p class="prod-spec">NVMe PCIe 4.0 · 7,450 MB/s<br/>M.2 2280 · 5 años garantía</p>
+              <div class="prod-footer">
+                <div class="prod-price"><sup>$</sup>179</div>
+                <button class="btn-cart">Agregar →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Corsair HX1000i -->
+          <div class="prod-card">
+            <div class="prod-img-zone">
+              <img class="prod-photo" src="public/products/Corsair%20HX1000i.png"
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="Corsair HX1000i" />
+              <div class="prod-img-fallback">
+                <svg width="64" height="64" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="15" y="35" width="90" height="50" rx="8" stroke="#5BC4E5" stroke-width="2"/>
+                  <line x1="30" y1="50" x2="90" y2="50" stroke="#5BC4E5" stroke-width="1.5" stroke-dasharray="5 3"/>
+                  <line x1="30" y1="60" x2="70" y2="60" stroke="#5BC4E5" stroke-width="1.5" stroke-dasharray="5 3"/>
+                  <line x1="30" y1="70" x2="80" y2="70" stroke="#5BC4E5" stroke-width="1.5" stroke-dasharray="5 3"/>
+                  <circle cx="95" cy="85" r="8" stroke="#5BC4E5" stroke-width="1.5"/>
+                  <circle cx="95" cy="85" r="3" fill="#5BC4E5" opacity="0.6"/>
+                </svg>
+              </div>
+            </div>
+            <div class="prod-body">
+              <p class="prod-cat-label">// fuente de poder</p>
+              <h3 class="prod-name">Corsair HX1000i</h3>
+              <p class="prod-spec">1000W · 80+ Platino<br/>Modular · ATX 3.0</p>
+              <div class="prod-footer">
+                <div class="prod-price"><sup>$</sup>229</div>
+                <button class="btn-cart">Agregar →</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section><!-- /h-scroll-outer -->
+
+    <!-- GAMING BANNER -->
+    <section id="gaming">
+      <!-- Hex grid background -->
+      <svg id="gaming-hex-bg" viewBox="0 0 1440 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <pattern id="hexPat" x="0" y="0" width="60" height="52" patternUnits="userSpaceOnUse">
+            <polygon points="30,2 56,16 56,36 30,50 4,36 4,16" fill="none" stroke="#5BC4E5" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#hexPat)"/>
+      </svg>
+
+      <h2 class="gaming-headline" id="gaming-headline">
+        <span class="gaming-line" id="glitch-line1">¿Jugás LoL?</span>
+        <span class="gaming-line" id="glitch-line2">Somos tu gente.</span>
+      </h2>
+      <p class="gaming-sub" id="gaming-sub">// mero organiza torneos · seguinos en redes · únete al squad</p>
+      <div class="gaming-pills" id="gaming-pills">
+        <span class="gaming-pill">🏆 Torneos mensuales</span>
+        <span class="gaming-pill">👾 +500 gamers</span>
+        <span class="gaming-pill">🎮 Comunidad activa</span>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-top">
+        <img src="public/logo/mero-logo-white.png" alt="Mero" class="footer-logo" />
+        <ul class="footer-nav">
+          <li><a href="#">Inicio</a></li>
+          <li><a href="#">Productos</a></li>
+          <li><a href="#">Comunidad</a></li>
+          <li><a href="#">Contacto</a></li>
+        </ul>
+        <div class="footer-socials">
+          <a href="#" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="Twitter/X">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="TikTok">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Mero · El Salvador · construido diferente.</span>
+        <span>impulsado por <span style="color:var(--blue)">mero</span></span>
+      </div>
+    </footer>
+
+  </div><!-- /page-wrap -->
+
+<script>
+(function () {
+  'use strict';
+
+  gsap.registerPlugin(ScrollTrigger, TextPlugin);
+
+  // ── LENIS ──
+  const lenis = new Lenis({ lerp: 0.08, smoothWheel: true, syncTouch: false });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(t => lenis.raf(t * 1000));
+  gsap.ticker.lagSmoothing(0);
+
+  // ── CURSOR ──
+  const cursorDot  = document.getElementById('cursor-dot');
+  const cursorRing = document.getElementById('cursor-ring');
+  let mouseX = innerWidth / 2, mouseY = innerHeight / 2;
+  let ringX = mouseX, ringY = mouseY;
+  window.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    gsap.set(cursorDot, { x: mouseX, y: mouseY });
+  });
+  (function tickRing() {
+    ringX += (mouseX - ringX) * 0.12; ringY += (mouseY - ringY) * 0.12;
+    gsap.set(cursorRing, { x: ringX, y: ringY });
+    requestAnimationFrame(tickRing);
+  })();
+  document.querySelectorAll('a,button,.cat-card,.prod-card,.rig-slot').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+  });
+
+  // ── MAGNETIC BUTTONS ──
+  function initMagnetic(id, radius, strength) {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+    document.addEventListener('mousemove', e => {
+      const r  = btn.getBoundingClientRect();
+      const cx = r.left + r.width  / 2;
+      const cy = r.top  + r.height / 2;
+      const dx = e.clientX - cx, dy = e.clientY - cy;
+      const d  = Math.sqrt(dx*dx + dy*dy);
+      if (d < radius) {
+        const p = (1 - d / radius) * strength;
+        gsap.to(btn, { x: dx * p, y: dy * p, duration: .4, ease: 'power2.out' });
+      } else {
+        gsap.to(btn, { x: 0, y: 0, duration: .6, ease: 'elastic.out(1,.4)' });
+      }
+    });
+  }
+  initMagnetic('hero-cta', 120, 0.45);
+  initMagnetic('rig-cta',  120, 0.45);
+
+  // ── HERO ORB ──
+  const orb = document.getElementById('hero-orb');
+  let orbX = innerWidth/2, orbY = innerHeight/2, tOX = orbX, tOY = orbY;
+  window.addEventListener('mousemove', e => { tOX = e.clientX; tOY = e.clientY; });
+  (function tickOrb() {
+    orbX += (tOX - orbX) * .04; orbY += (tOY - orbY) * .04;
+    gsap.set(orb, { x: orbX, y: orbY });
+    requestAnimationFrame(tickOrb);
+  })();
+
+  // ── PRELOADER ──
+  const preloader  = document.getElementById('preloader');
+  const plIcon     = document.getElementById('preloader-icon');
+  const plWord     = document.getElementById('preloader-wordmark');
+  const plFill     = document.getElementById('preloader-bar-fill');
+  const plProgress = document.getElementById('preloader-progress-fill');
+  const pageWrap   = document.getElementById('page-wrap');
+
+  const tl = gsap.timeline({ onComplete: revealPage });
+  tl.to(plFill,     { width: '100%', duration: 1.4, ease: 'power2.inOut' }, 0);
+  tl.to(plIcon,     { opacity: 1, scale: 1, duration: .5, ease: 'back.out(2)' }, 0.3);
+  tl.to(plIcon,     { scale: 1.12, duration: .22, yoyo: true, repeat: 1, ease: 'power1.inOut' }, 1.0);
+  tl.to(plWord,     { opacity: 1, duration: .35, ease: 'power2.out' }, 1.3);
+  // bottom progress bar
+  tl.to(plProgress, { width: '100%', duration: 1.2, ease: 'power2.inOut' }, 1.3);
+  tl.to([plIcon, plWord, document.getElementById('preloader-bar')],
+        { y: -30, opacity: 0, duration: .5, stagger: .06, ease: 'power3.in' }, 2.1);
+
+  function revealPage() {
+    // upward clip-path wipe: bottom inset 100%→0%
+    gsap.to(pageWrap, {
+      clipPath: 'inset(0 0 0% 0)',
+      duration: 1.0,
+      ease: 'power3.inOut',
+      onComplete: () => {
+        preloader.style.display = 'none';
+        document.body.classList.remove('loading');
+        animateHero();
+      }
+    });
+    gsap.to(preloader, { opacity: 0, duration: .9, ease: 'power2.in' });
+  }
+
+  // ── HERO ANIMATION ──
+  function animateHero() {
+    gsap.to('.hero-headline .word', { y: 0, opacity: 1, duration: .9, stagger: .08, ease: 'power3.out', delay: .1 });
+    gsap.to('.hero-subline',        { opacity: 1, y: 0, duration: .7, ease: 'power3.out', delay: .65 });
+    gsap.to('.hero-cta-wrap',       { opacity: 1, y: 0, duration: .7, ease: 'power3.out', delay: .9 });
+    gsap.to('#scroll-hint',         { opacity: 1, duration: .7, delay: 1.6 });
+  }
+
+  // ── CATEGORY CARDS ──
+  gsap.utils.toArray('.cat-card').forEach((card, i) => {
+    gsap.to(card, { opacity: 1, y: 0, duration: .8, ease: 'power3.out', delay: i * .1,
+      scrollTrigger: { trigger: card, start: 'top 80%' }
+    });
+  });
+
+  // ── COUNTERS ──
+  document.querySelectorAll('.counter').forEach(counter => {
+    const target = parseInt(counter.dataset.target, 10);
+    ScrollTrigger.create({
+      trigger: counter, start: 'top 80%', once: true,
+      onEnter: () => {
+        gsap.to({ val: 0 }, {
+          val: target, duration: 1.6, ease: 'power2.out',
+          onUpdate: function() { counter.textContent = Math.round(this.targets()[0].val); }
+        });
+      }
+    });
+  });
+
+  // why accent + text
+  ScrollTrigger.create({
+    trigger: '#why', start: 'top 70%', once: true,
+    onEnter: () => {
+      gsap.to('#why-accent', { scaleY: 1, duration: .9, ease: 'power3.out', delay: .2 });
+      gsap.to('#why-text',   { opacity: 1, y: 0, duration: .9, ease: 'power3.out', delay: .3 });
+    }
+  });
+
+  // ── RIG BUILDER ANIMATIONS ──
+  ScrollTrigger.create({
+    trigger: '#rig-builder', start: 'top 65%', once: true,
+    onEnter: () => {
+      // slots enter from different directions
+      gsap.fromTo('#slot-cpu',     { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: .7, ease: 'back.out(1.8)', delay: 0 });
+      gsap.fromTo('#slot-gpu',     { x:  80, opacity: 0 },   { x: 0, opacity: 1, duration: .7, ease: 'power3.out', delay: .15 });
+      gsap.fromTo('#slot-ram',     { y: -60, opacity: 0 },   { y: 0, opacity: 1, duration: .7, ease: 'power3.out', delay: .3 });
+      gsap.fromTo('#slot-storage', { y:  60, opacity: 0 },   { y: 0, opacity: 1, duration: .7, ease: 'power3.out', delay: .45 });
+
+      // draw SVG connector lines after slots appear
+      gsap.to('.rig-line', {
+        strokeDashoffset: 0, duration: .8, ease: 'power2.out',
+        stagger: .12, delay: .7
+      });
+
+      // start floating after entrance
+      setTimeout(() => {
+        document.querySelectorAll('.rig-slot').forEach(s => s.classList.add('floating'));
+      }, 900);
+
+      // headline clip-path reveal
+      gsap.to('#rig-headline-wrap', {
+        clipPath: 'inset(0% 0 0 0)', duration: .9, ease: 'power3.out', delay: .9
+      });
+      gsap.to('#rig-cta-wrap', { opacity: 1, y: 0, duration: .7, ease: 'power3.out', delay: 1.1 });
+    }
+  });
+
+  // ── HORIZONTAL SCROLL ──
+  const isMobile = innerWidth <= 768;
+
+  if (!isMobile) {
+    const track  = document.getElementById('h-scroll-track');
+    const outer  = document.getElementById('h-scroll-outer');
+
+    function initHScroll() {
+      // measure how far the track overflows the viewport
+      const totalMove = track.scrollWidth - innerWidth;
+      if (totalMove <= 0) return; // nothing to scroll
+
+      // outer section must be tall enough: 100vh (sticky window) + travel
+      gsap.set(outer, { height: innerHeight + totalMove });
+
+      // animate x on the track, driven by outer's scroll progress
+      gsap.to(track, {
+        x: -totalMove,
+        ease: 'none',
+        scrollTrigger: {
+          trigger:             outer,
+          start:               'top top',
+          end:                 () => `+=${totalMove}`,
+          scrub:               1,
+          invalidateOnRefresh: true,
+        }
+      });
+    }
+
+    // Double rAF so all images/fonts are measured before reading scrollWidth
+    function safeInit() {
+      requestAnimationFrame(() => requestAnimationFrame(initHScroll));
+    }
+
+    if (document.readyState === 'complete') { safeInit(); }
+    else { window.addEventListener('load', safeInit); }
+
+    window.addEventListener('resize', () => {
+      ScrollTrigger.refresh();
+      safeInit();
+    });
+  }
+
+  // ── GAMING BANNER ──
+  ScrollTrigger.create({
+    trigger: '#gaming', start: 'top 80%', once: true,
+    onEnter: () => {
+      gsap.to('#gaming-headline', { opacity: 1, y: 0, duration: .9, ease: 'power3.out' });
+      gsap.to('#gaming-sub',      { opacity: 1, y: 0, duration: .8, ease: 'power3.out', delay: .2 });
+      gsap.to('#gaming-pills',    { opacity: 1, y: 0, duration: .7, ease: 'power3.out', delay: .4 });
+    }
+  });
+
+  // ── GLITCH — alternating between line 1 and line 2 ──
+  const line1 = document.getElementById('glitch-line1');
+  const line2 = document.getElementById('glitch-line2');
+  const originalL1 = line1.textContent;
+  const originalL2 = line2.textContent;
+  const glitchChars = '!@#$%^&*Ñ01ABCDEFGHIJKLMN01234';
+  let glitchTarget = 0; // alternates 0=line1, 1=line2
+
+  function scrambleLine(el, original, duration) {
+    let frame = 0;
+    const total = Math.round(duration / 16);
+    const iv = setInterval(() => {
+      frame++;
+      const progress = frame / total;
+      let out = '';
+      for (let i = 0; i < original.length; i++) {
+        const ch = original[i];
+        if (progress > i / original.length + 0.3 || ch === ' ') {
+          out += ch;
+        } else {
+          out += glitchChars[Math.floor(Math.random() * glitchChars.length)];
+        }
+      }
+      el.textContent = out;
+      if (frame >= total) { clearInterval(iv); el.textContent = original; }
+    }, 16);
+  }
+
+  setInterval(() => {
+    if (glitchTarget === 0) { scrambleLine(line1, originalL1, 480); }
+    else                    { scrambleLine(line2, originalL2, 480); }
+    glitchTarget = 1 - glitchTarget;
+  }, 4000);
+
+})();
+</script>
+</body>
+</html>
