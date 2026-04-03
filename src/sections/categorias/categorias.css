@@ -101,6 +101,7 @@
   filter: drop-shadow(0 0 5px rgba(91,196,229,.45));
 }
 .cat-card.gpu:hover .cat-icon {
+  opacity: 1;
   filter: drop-shadow(0 0 5px rgba(244,63,94,.45));
 }
 
@@ -126,7 +127,7 @@
 .cat-count {
   font-size: .54rem; color: rgba(91,196,229,.45);
 }
-.cat-card.gpu .cat-count { color: rgba(244,63,94,.5); }
+.cat-card.gpu .cat-count { color: rgba(244,63,94,.45); }
 
 /* ─── CTA REVEAL ─────────────────────────────────── */
 .cat-cta-wrap {
@@ -148,7 +149,7 @@
   padding: .28rem .85rem;
   clip-path: polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
   white-space: nowrap;
-  transition: border-color .2s, background .2s;
+  transition: border-color .25s, background .25s;
 }
 .cat-card:hover .cat-cta {
   border-color: rgba(91,196,229,.5);
@@ -174,4 +175,14 @@
   .cat-icon-wrap { flex-shrink: 0; }
   .cat-name { font-size: .9rem; }
   .cat-cta-wrap { display: none; }
+}
+
+/* ─── ACCESSIBILITY ──────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .cat-card::before,
+  .cat-card::after,
+  .cat-icon,
+  .cat-cta-wrap { transition: none; }
+  .cat-card:hover::before { width: 100%; }
+  .cat-card:hover::after  { height: 55%; }
 }
