@@ -1,0 +1,25 @@
+    /* ─── TRUST BAR ──────────────────────────────────── */
+    #trust-bar {
+      border-top: 1px solid rgba(91,196,229,.12);
+      border-bottom: 1px solid rgba(91,196,229,.12);
+      background: rgba(91,196,229,.02);
+      padding: 1.25rem 8vw;
+    }
+    .trust-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: .65rem;
+      font-size: .72rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--dim); transition: color .25s;
+    }
+    .trust-item:hover { color: var(--primary); }
+    .trust-item svg { width: 18px; height: 18px; transition: filter .25s; }
+    .trust-item:hover svg { filter: drop-shadow(0 0 6px var(--primary)); }
+    .trust-sep { width: 1px; height: 28px; background: rgba(91,196,229,.12); flex-shrink: 0; }
+
+    @media (max-width: 768px) {
+      .trust-inner { flex-wrap: wrap; gap: .75rem; justify-content: center; }
+      .trust-sep { display: none; }
+    }
