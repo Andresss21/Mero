@@ -1,0 +1,74 @@
+#productos { padding: 8rem 8vw; }
+
+.prod-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 3rem; gap: 1rem; flex-wrap: wrap;
+}
+.prod-header .sec-title { margin-bottom: 0; }
+.prod-view-all {
+  font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--primary); text-decoration: none;
+  border-bottom: 1px solid rgba(91,196,229,.25); padding-bottom: .2rem;
+  transition: border-color .2s;
+}
+.prod-view-all:hover { border-color: var(--primary); }
+
+/* Fan stage */
+.fan-stage {
+  position: relative; height: 540px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.fan-card {
+  position: absolute; overflow: hidden;
+  clip-path: polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+  border: 1px solid rgba(91,196,229,.2);
+  box-shadow: 0 16px 48px rgba(0,0,0,.7);
+  transition: transform .4s cubic-bezier(.16,1,.3,1), box-shadow .4s;
+  cursor: pointer;
+}
+.fan-card img { width: 100%; display: block; transition: transform .4s; }
+.fan-card:hover img { transform: scale(1.03); }
+.fan-card:hover { z-index: 10 !important; }
+
+.fc-left  { width: 265px; transform: rotate(-7deg) translateX(-145px); z-index: 1; }
+.fc-mid   {
+  width: 310px; z-index: 3;
+  border-color: rgba(244,63,94,.35);
+  box-shadow: 0 20px 60px rgba(0,0,0,.8), 0 0 40px rgba(244,63,94,.08);
+}
+.fc-right { width: 265px; transform: rotate(7deg) translateX(145px); z-index: 1; }
+
+.fc-left:hover  { transform: rotate(-7deg) translateX(-145px) scale(1.05); }
+.fc-mid:hover   { transform: scale(1.05); box-shadow: 0 24px 70px rgba(0,0,0,.9), 0 0 50px rgba(244,63,94,.14); }
+.fc-right:hover { transform: rotate(7deg) translateX(145px) scale(1.05); }
+
+/* Badges */
+.fan-badge {
+  position: absolute; top: .8rem; left: 0;
+  font-family: var(--fu); font-size: .54rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+  padding: .26rem .8rem .26rem .55rem;
+  clip-path: polygon(0 0,100% 0,calc(100% - 5px) 100%,0 100%);
+}
+.badge-hot   { background: var(--hot); color: #fff; }
+.badge-value { background: var(--primary); color: var(--bg); }
+.badge-new   { background: rgba(91,196,229,.12); color: var(--primary); border: 1px solid rgba(91,196,229,.3); border-left: none; }
+
+/* CTA bar */
+.fan-cta {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: rgba(12,10,20,.94); backdrop-filter: blur(10px);
+  padding: .75rem .9rem; border-top: 1px solid rgba(91,196,229,.15);
+  transform: translateY(100%); transition: transform .35s cubic-bezier(.16,1,.3,1);
+}
+.fan-card:hover .fan-cta { transform: translateY(0); }
+.fan-cta .btn-primary, .fan-cta .btn-ghost { display: block; text-align: center; padding: .5rem; font-size: .7rem; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .fan-stage { height: auto; flex-direction: column; gap: 1rem; }
+  .fan-card { position: relative; width: 100% !important; transform: none !important; }
+  .fc-left:hover, .fc-right:hover { transform: none !important; }
+  .fan-cta { transform: translateY(0); }
+}
