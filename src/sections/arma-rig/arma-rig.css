@@ -1,0 +1,117 @@
+#arma-rig { padding: 8rem 8vw; background: var(--bg); }
+
+.arma-header { margin-bottom: 3.5rem; max-width: 520px; }
+.arma-header .sec-title { margin-bottom: .75rem; }
+.arma-sub { font-size: .9rem; color: var(--dim); line-height: 1.6; }
+
+/* ── Arena layout ── */
+#rig-arena {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* ── Chassis ── */
+.rig-chassis {
+  border: 1px solid rgba(91,196,229,.15);
+  background: rgba(91,196,229,.02);
+  clip-path: polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));
+  padding: 2rem;
+  transition: box-shadow .5s;
+}
+.rig-chassis.powered {
+  box-shadow: 0 0 60px rgba(91,196,229,.12), inset 0 0 40px rgba(91,196,229,.03);
+}
+
+/* ── Slots grid ── */
+.rig-slots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.rig-slot {
+  display: flex; flex-direction: column; align-items: center;
+  gap: .6rem; padding: 1.4rem 1rem;
+  border: 1px solid rgba(91,196,229,.14);
+  background: var(--bg);
+  transition: border-color .35s, box-shadow .35s, background .35s;
+  position: relative; overflow: hidden;
+}
+
+.rig-slot::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, rgba(91,196,229,.08) 0%, transparent 70%);
+  opacity: 0; transition: opacity .4s;
+}
+
+.rig-slot.on { border-color: rgba(91,196,229,.4); background: rgba(91,196,229,.04); }
+.rig-slot.on::before { opacity: 1; }
+.rig-slot.flash { animation: slot-flash .75s ease-out forwards; }
+
+@keyframes slot-flash {
+  0%   { background: rgba(91,196,229,.18); }
+  100% { background: rgba(91,196,229,.04); }
+}
+
+.rig-slot-icon {
+  width: 36px; height: 36px; color: rgba(91,196,229,.3);
+  transition: color .35s;
+}
+.rig-slot.on .rig-slot-icon { color: var(--primary); }
+
+.rig-slot-label {
+  font-size: .62rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--dim); transition: color .35s;
+}
+.rig-slot.on .rig-slot-label { color: var(--primary); }
+
+/* ── Readout ── */
+.rig-readout {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; flex-wrap: wrap;
+  padding: 1.2rem 1.4rem;
+  border-top: 1px solid rgba(91,196,229,.12);
+  opacity: 0; transform: translateY(12px);
+  transition: opacity .6s, transform .6s;
+}
+.rig-readout.show { opacity: 1; transform: translateY(0); }
+
+.rig-readout-label {
+  font-size: .7rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--primary);
+}
+
+/* ── Log panel ── */
+.rig-log-wrap {
+  border: 1px solid rgba(91,196,229,.12);
+  background: rgba(7,8,26,.6);
+  clip-path: polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+  padding: 1.25rem 1.4rem;
+  height: 100%;
+}
+
+.rig-log-header {
+  font-size: .58rem; letter-spacing: .18em; color: rgba(91,196,229,.3);
+  text-transform: uppercase; margin-bottom: .8rem;
+}
+
+.rig-log {
+  font-size: .75rem; color: var(--dim);
+  line-height: 1.6; min-height: 80px;
+  transition: color .3s;
+}
+.rig-log.active { color: var(--primary); }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  #rig-arena { grid-template-columns: 1fr; }
+  .rig-log-wrap { height: auto; }
+}
+
+@media (max-width: 640px) {
+  #arma-rig { padding: 5rem 5vw; }
+  .rig-slots { grid-template-columns: repeat(2, 1fr); }
+}

@@ -1,0 +1,74 @@
+#categorias { padding: 8rem 8vw; background: var(--bg2); }
+
+.cat-header { margin-bottom: 3.5rem; }
+.cat-header .sec-title { margin-bottom: 0; }
+
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.cat-link {
+  display: flex; align-items: center; gap: 1.2rem;
+  padding: 1.5rem 1.6rem;
+  background: var(--bg);
+  border: 1px solid rgba(91,196,229,.12);
+  border-left: 2px solid rgba(91,196,229,.3);
+  clip-path: polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+  text-decoration: none; color: var(--text);
+  position: relative; overflow: hidden;
+  transition: border-color .3s, background .3s, box-shadow .3s;
+}
+.cat-link::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 20% 50%, rgba(91,196,229,.06) 0%, transparent 60%);
+  opacity: 0; transition: opacity .3s;
+}
+.cat-link:hover::before { opacity: 1; }
+.cat-link:hover {
+  border-color: var(--primary);
+  border-left-color: var(--primary);
+  background: rgba(91,196,229,.04);
+  box-shadow: 0 0 30px rgba(91,196,229,.12), -2px 0 16px rgba(91,196,229,.1);
+}
+
+.cat-icon {
+  flex-shrink: 0; width: 52px; height: 52px;
+  opacity: .45; transition: opacity .3s, transform .3s;
+}
+.cat-link:hover .cat-icon { opacity: .9; transform: scale(1.08); }
+
+.cat-body { flex: 1; min-width: 0; }
+
+.cat-slug {
+  font-size: .6rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--primary); margin-bottom: .3rem;
+}
+
+.cat-name {
+  font-family: var(--fh); font-size: 1.5rem; line-height: 1.1;
+  margin-bottom: .35rem;
+}
+
+.cat-count {
+  font-size: .65rem; color: var(--dim);
+}
+
+.cat-arrow {
+  font-size: 1.1rem; color: var(--primary);
+  opacity: 0; transform: translateX(-6px);
+  transition: opacity .25s, transform .25s;
+  flex-shrink: 0;
+}
+.cat-link:hover .cat-arrow { opacity: 1; transform: translateX(0); }
+
+@media (max-width: 1024px) {
+  .cat-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  #categorias { padding: 5rem 5vw; }
+  .cat-grid { grid-template-columns: 1fr; }
+  .cat-link { padding: 1.2rem 1.3rem; }
+}
