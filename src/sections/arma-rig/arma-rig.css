@@ -111,6 +111,7 @@
   opacity: 0;
 }
 
+/* JS must add/remove .hot on .rig-panel when stage 1 (GPU) is active */
 .rig-panel.hot::after {
   background: repeating-linear-gradient(
     0deg,
@@ -122,7 +123,7 @@
 }
 
 .rig-panel.rig-glitch::after {
-  animation: glitch-flash .2s steps(1) forwards;
+  animation: glitch-flash .2s linear forwards;
 }
 
 @keyframes glitch-flash {
@@ -248,6 +249,7 @@
     border-radius: 50%;
     background: rgba(91,196,229,.2);
     gap: 0;
+    flex-shrink: 0;
   }
   .rig-sidebar-item::before { display: none; }
   .rig-sidebar-item.active { background: var(--primary); }
@@ -271,6 +273,7 @@
 @media (prefers-reduced-motion: reduce) {
   .rig-panel.rig-glitch::after { animation: none; opacity: 0; }
   .rig-stage { transition: none; }
+  .rig-stage-cta { transition: none; }
   .rig-sidebar-item,
   .rig-sidebar-item::before,
   .rig-sb-icon,
