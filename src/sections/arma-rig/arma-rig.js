@@ -6,8 +6,9 @@ export function initArmaRig() {
   const panel   = document.querySelector('.rig-panel')
   if (!panel) return
 
-  let currentStage = -1
-  let glitchTimer  = null
+  let currentStage  = -1
+  let glitchTimer   = null
+  let initialized   = false
 
   function updateStage(idx) {
     idx = Math.min(5, Math.max(0, idx))
@@ -15,16 +16,26 @@ export function initArmaRig() {
 
     currentStage = idx
 
+    // Skip glitch on initial load — just set the stage directly
+    if (!initialized) {
+      initialized = true
+      stages.forEach((s, i) => s.classList.toggle('active', i === idx))
+      items.forEach((it, i) => it.classList.toggle('active', i === idx))
+      if (idx === 1) panel.classList.add('hot')
+      else panel.classList.remove('hot')
+      return
+    }
+
     // Glitch overlay — cancel any pending swap, start fresh
     clearTimeout(glitchTimer)
     panel.classList.add('rig-glitch')
-    if (idx === 1) panel.classList.add('hot')
-    else panel.classList.remove('hot')
 
     glitchTimer = setTimeout(() => {
-      // Remove active from all, set only the current stage
+      // Swap content and color together
       stages.forEach((s, i) => s.classList.toggle('active', i === idx))
       items.forEach((it, i) => it.classList.toggle('active', i === idx))
+      if (idx === 1) panel.classList.add('hot')
+      else panel.classList.remove('hot')
       panel.classList.remove('rig-glitch')
     }, 200)
   }
@@ -39,6 +50,6 @@ export function initArmaRig() {
     onUpdate: (self) => updateStage(Math.floor(self.progress * 6))
   })
 
-  // Start at stage 0
+  // Start at stage 0 (no glitch on initial load)
   updateStage(0)
 }
