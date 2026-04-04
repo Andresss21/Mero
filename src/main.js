@@ -38,6 +38,9 @@ initPreloader(() => {
   revealOnScroll('#categorias .sec-label, #categorias .sec-title', { x: -24, stagger: .1, duration: .6 })
   revealOnScroll('.cat-card', { y: 55, stagger: .1, duration: .65 })
 
+  // Arma Tu Rig
+  revealOnScroll('#rig-arena .sec-label, #rig-arena .sec-title', { x: -24, stagger: .1, duration: .6 })
+
   // Productos fan
   window.gsap.from('.fan-card', {
     scrollTrigger: { trigger: '.fan-stage', start: 'top 82%' },

@@ -1,39 +1,46 @@
 import './arma-rig.css'
 
 export function initArmaRig() {
-  const MOB = window.innerWidth < 768
-  if (MOB) return
-  const slots = ['cpu','cool','ram','ssd','gpu','psu']
-  const labels = [
-    '// Procesador instalado.','// Refrigeración lista.',
-    '// RAM sincronizada.','// SSD montado.',
-    '// GPU encendida.','// PSU conectada — rig operativo.'
-  ]
-  const log = document.getElementById('rig-log')
-  const readout = document.getElementById('rig-readout')
-  const chassis = document.getElementById('rig-chassis')
-  const rigTl = window.gsap.timeline({
-    scrollTrigger: { trigger: '#arma-rig', start: 'top 70%', end: 'bottom 30%', scrub: 1.4 }
-  })
-  rigTl.from('#rig-arena', { opacity: 0, scale: .96, duration: .5 })
-  slots.forEach((id, i) => {
-    rigTl.to({}, { duration: .4, onStart: () => {
-      const el = document.getElementById('rs-' + id)
-      if (!el.classList.contains('on')) {
-        el.classList.add('on', 'flash')
-        log.textContent = labels[i]
-        log.classList.add('active')
-        setTimeout(() => el.classList.remove('flash'), 750)
+  const items   = document.querySelectorAll('.rig-sidebar-item')
+  const stages  = document.querySelectorAll('.rig-stage')
+  const panel   = document.querySelector('.rig-panel')
+  if (!panel) return
+
+  let currentStage = -1
+
+  function updateStage(idx) {
+    idx = Math.min(5, Math.max(0, idx))
+    if (idx === currentStage) return
+
+    const prev = currentStage
+    currentStage = idx
+
+    // Glitch overlay — add class, swap after 200ms, remove glitch
+    panel.classList.add('rig-glitch')
+    if (idx === 1) panel.classList.add('hot')
+    else panel.classList.remove('hot')
+
+    setTimeout(() => {
+      if (prev >= 0) {
+        stages[prev].classList.remove('active')
+        items[prev].classList.remove('active')
       }
-    }})
+      stages[idx].classList.add('active')
+      items[idx].classList.add('active')
+      panel.classList.remove('rig-glitch')
+    }, 200)
+  }
+
+  // Pin the section and scrub through 6 stages
+  window.ScrollTrigger.create({
+    trigger: '#rig-arena',
+    pin: true,
+    start: 'top top',
+    end: '+=400%',
+    scrub: 1.4,
+    onUpdate: (self) => updateStage(Math.floor(self.progress * 6))
   })
-  rigTl.to({}, { duration: .3, onStart: () => {
-    chassis.classList.add('powered')
-    readout.classList.add('show')
-    log.textContent = '// RIG COMPLETADO. ENCENDELO.'
-    window.gsap.to('.rig-slot.on', {
-      boxShadow: '0 0 28px rgba(91,196,229,.5),inset 0 0 40px rgba(91,196,229,.1)',
-      duration: .9, repeat: -1, yoyo: true, ease: 'sine.inOut', stagger: .15
-    })
-  }})
+
+  // Start at stage 0
+  updateStage(0)
 }
