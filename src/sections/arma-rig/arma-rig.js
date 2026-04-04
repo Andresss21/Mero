@@ -7,26 +7,24 @@ export function initArmaRig() {
   if (!panel) return
 
   let currentStage = -1
+  let glitchTimer  = null
 
   function updateStage(idx) {
     idx = Math.min(5, Math.max(0, idx))
     if (idx === currentStage) return
 
-    const prev = currentStage
     currentStage = idx
 
-    // Glitch overlay — add class, swap after 200ms, remove glitch
+    // Glitch overlay — cancel any pending swap, start fresh
+    clearTimeout(glitchTimer)
     panel.classList.add('rig-glitch')
     if (idx === 1) panel.classList.add('hot')
     else panel.classList.remove('hot')
 
-    setTimeout(() => {
-      if (prev >= 0) {
-        stages[prev].classList.remove('active')
-        items[prev].classList.remove('active')
-      }
-      stages[idx].classList.add('active')
-      items[idx].classList.add('active')
+    glitchTimer = setTimeout(() => {
+      // Remove active from all, set only the current stage
+      stages.forEach((s, i) => s.classList.toggle('active', i === idx))
+      items.forEach((it, i) => it.classList.toggle('active', i === idx))
       panel.classList.remove('rig-glitch')
     }, 200)
   }
