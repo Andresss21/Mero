@@ -1,0 +1,281 @@
+/* ─── ARMA TU RIG ─────────────────────────────────── */
+#rig-arena {
+  padding: 8rem 8vw;
+  background: var(--bg);
+}
+
+.rig-header { margin-bottom: 3.5rem; }
+.rig-header .sec-title { margin-bottom: 0; }
+
+/* ─── BODY SPLIT ─────────────────────────────────── */
+.rig-body {
+  display: flex;
+  gap: 3rem;
+  align-items: stretch;
+  min-height: 480px;
+}
+
+/* ─── SIDEBAR (25%) ──────────────────────────────── */
+.rig-sidebar {
+  list-style: none;
+  width: 25%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: .25rem;
+}
+
+.rig-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .75rem 1rem .75rem 1.2rem;
+  position: relative;
+  cursor: default;
+  transition: background .2s ease;
+  border-radius: 2px;
+}
+
+/* Left bar */
+.rig-sidebar-item::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: var(--primary);
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+
+.rig-sidebar-item.active {
+  background: rgba(91,196,229,.05);
+}
+.rig-sidebar-item.active::before { opacity: 1; }
+
+/* GPU item */
+.rig-sidebar-item[data-stage="1"].active {
+  background: rgba(244,63,94,.05);
+}
+.rig-sidebar-item[data-stage="1"].active::before {
+  background: var(--hot);
+}
+
+/* Sidebar icon */
+.rig-sb-icon {
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  color: rgba(91,196,229,.35);
+  transition: color .2s ease, opacity .2s ease;
+}
+.rig-sb-icon svg { width: 100%; height: 100%; }
+
+.rig-sidebar-item.active .rig-sb-icon { color: var(--primary); }
+.rig-sidebar-item[data-stage="1"].active .rig-sb-icon { color: var(--hot); }
+
+/* Sidebar name */
+.rig-sb-name {
+  font-family: var(--fu);
+  font-size: .75rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--dim);
+  transition: color .2s ease;
+}
+.rig-sidebar-item.active .rig-sb-name { color: var(--text); }
+
+/* ─── FEATURE PANEL (75%) ────────────────────────── */
+.rig-panel {
+  flex: 1;
+  position: relative;
+  min-height: 480px;
+  border: 1px solid rgba(91,196,229,.1);
+  background: rgba(91,196,229,.02);
+  clip-path: polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));
+  overflow: hidden;
+}
+
+/* ─── GLITCH OVERLAY ─────────────────────────────── */
+.rig-panel::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(91,196,229,.06) 2px,
+    rgba(91,196,229,.06) 4px
+  );
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* JS must add/remove .hot on .rig-panel when stage 1 (GPU) is active */
+.rig-panel.hot::after {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(244,63,94,.06) 2px,
+    rgba(244,63,94,.06) 4px
+  );
+}
+
+.rig-panel.rig-glitch::after {
+  animation: glitch-flash .2s linear forwards;
+}
+
+@keyframes glitch-flash {
+  0%   { opacity: 1; transform: translateX(0); }
+  25%  { opacity: .6; transform: translateX(-2px); }
+  50%  { opacity: 1; transform: translateX(2px); }
+  75%  { opacity: .5; transform: translateX(0); }
+  100% { opacity: 0; }
+}
+
+/* ─── STAGES ─────────────────────────────────────── */
+.rig-stage {
+  position: absolute; inset: 0;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.2rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease;
+}
+
+.rig-stage.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ─── STAGE ICON ─────────────────────────────────── */
+.rig-stage-icon {
+  width: 120px; height: 120px;
+  color: var(--primary);
+}
+.rig-stage[data-stage="1"] .rig-stage-icon { color: var(--hot); }
+.rig-stage-icon svg { width: 100%; height: 100%; }
+
+/* ─── STAGE NAME ─────────────────────────────────── */
+.rig-stage-name {
+  font-family: var(--fh);
+  font-size: 3rem;
+  letter-spacing: .04em;
+  color: var(--text);
+  line-height: 1;
+}
+
+/* ─── STAGE SEPARATOR ────────────────────────────── */
+.rig-stage-sep {
+  width: 40px; height: 2px;
+  background: var(--primary);
+}
+.rig-stage[data-stage="1"] .rig-stage-sep { background: var(--hot); }
+
+/* ─── STAGE SPECS ────────────────────────────────── */
+.rig-stage-specs {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+}
+
+.rig-stage-specs li {
+  font-family: var(--fu);
+  font-size: .85rem;
+  color: var(--dim);
+  line-height: 1.8;
+}
+
+.rig-stage-specs li::before {
+  content: '· ';
+  color: var(--primary);
+}
+.rig-stage[data-stage="1"] .rig-stage-specs li::before { color: var(--hot); }
+
+/* ─── STAGE CTA ──────────────────────────────────── */
+.rig-stage-cta {
+  display: inline-block;
+  font-family: var(--fu);
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--primary);
+  text-decoration: none;
+  border: 1px solid rgba(91,196,229,.3);
+  padding: .5rem 1.2rem;
+  clip-path: polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+  transition: border-color .25s, background .25s;
+  align-self: flex-start;
+}
+.rig-stage-cta:hover {
+  border-color: rgba(91,196,229,.6);
+  background: rgba(91,196,229,.06);
+}
+
+.rig-stage[data-stage="1"] .rig-stage-cta {
+  color: var(--hot);
+  border-color: rgba(244,63,94,.3);
+}
+.rig-stage[data-stage="1"] .rig-stage-cta:hover {
+  border-color: rgba(244,63,94,.6);
+  background: rgba(244,63,94,.06);
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────── */
+@media (max-width: 900px) {
+  .rig-body {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  /* Sidebar becomes horizontal dot row */
+  .rig-sidebar {
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    gap: .6rem;
+    min-height: unset;
+  }
+
+  .rig-sidebar-item {
+    width: 8px; height: 8px;
+    padding: 0;
+    border-radius: 50%;
+    background: rgba(91,196,229,.2);
+    gap: 0;
+    flex-shrink: 0;
+    pointer-events: none;
+  }
+  .rig-sidebar-item::before { display: none; }
+  .rig-sidebar-item.active { background: var(--primary); }
+  .rig-sidebar-item[data-stage="1"].active { background: var(--hot); }
+  .rig-sb-icon, .rig-sb-name { display: none; }
+
+  .rig-panel { min-height: 420px; }
+}
+
+@media (max-width: 480px) {
+  #rig-arena { padding: 5rem 5vw; }
+
+  .rig-stage-icon { width: 80px; height: 80px; }
+  .rig-stage-name { font-size: 2rem; }
+
+  /* Show only first 2 specs on mobile */
+  .rig-stage-specs li:nth-child(n+3) { display: none; }
+}
+
+/* ─── ACCESSIBILITY ──────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .rig-panel.rig-glitch::after { animation: none; opacity: 0; }
+  .rig-stage { transition: none; }
+  .rig-stage-cta { transition: none; }
+  .rig-sidebar-item,
+  .rig-sidebar-item::before,
+  .rig-sb-icon,
+  .rig-sb-name { transition: none; }
+}

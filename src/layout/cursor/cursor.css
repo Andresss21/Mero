@@ -1,0 +1,17 @@
+#cur-dot {
+  position: fixed; width: 6px; height: 6px;
+  background: var(--primary); border-radius: 50%;
+  pointer-events: none; z-index: 10000;
+  transform: translate(-50%,-50%);
+  box-shadow: 0 0 12px var(--primary), 0 0 24px rgba(91,196,229,.4);
+  transition: width .15s, height .15s, background .2s;
+}
+#cur-ring {
+  position: fixed; width: 34px; height: 34px;
+  border: 1.5px solid rgba(91,196,229,.55); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width .3s, height .3s, border-color .3s;
+}
+body.chov #cur-dot { width: 10px; height: 10px; background: var(--hot); box-shadow: 0 0 16px var(--hot); }
+body.chov #cur-ring { width: 52px; height: 52px; border-color: var(--primary); }
