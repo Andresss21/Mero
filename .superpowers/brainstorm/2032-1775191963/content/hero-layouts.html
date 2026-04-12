@@ -1,0 +1,162 @@
+<h2>Hero Layouts — with Particle Background</h2>
+<p class="subtitle">All three use the particle background. Pick the layout that feels most like Mero.</p>
+
+<div class="options">
+
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Headline + Terminal Status Panel</h3>
+      <div class="mockup" style="margin-top:.75rem">
+        <div class="mockup-header">Layout A</div>
+        <div class="mockup-body" style="background:#0A0A1A;min-height:260px;position:relative;overflow:hidden;padding:0">
+          <canvas id="ca" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 38% 50%,rgba(91,196,229,.07) 0%,transparent 65%);pointer-events:none"></div>
+          <div style="position:relative;z-index:2;padding:2rem;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center;height:100%">
+            <div>
+              <div style="font-size:.58rem;letter-spacing:.22em;color:#5BC4E5;margin-bottom:.8rem;text-transform:uppercase;display:flex;align-items:center;gap:.5rem"><span style="display:block;width:20px;height:1px;background:#5BC4E5;box-shadow:0 0 6px #5BC4E5"></span>Precios justos. Sin excusas.</div>
+              <div style="font-family:'Russo One',sans-serif;font-size:clamp(1.6rem,3.5vw,2.4rem);line-height:1.06;color:#E2E8F0;margin-bottom:.8rem">
+                El hardware que <span style="color:#5BC4E5;text-shadow:0 0 24px rgba(91,196,229,.45)">querés</span><br>al precio que <span style="color:#5BC4E5;text-shadow:0 0 24px rgba(91,196,229,.45)">merece</span>
+              </div>
+              <div style="font-size:.76rem;color:#6b7fa3;margin-bottom:1.4rem;line-height:1.65;max-width:380px">Componentes seleccionados. Verificados contra el mercado. Entregados en 48h.</div>
+              <div style="display:flex;gap:.75rem;flex-wrap:wrap;align-items:center">
+                <div style="background:#5BC4E5;color:#0A0A1A;padding:.55rem 1.4rem;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%)">Cotizar por WhatsApp</div>
+                <div style="border:1px solid rgba(91,196,229,.3);color:#5BC4E5;padding:.55rem 1.2rem;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%)">Ver Catálogo →</div>
+              </div>
+            </div>
+            <!-- terminal panel -->
+            <div style="border:1px solid rgba(91,196,229,.18);background:rgba(10,10,26,.85);backdrop-filter:blur(8px);padding:1.1rem 1.2rem;min-width:175px;font-size:.6rem;color:#5BC4E5;line-height:2;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px))">
+              <div style="color:rgba(91,196,229,.45);margin-bottom:.5rem;letter-spacing:.14em;font-size:.55rem">// MERO_STATUS</div>
+              <div style="display:flex;justify-content:space-between;gap:1rem"><span style="color:#6b7fa3">STOCK</span><span style="color:#00ff88">● LIVE</span></div>
+              <div style="display:flex;justify-content:space-between;gap:1rem"><span style="color:#6b7fa3">PRODUCTOS</span><span>12</span></div>
+              <div style="display:flex;justify-content:space-between;gap:1rem"><span style="color:#6b7fa3">ENTREGA</span><span>48H</span></div>
+              <div style="display:flex;justify-content:space-between;gap:1rem"><span style="color:#6b7fa3">PRECIO</span><span style="color:#5BC4E5">JUSTO</span></div>
+              <div style="margin-top:.6rem;padding-top:.6rem;border-top:1px solid rgba(91,196,229,.1);color:rgba(91,196,229,.35);font-size:.52rem">
+                <span style="animation:blink 1.1s step-end infinite">█</span> READY_
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Featured Product Front and Center</h3>
+      <div class="mockup" style="margin-top:.75rem">
+        <div class="mockup-header">Layout B</div>
+        <div class="mockup-body" style="background:#0A0A1A;min-height:260px;position:relative;overflow:hidden;padding:0">
+          <canvas id="cb" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(91,196,229,.07) 0%,transparent 65%);pointer-events:none"></div>
+          <div style="position:relative;z-index:2;padding:2rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;height:100%">
+            <div>
+              <div style="font-size:.56rem;letter-spacing:.2em;color:#5BC4E5;margin-bottom:.7rem;text-transform:uppercase;display:flex;align-items:center;gap:.5rem"><span style="display:block;width:20px;height:1px;background:#5BC4E5"></span>Drop actual</div>
+              <div style="font-family:'Russo One',sans-serif;font-size:clamp(1.4rem,3vw,2rem);line-height:1.08;color:#E2E8F0;margin-bottom:.5rem">RTX 4080 Super</div>
+              <div style="font-family:'Russo One',sans-serif;font-size:clamp(1.8rem,3.5vw,2.6rem);color:#F43F5E;text-shadow:0 0 20px rgba(244,63,94,.35);margin-bottom:.6rem">$749</div>
+              <div style="font-size:.7rem;color:#6b7fa3;margin-bottom:1.2rem;line-height:1.6">16GB GDDR6X · El precio más justo del mercado SV</div>
+              <div style="display:flex;gap:.75rem;align-items:center;flex-wrap:wrap">
+                <div style="background:#5BC4E5;color:#0A0A1A;padding:.55rem 1.4rem;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%)">La quiero →</div>
+                <div style="font-size:.65rem;color:rgba(91,196,229,.45);letter-spacing:.1em;text-transform:uppercase">Ver más productos</div>
+              </div>
+            </div>
+            <!-- product card -->
+            <div style="border:1px solid rgba(91,196,229,.22);background:#050512;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));max-height:200px">
+              <div style="position:absolute;top:0;left:0;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(91,196,229,.5),transparent)"></div>
+              <img src="/public/products/Product 1.jpg" style="width:75%;height:75%;object-fit:contain;filter:saturate(.9)" onerror="this.style.display='none'"/>
+              <div style="position:absolute;top:.6rem;left:.6rem;font-size:.52rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#5BC4E5;background:rgba(91,196,229,.1);padding:.2rem .5rem">HOT DEAL</div>
+              <div style="position:absolute;bottom:.6rem;right:.6rem;font-size:.52rem;color:rgba(91,196,229,.45);letter-spacing:.1em">STOCK: 3</div>
+              <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(91,196,229,.04) 0%,transparent 70%)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Pure Brand Statement</h3>
+      <div class="mockup" style="margin-top:.75rem">
+        <div class="mockup-header">Layout C</div>
+        <div class="mockup-body" style="background:#0A0A1A;min-height:260px;position:relative;overflow:hidden;padding:0;display:flex;align-items:center">
+          <canvas id="cc" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 45% 50%,rgba(91,196,229,.08) 0%,transparent 65%);pointer-events:none"></div>
+          <!-- large ghost text -->
+          <div style="position:absolute;right:-1rem;top:50%;transform:translateY(-50%);font-family:'Russo One',sans-serif;font-size:7rem;color:transparent;-webkit-text-stroke:1px rgba(91,196,229,.05);user-select:none;line-height:1;pointer-events:none">MERO</div>
+          <div style="position:relative;z-index:2;padding:2.5rem;max-width:580px">
+            <div style="font-size:.58rem;letter-spacing:.22em;color:#5BC4E5;margin-bottom:1rem;text-transform:uppercase;display:flex;align-items:center;gap:.6rem"><span style="display:block;width:24px;height:1px;background:#5BC4E5;box-shadow:0 0 6px #5BC4E5"></span>PC Components · El Salvador</div>
+            <div style="font-family:'Russo One',sans-serif;font-size:clamp(2rem,4.5vw,3rem);line-height:1.05;margin-bottom:1rem">
+              <span style="color:#E2E8F0;display:block">Construido para</span>
+              <span style="color:#5BC4E5;text-shadow:0 0 40px rgba(91,196,229,.4);display:block">los que saben.</span>
+            </div>
+            <div style="font-size:.78rem;color:#6b7fa3;margin-bottom:1.6rem;line-height:1.72;max-width:400px">Hardware seleccionado. Precios verificados contra el mercado. Sin inventario falso.</div>
+            <div style="display:flex;gap:.9rem;align-items:center;flex-wrap:wrap">
+              <div style="background:#5BC4E5;color:#0A0A1A;padding:.6rem 1.6rem;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%)">Hablar con Mero</div>
+              <div style="border:1px solid rgba(91,196,229,.28);color:#5BC4E5;padding:.6rem 1.3rem;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%)">Ver Catálogo</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function makeParticles(id) {
+  const c = document.getElementById(id);
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  function resize() { c.width = c.offsetWidth; c.height = c.offsetHeight; }
+  resize();
+  const pts = Array.from({length:50}, () => ({
+    x: Math.random() * c.width,
+    y: Math.random() * c.height,
+    vx: (Math.random() - .5) * .35,
+    vy: -Math.random() * .45 - .1,
+    r: Math.random() * 1.4 + .4,
+    a: Math.random() * .6 + .1
+  }));
+  function draw() {
+    ctx.clearRect(0, 0, c.width, c.height);
+    pts.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.y < -5) { p.y = c.height + 5; p.x = Math.random() * c.width; }
+      if (p.x < 0) p.x = c.width;
+      if (p.x > c.width) p.x = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(91,196,229,${p.a})`;
+      ctx.shadowColor = '#5BC4E5';
+      ctx.shadowBlur = 4;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    });
+    pts.forEach((a, i) => {
+      for (let j = i + 1; j < pts.length; j++) {
+        const b = pts[j];
+        const d = Math.hypot(a.x - b.x, a.y - b.y);
+        if (d < 90) {
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.strokeStyle = `rgba(91,196,229,${(1 - d / 90) * .13})`;
+          ctx.lineWidth = .5;
+          ctx.stroke();
+        }
+      }
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+makeParticles('ca');
+makeParticles('cb');
+makeParticles('cc');
+</script>
+<style>
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+</style>

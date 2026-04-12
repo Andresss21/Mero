@@ -1,0 +1,100 @@
+<h2>How do we structure the project?</h2>
+<p class="subtitle">All three use Vite. The difference is how granular the module split goes.</p>
+
+<div class="options">
+
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Flat partials — HTML split, CSS/JS shared</h3>
+      <p>Each section is an HTML file. One global CSS file, one global JS file. Vite assembles everything.</p>
+      <pre style="margin-top:.75rem;font-size:.72rem;line-height:1.7;color:#a0aec0;background:rgba(0,0,0,.3);padding:.75rem;border-radius:4px;">src/
+  pages/
+    index.html
+    products.html
+  sections/
+    hero.html
+    nav.html
+    productos.html
+    eventos.html
+    ...
+  styles/
+    main.css          ← everything here
+  scripts/
+    main.js           ← everything here</pre>
+      <div class="pros-cons" style="margin-top:.75rem">
+        <div class="pros"><h4>Pros</h4><ul><li>Closest to what you have now</li><li>Easiest to get running</li><li>One CSS file = easy global changes</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>CSS/JS still grows into one big file</li><li>Harder to migrate section-by-section to Next.js</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Full modules — HTML + CSS + JS per section</h3>
+      <p>Each section lives in its own folder. Shared globals for tokens and layout chrome. Each folder ≈ one future Next.js component.</p>
+      <pre style="margin-top:.75rem;font-size:.72rem;line-height:1.7;color:#a0aec0;background:rgba(0,0,0,.3);padding:.75rem;border-radius:4px;">src/
+  pages/
+    index.html
+    products.html
+  sections/
+    hero/
+      hero.html
+      hero.css
+      hero.js
+    nav/
+      nav.html
+      nav.css
+      nav.js
+    productos/
+      productos.html
+      productos.css
+      productos.js
+    eventos/
+      ...
+  shared/
+    tokens.css        ← variables, reset
+    animations.js     ← GSAP, Lenis setup
+    cursor.js</pre>
+      <div class="pros-cons" style="margin-top:.75rem">
+        <div class="pros"><h4>Pros</h4><ul><li>Each section is fully self-contained</li><li>1:1 mapping to future Next.js components</li><li>Easy to work on one section without touching others</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>More files upfront</li><li>Need to be careful with shared state (scroll, cursor)</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Hybrid — modules for features, shared for layout chrome</h3>
+      <p>Nav, footer, cursor, preloader stay in shared/. Feature sections (hero, products, events…) each get their own folder. CSS split into tokens + per-section.</p>
+      <pre style="margin-top:.75rem;font-size:.72rem;line-height:1.7;color:#a0aec0;background:rgba(0,0,0,.3);padding:.75rem;border-radius:4px;">src/
+  pages/
+    index.html
+    products.html
+  layout/
+    nav/
+    footer/
+    cursor/
+    preloader/
+  sections/
+    hero/
+    productos/
+    eventos/
+    galeria/
+    arma-rig/
+    ...
+  shared/
+    tokens.css
+    animations.js</pre>
+      <div class="pros-cons" style="margin-top:.75rem">
+        <div class="pros"><h4>Pros</h4><ul><li>Layout chrome separated from page content</li><li>Cleanest mental model</li><li>Best Next.js migration path (layout → app/layout.tsx)</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Slightly more upfront structure to set up</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top:1.5rem">My recommendation: <strong style="color:#5BC4E5">C</strong> — nav/footer/cursor as layout, feature sections as modules. Maps cleanly to Next.js app router later.</p>

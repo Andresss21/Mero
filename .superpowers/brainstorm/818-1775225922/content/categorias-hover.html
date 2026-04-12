@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Categorías — Hover State Options</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Russo+One&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0C0A14; --bg2: #100D1C;
+    --primary: #5BC4E5; --hot: #F43F5E;
+    --text: #E2E8F0; --dim: #6b7fa3;
+    --fh: 'Russo One', sans-serif;
+    --fu: 'Chakra Petch', monospace;
+  }
+
+  body { background: #090710; color: var(--text); font-family: var(--fu); padding: 2rem; }
+
+  .page-title { font-family: var(--fh); font-size: 1rem; color: var(--primary); text-align: center; margin-bottom: .3rem; letter-spacing: .15em; text-transform: uppercase; }
+  .page-sub { text-align: center; font-size: .68rem; color: var(--dim); letter-spacing: .08em; margin-bottom: 2.5rem; }
+
+  .options-wrap { display: flex; flex-direction: column; gap: 2rem; max-width: 900px; margin: 0 auto; }
+
+  .opt { border: 1px solid rgba(91,196,229,.12); border-radius: 2px; overflow: hidden; cursor: pointer; transition: border-color .25s, box-shadow .25s; position: relative; }
+  .opt:hover { border-color: rgba(91,196,229,.35); }
+  .opt.selected { border-color: var(--primary); box-shadow: 0 0 24px rgba(91,196,229,.15); }
+  .opt.selected::after { content: '✓ SELECTED'; position: absolute; top: .7rem; right: .7rem; font-size: .55rem; letter-spacing: .2em; font-weight: 700; color: var(--primary); background: rgba(91,196,229,.1); border: 1px solid rgba(91,196,229,.3); padding: .22rem .55rem; }
+
+  .opt-label { background: rgba(91,196,229,.05); border-bottom: 1px solid rgba(91,196,229,.1); padding: .55rem 1.2rem; display: flex; align-items: center; gap: 1rem; }
+  .opt-letter { font-family: var(--fh); font-size: 1rem; color: var(--primary); }
+  .opt-name { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: var(--text); font-weight: 600; }
+  .opt-desc { font-size: .6rem; color: var(--dim); margin-left: auto; }
+
+  .opt-preview { padding: 1.5rem; background: var(--bg2); }
+
+  /* ── SHARED CARD BASE ── */
+  .demo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; }
+
+  .card-base {
+    background: var(--bg);
+    border: 1px solid rgba(91,196,229,.12);
+    clip-path: polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+    padding: 1.4rem 1.1rem 1.1rem;
+    display: flex; flex-direction: column; align-items: center; gap: .65rem;
+    position: relative; overflow: hidden;
+    transition: border-color .3s, box-shadow .3s, background .3s;
+    cursor: pointer;
+  }
+  .icon-wrap { width: 56px; height: 56px; border: 1px solid rgba(91,196,229,.12); background: rgba(91,196,229,.04); display: flex; align-items: center; justify-content: center; border-radius: 2px; transition: border-color .3s, background .3s; }
+  .c-icon { width: 34px; height: 34px; opacity: .7; transition: opacity .3s; }
+  .c-name { font-family: var(--fh); font-size: .95rem; }
+  .c-slug { font-size: .52rem; color: var(--dim); letter-spacing: .18em; text-transform: uppercase; }
+  .c-sep { width: 100%; height: 1px; background: rgba(91,196,229,.08); }
+  .c-count { font-size: .54rem; color: rgba(91,196,229,.45); }
+  .c-cta { font-size: .54rem; letter-spacing: .12em; text-transform: uppercase; color: var(--primary); border: 1px solid rgba(91,196,229,.2); padding: .28rem .75rem; clip-path: polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%); }
+
+  /* ══ OPTION A: GLOW LIFT ══ */
+  .hover-a .card-base { transition: transform .35s cubic-bezier(.16,1,.3,1), border-color .3s, box-shadow .3s; }
+  .hover-a .card-active {
+    border-color: var(--primary);
+    box-shadow: 0 8px 40px rgba(91,196,229,.2), 0 0 0 1px rgba(91,196,229,.15);
+    transform: translateY(-6px);
+    background: rgba(91,196,229,.03);
+  }
+  .hover-a .card-active .icon-wrap { border-color: rgba(91,196,229,.4); background: rgba(91,196,229,.08); }
+  .hover-a .card-active .c-icon { opacity: 1; filter: drop-shadow(0 0 6px rgba(91,196,229,.5)); }
+  .hover-a .card-active .c-cta { background: rgba(91,196,229,.08); border-color: var(--primary); }
+
+  /* ══ OPTION B: SCAN LINE SWEEP ══ */
+  .hover-b .card-base { overflow: hidden; }
+  .hover-b .scan-line {
+    position: absolute; top: -100%; left: 0; right: 0; height: 100%;
+    background: linear-gradient(to bottom,
+      transparent 0%,
+      rgba(91,196,229,.04) 40%,
+      rgba(91,196,229,.08) 50%,
+      rgba(91,196,229,.04) 60%,
+      transparent 100%);
+    pointer-events: none;
+  }
+  .hover-b .card-active .scan-line { top: 100%; transition: top .6s ease; }
+  .hover-b .card-active { border-color: rgba(91,196,229,.4); box-shadow: 0 0 24px rgba(91,196,229,.1); }
+  .hover-b .card-active .icon-wrap { border-color: rgba(91,196,229,.4); background: rgba(91,196,229,.06); }
+  .hover-b .card-active .c-icon { opacity: 1; }
+  .hover-b .card-active .c-cta { border-color: rgba(91,196,229,.5); }
+
+  /* ══ OPTION C: CORNER ACCENT ══ */
+  .hover-c .card-base::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; width: 0; height: 2px;
+    background: var(--primary);
+    box-shadow: 0 0 8px var(--primary);
+    transition: width .4s cubic-bezier(.22,1,.36,1);
+  }
+  .hover-c .card-base::after {
+    content: ''; position: absolute;
+    top: 0; left: 0; width: 2px; height: 0;
+    background: var(--primary);
+    box-shadow: 0 0 8px var(--primary);
+    transition: height .4s cubic-bezier(.22,1,.36,1) .05s;
+  }
+  .hover-c .card-active::before { width: 100%; }
+  .hover-c .card-active::after { height: 55%; }
+  .hover-c .card-active { border-color: rgba(91,196,229,.25); box-shadow: 0 4px 28px rgba(91,196,229,.1); }
+  .hover-c .card-active .icon-wrap { border-color: rgba(91,196,229,.4); background: rgba(91,196,229,.06); }
+  .hover-c .card-active .c-icon { opacity: 1; }
+  .hover-c .card-active .c-cta { border-color: rgba(91,196,229,.5); }
+  .hover-c .label-note { font-size: .54rem; color: var(--dim); text-align: center; margin-top: .8rem; letter-spacing: .08em; }
+
+  /* labels */
+  .preview-label { font-size: .58rem; letter-spacing: .2em; text-transform: uppercase; color: var(--dim); margin-bottom: .75rem; }
+  .preview-label span { color: var(--primary); }
+</style>
+</head>
+<body>
+
+<div class="page-title">Hover State — 3 Options</div>
+<div class="page-sub">Middle card in each row shows the hovered state. Click to select.</div>
+
+<div class="options-wrap">
+
+  <!-- ── OPTION A: GLOW LIFT ── -->
+  <div class="opt hover-a" onclick="this.classList.toggle('selected')">
+    <div class="opt-label">
+      <span class="opt-letter">A</span>
+      <span class="opt-name">Glow + Lift</span>
+      <span class="opt-desc">Card rises 6px, border glows, icon brightens with drop-shadow</span>
+    </div>
+    <div class="opt-preview">
+      <div class="preview-label">Middle card = <span>hovered</span></div>
+      <div class="demo-grid">
+        <div class="card-base">
+          <div class="icon-wrap"><svg class="c-icon" viewBox="0 0 120 120" fill="none"><rect x="30" y="30" width="60" height="60" rx="6" stroke="#5BC4E5" stroke-width="2.5"/><rect x="44" y="44" width="32" height="32" rx="3" fill="none" stroke="#5BC4E5" stroke-width="2"/><line x1="20" y1="45" x2="30" y2="45" stroke="#5BC4E5" stroke-width="2"/><line x1="20" y1="57" x2="30" y2="57" stroke="#5BC4E5" stroke-width="2"/><line x1="90" y1="45" x2="100" y2="45" stroke="#5BC4E5" stroke-width="2"/></svg></div>
+          <div class="c-name">CPU</div><div class="c-slug">Procesadores</div>
+          <div class="c-sep"></div><div class="c-count">120+ modelos</div>
+          <div class="c-cta">Explorar →</div>
+        </div>
+        <div class="card-base card-active">
+          <div class="icon-wrap"><svg class="c-icon" viewBox="0 0 120 120" fill="none"><rect x="15" y="38" width="90" height="44" rx="6" stroke="#5BC4E5" stroke-width="2.5"/><rect x="28" y="50" width="22" height="20" rx="3" stroke="#5BC4E5" stroke-width="2"/><rect x="58" y="50" width="22" height="20" rx="3" stroke="#5BC4E5" stroke-width="2"/><circle cx="93" cy="60" r="7" stroke="#5BC4E5" stroke-width="2"/></svg></div>
+          <div class="c-name">GPU</div><div class="c-slug">Tarjetas Gráficas</div>
+          <div class="c-sep"></div><div class="c-count">85+ modelos</div>
+          <div class="c-cta">Explorar →</div>
+        </div>
+        <div class="card-base">
+          <div class="icon-wrap"><svg class="c-icon" viewBox="0 0 120 120" fill="none"><rect x="35" y="22" width="18" height="76" rx="4" stroke="#5BC4E5" stroke-width="2.5"/><rect x="67" y="22" width="18" height="76" rx="4" stroke="#5BC4E5" stroke-width="2.5"/><rect x="39" y="30" width="10" height="8" rx="2" fill="#5BC4E5" opacity="0.6"/></svg></div>
+          <div class="c-name">RAM</div><div class="c-slug">Memoria</div>
+          <div class="c-sep"></div><div class="c-count">60+ kits</div>
+          <div class="c-cta">Explorar →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── OPTION B: SCAN SWEEP ── -->
+  <div class="opt hover-b" onclick="this.classList.toggle('selected')">
+    <div class="opt-label">
+      <span class="opt-letter">B</span>
+      <span class="opt-name">Scanline Sweep</span>
+      <span class="opt-desc">A light beam sweeps top→bottom on hover — very CRT/retro, no movement</span>
+    </div>
+    <div class="opt-preview">
+      <div class="preview-label">Middle card = <span>hovered</span></div>
+      <div class="demo-grid">
+        <div class="card-base">
+          <div class="icon-wrap"><svg class="c-icon" viewBox="0 0 120 120" fill="none"><rect x="30" y="30" width="60" height="60" rx="6" stroke="#5BC4E5" stroke-width="2.5"/><rect x="44" y="44" width="32" height="32" rx="3" fill="none" stroke="#5BC4E5" stroke-width="2"/><line x1="20" y1="45" x2="30" y2="45" stroke="#5BC4E5" stroke-width="2"/><line x1="20" y1="57" x2="30" y2="57" stroke="#5BC4E5" stroke-width="2"/><line x1="90" y1="45" x2="100" y2="45" stroke="#5BC4E5" stroke-width="2"/></svg></div>
+          <div class="c-name">CPU</div><div class="c-slug">Procesadores</div>
+          <div class="c-sep"></div><div class="c-count">120+ modelos</div>
+          <div class="c-cta">Explorar →</div>
+        </div>
+        <div class="card-base card-active">
+          <!-- scan beam pre-swept to show mid-state -->
+          <div class="scan-line" style="top:30%;transition:none"></div>
+          <div class="icon-wrap"><svg class="c-icon" viewBox="0 0 120 120" fill="none"><rect x="15" y="38" width="90" height="44" rx="6" stroke="#5BC4E5" stroke-width="2.5"/><rect x="28" y="50" width="22" height="20" rx="3" stroke="#5BC4E5" stroke-width="2"/><rect x="58" y="50" width="22" height="20" rx="3" stroke="#5BC4E5" stroke-width="2"/><circle cx="93" cy="60" r="7" stroke="#5BC4E5" stroke-width="2"/></svg></div>
+          <div class="c-name">GPU</div><div class="c-slug">Tarjetas Gráficas</div>
+          <div class="c-sep"></div><div class="c-count">85+ modelos</div>
+          <div class="c-cta">Explorar →</div>
+        </div>
+        <div class="card-base">
+          <div class="icon-wrap"><svg class="c-icon" viewBox="0 0 120 120" fill="none"><rect x="35" y="22" width="18" height="76" rx="4" stroke="#5BC4E5" stroke-width="2.5"/><rect x="67" y="22" width="18" height="76" rx="4" stroke="#5BC4E5" stroke-width="2.5"/><rect x="39" y="30" width="10" height="8" rx="2" fill="#5BC4E5" opacity="0.6"/></svg></div>
+          <div class="c-name">RAM</div><div class="c-slug">Memoria</div>
+          <div class="c-sep"></div><div class="c-count">60+ kits</div>
+          <div class="c-cta">Explorar →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── OPTION C: CORNER TRACE ── -->
+  <div class="opt hover-c" onclick="this.classList.toggle('selected')">
+    <div class="opt-label">
+      <span class="opt-letter">C</span>
+      <span class="opt-name">Corner Trace</span>
+      <span class="opt-desc">A cyan line traces the top and left edges on hover — geometric, precise</span>
+    </div>
+    <div class="opt-preview">
+      <div class="preview-label">Middle card = <span>hovered</span></div>
+      <div class="demo-grid">
+        <div class="card-base">
+          <div class="icon-wrap"><svg class="c-icon" viewBox="0 0 120 120" fill="none"><rect x="30" y="30" width="60" height="60" rx="6" stroke="#5BC4E5" stroke-width="2.5"/><rect x="44" y="44" width="32" height="32" rx="3" fill="none" stroke="#5BC4E5" stroke-width="2"/><line x1="20" y1="45" x2="30" y2="45" stroke="#5BC4E5" stroke-width="2"/><line x1="20" y1="57" x2="30" y2="57" stroke="#5BC4E5" stroke-width="2"/><line x1="90" y1="45" x2="100" y2="45" stroke="#5BC4E5" stroke-width="2"/></svg></div>
+          <div class="c-name">CPU</div><div class="c-slug">Procesadores</div>
+          <div class="c-sep"></div><div class="c-count">120+ modelos</div>
+          <div class="c-cta">Explorar →</div>
+        </div>
+        <div class="card-base card-active">
+          <div class="icon-wrap"><svg class="c-icon" viewBox="0 0 120 120" fill="none"><rect x="15" y="38" width="90" height="44" rx="6" stroke="#5BC4E5" stroke-width="2.5"/><rect x="28" y="50" width="22" height="20" rx="3" stroke="#5BC4E5" stroke-width="2"/><rect x="58" y="50" width="22" height="20" rx="3" stroke="#5BC4E5" stroke-width="2"/><circle cx="93" cy="60" r="7" stroke="#5BC4E5" stroke-width="2"/></svg></div>
+          <div class="c-name">GPU</div><div class="c-slug">Tarjetas Gráficas</div>
+          <div class="c-sep"></div><div class="c-count">85+ modelos</div>
+          <div class="c-cta">Explorar →</div>
+        </div>
+        <div class="card-base">
+          <div class="icon-wrap"><svg class="c-icon" viewBox="0 0 120 120" fill="none"><rect x="35" y="22" width="18" height="76" rx="4" stroke="#5BC4E5" stroke-width="2.5"/><rect x="67" y="22" width="18" height="76" rx="4" stroke="#5BC4E5" stroke-width="2.5"/><rect x="39" y="30" width="10" height="8" rx="2" fill="#5BC4E5" opacity="0.6"/></svg></div>
+          <div class="c-name">RAM</div><div class="c-slug">Memoria</div>
+          <div class="c-sep"></div><div class="c-count">60+ kits</div>
+          <div class="c-cta">Explorar →</div>
+        </div>
+      </div>
+      <div class="label-note">Line animates right then down from the top-left corner</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      document.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'))
+      opt.classList.add('selected')
+    })
+  })
+</script>
+</body>
+</html>

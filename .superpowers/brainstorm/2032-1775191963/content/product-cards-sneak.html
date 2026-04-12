@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Cards — Sneak Peek</title>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Chakra+Petch:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0C0A14;
+    --bg2: #100D1C;
+    --primary: #5BC4E5;
+    --hot: #F43F5E;
+    --text: #E2E8F0;
+    --dim: #6b7fa3;
+    --fh: 'Russo One', sans-serif;
+    --fu: 'Chakra Petch', monospace;
+  }
+  body { background: var(--bg); color: var(--text); font-family: var(--fu); overflow-x: hidden; }
+
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.05) 2px,rgba(0,0,0,.05) 4px);
+    pointer-events: none; z-index: 9998;
+  }
+
+  .page-toggle {
+    position: fixed; top: 1.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 0; z-index: 100;
+    border: 1px solid rgba(91,196,229,.25);
+    clip-path: polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
+  }
+  .toggle-btn {
+    font-family: var(--fu); font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    padding: .5rem 1.6rem; cursor: pointer; border: none; transition: background .2s, color .2s;
+    background: rgba(12,10,20,.9); color: var(--dim);
+  }
+  .toggle-btn.active { background: var(--primary); color: var(--bg); }
+
+  section { padding: 6rem 8vw; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+
+  .sec-label {
+    display: inline-flex; align-items: center; gap: .7rem;
+    font-size: .67rem; font-weight: 600; letter-spacing: .24em; text-transform: uppercase;
+    color: var(--primary); margin-bottom: .9rem;
+  }
+  .sec-label::before { content: ''; display: block; width: 28px; height: 1px; background: var(--primary); box-shadow: 0 0 6px var(--primary); }
+
+  .sec-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem; }
+  .sec-title { font-family: var(--fh); font-size: clamp(1.8rem,4vw,3rem); line-height: 1.08; }
+  .sec-link { font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--primary); text-decoration: none; display: inline-flex; align-items: center; gap: .4rem; border-bottom: 1px solid rgba(91,196,229,.25); padding-bottom: .2rem; }
+
+  /* ── OPTION B — Tilted fan ── */
+  #option-b { display: none; }
+  .fan-stage { position: relative; height: 480px; display: flex; align-items: center; justify-content: center; }
+  .fan-card {
+    position: absolute; box-shadow: 0 16px 50px rgba(0,0,0,.7);
+    border: 1px solid rgba(91,196,229,.2); overflow: hidden;
+    clip-path: polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+    transition: transform .4s cubic-bezier(.16,1,.3,1), box-shadow .4s, z-index 0s;
+    cursor: pointer;
+  }
+  .fan-card img { width: 100%; display: block; transition: transform .4s; }
+  .fan-card .badge {
+    position: absolute; top: .8rem; left: 0;
+    font-family: var(--fu); font-size: .56rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+    padding: .28rem .8rem .28rem .6rem;
+    clip-path: polygon(0 0,100% 0,calc(100% - 5px) 100%,0 100%);
+  }
+  .fan-card .cta-bar {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: rgba(12,10,20,.94); backdrop-filter: blur(10px);
+    padding: .75rem 1rem; border-top: 1px solid rgba(91,196,229,.15);
+    transform: translateY(100%); transition: transform .35s cubic-bezier(.16,1,.3,1);
+  }
+  .fan-card:hover .cta-bar { transform: translateY(0); }
+  .fan-card:hover { z-index: 10 !important; }
+
+  .fan-left  { width: 260px; transform: rotate(-7deg) translateX(-120px); z-index: 1; }
+  .fan-center { width: 300px; transform: rotate(0deg); z-index: 3; border-color: rgba(244,63,94,.4); box-shadow: 0 20px 60px rgba(0,0,0,.8), 0 0 40px rgba(244,63,94,.08); }
+  .fan-right { width: 260px; transform: rotate(6deg) translateX(120px); z-index: 1; }
+
+  .fan-left:hover  { transform: rotate(-7deg) translateX(-120px) scale(1.04); }
+  .fan-center:hover { transform: rotate(0deg) scale(1.04); }
+  .fan-right:hover { transform: rotate(6deg) translateX(120px) scale(1.04); }
+
+  .btn-primary {
+    display: block; font-family: var(--fu); font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--bg); background: var(--primary); padding: .5rem; text-align: center; text-decoration: none;
+    clip-path: polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
+  }
+  .btn-ghost {
+    display: block; font-family: var(--fu); font-size: .7rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--primary); background: transparent; border: 1px solid rgba(91,196,229,.3); padding: .5rem; text-align: center; text-decoration: none;
+    clip-path: polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
+  }
+
+  /* ── OPTION C — Hero + grid ── */
+  #option-c { display: none; }
+  .prod-layout { display: grid; grid-template-columns: 1.15fr 1fr; gap: 1.1rem; max-width: 1100px; }
+  .hero-card {
+    position: relative; overflow: hidden;
+    border: 1px solid rgba(244,63,94,.3);
+    clip-path: polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));
+    box-shadow: 0 0 40px rgba(244,63,94,.06);
+    transition: border-color .3s;
+  }
+  .hero-card:hover { border-color: rgba(244,63,94,.55); }
+  .hero-card img { width: 100%; display: block; transition: transform .5s; }
+  .hero-card:hover img { transform: scale(1.02); }
+  .hero-card .badge {
+    position: absolute; top: 1rem; left: 0;
+    font-family: var(--fu); font-size: .6rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+    background: var(--hot); color: #fff; padding: .3rem .9rem .3rem .7rem;
+    clip-path: polygon(0 0,100% 0,calc(100% - 6px) 100%,0 100%);
+  }
+  .hero-card .overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: rgba(12,10,20,.94); backdrop-filter: blur(12px);
+    padding: 1.1rem 1.25rem; border-top: 1px solid rgba(244,63,94,.18);
+  }
+  .hero-label { font-size: .62rem; color: rgba(91,196,229,.5); letter-spacing: .12em; text-transform: uppercase; margin-bottom: .6rem; }
+
+  .side-grid { display: grid; grid-template-rows: 1fr 1fr; gap: 1.1rem; }
+  .side-card {
+    position: relative; overflow: hidden;
+    border: 1px solid rgba(91,196,229,.18);
+    clip-path: polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+    transition: border-color .3s;
+  }
+  .side-card:hover { border-color: rgba(91,196,229,.4); }
+  .side-card img { width: 100%; display: block; transition: transform .5s; }
+  .side-card:hover img { transform: scale(1.03); }
+  .side-card .badge {
+    position: absolute; top: .7rem; left: 0;
+    font-family: var(--fu); font-size: .54rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+    padding: .24rem .7rem .24rem .55rem;
+    clip-path: polygon(0 0,100% 0,calc(100% - 4px) 100%,0 100%);
+  }
+  .side-card .overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: rgba(12,10,20,.92); backdrop-filter: blur(10px);
+    padding: .75rem 1rem; border-top: 1px solid rgba(91,196,229,.12);
+    display: flex; align-items: center; justify-content: space-between; gap: .75rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- Toggle -->
+<div class="page-toggle">
+  <button class="toggle-btn active" onclick="show('b')">B — Fan</button>
+  <button class="toggle-btn" onclick="show('c')">C — Hero + Grid</button>
+</div>
+
+<!-- OPTION B -->
+<section id="option-b">
+  <div class="sec-header">
+    <div>
+      <div class="sec-label">Disponible ahora</div>
+      <h2 class="sec-title">Drops de la semana</h2>
+    </div>
+    <a href="#" class="sec-link">Ver catálogo completo →</a>
+  </div>
+
+  <div class="fan-stage">
+    <div class="fan-card fan-left">
+      <img src="/p3.jpg" alt=""/>
+      <div class="badge" style="background:rgba(91,196,229,.15);color:var(--primary);border:1px solid rgba(91,196,229,.3);border-left:none">NEW</div>
+      <div class="cta-bar">
+        <a href="#" class="btn-ghost">Cotizar →</a>
+      </div>
+    </div>
+
+    <div class="fan-card fan-center">
+      <img src="/p1.jpg" alt=""/>
+      <div class="badge" style="background:var(--hot);color:#fff">★ HOT DEAL</div>
+      <div class="cta-bar">
+        <a href="#" class="btn-primary">Lo quiero — WhatsApp →</a>
+      </div>
+    </div>
+
+    <div class="fan-card fan-right">
+      <img src="/p2.jpg" alt=""/>
+      <div class="badge" style="background:var(--primary);color:var(--bg)">BEST VALUE</div>
+      <div class="cta-bar">
+        <a href="#" class="btn-ghost">Cotizar →</a>
+      </div>
+    </div>
+  </div>
+
+  <p style="text-align:center;font-size:.65rem;color:var(--dim);margin-top:2rem;letter-spacing:.1em">Hover sobre cada tarjeta</p>
+</section>
+
+<!-- OPTION C -->
+<section id="option-c">
+  <div class="sec-header">
+    <div>
+      <div class="sec-label">Disponible ahora</div>
+      <h2 class="sec-title">Drops de la semana</h2>
+    </div>
+    <a href="#" class="sec-link">Ver catálogo completo →</a>
+  </div>
+
+  <div class="prod-layout">
+    <!-- hero -->
+    <div class="hero-card">
+      <img src="/p1.jpg" alt=""/>
+      <div class="badge">★ HOT DEAL</div>
+      <div class="overlay">
+        <div class="hero-label">El más pedido esta semana</div>
+        <a href="#" class="btn-primary">Lo quiero — WhatsApp →</a>
+      </div>
+    </div>
+
+    <!-- side grid -->
+    <div class="side-grid">
+      <div class="side-card">
+        <img src="/p2.jpg" alt=""/>
+        <div class="badge" style="background:var(--primary);color:var(--bg)">BEST VALUE</div>
+        <div class="overlay">
+          <span style="font-size:.6rem;color:var(--dim);letter-spacing:.08em">MSI Monitor</span>
+          <a href="#" class="btn-ghost" style="min-width:130px">WhatsApp →</a>
+        </div>
+      </div>
+      <div class="side-card">
+        <img src="/p3.jpg" alt=""/>
+        <div class="badge" style="background:rgba(91,196,229,.12);color:var(--primary);border:1px solid rgba(91,196,229,.3);border-left:none">NEW</div>
+        <div class="overlay">
+          <span style="font-size:.6rem;color:var(--dim);letter-spacing:.08em">Nuevo ingreso</span>
+          <a href="#" class="btn-ghost" style="min-width:130px">WhatsApp →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+function show(id) {
+  document.getElementById('option-b').style.display = id === 'b' ? 'flex' : 'none';
+  document.getElementById('option-c').style.display = id === 'c' ? 'flex' : 'none';
+  document.querySelectorAll('.toggle-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', (i === 0 && id === 'b') || (i === 1 && id === 'c'));
+  });
+}
+show('b');
+</script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<h2>Marquee — Card & Effect Redesign</h2>
+<p class="subtitle">Same two-row scroll concept. Different card treatment and visual effect.</p>
+
+<div class="options">
+
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Pill chips with icon + glow on accent items</h3>
+      <p>Items become pill-shaped chips. Accent items (CPU, GPU, etc.) get a faint border and glow. Regular items are plain text. Cleaner hierarchy, more tactile.</p>
+      <div class="mockup" style="margin-top:.75rem">
+        <div class="mockup-header">Marquee — Option A</div>
+        <div class="mockup-body" style="background:#080710;padding:1.1rem 0;overflow:hidden">
+          <!-- Row 1 -->
+          <div style="display:flex;gap:.75rem;white-space:nowrap;margin-bottom:.6rem;animation:mq 18s linear infinite;width:max-content">
+            <span style="display:inline-flex;align-items:center;gap:.5rem;font-family:'Russo One',sans-serif;font-size:.9rem;color:#6b7fa3;padding:0 .5rem">MERO</span>
+            <span style="color:rgba(91,196,229,.3);font-size:.9rem">·</span>
+            <span style="display:inline-flex;align-items:center;gap:.4rem;font-family:'Russo One',sans-serif;font-size:.9rem;color:#5BC4E5;border:1px solid rgba(91,196,229,.25);padding:.25rem .8rem;border-radius:2px;background:rgba(91,196,229,.04);box-shadow:0 0 10px rgba(91,196,229,.08)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#5BC4E5" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="1"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>CPU
+            </span>
+            <span style="color:rgba(91,196,229,.3);font-size:.9rem">·</span>
+            <span style="display:inline-flex;align-items:center;gap:.4rem;font-family:'Russo One',sans-serif;font-size:.9rem;color:#5BC4E5;border:1px solid rgba(91,196,229,.25);padding:.25rem .8rem;border-radius:2px;background:rgba(91,196,229,.04);box-shadow:0 0 10px rgba(91,196,229,.08)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#5BC4E5" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="1"/><line x1="6" y1="6" x2="6" y2="18"/><line x1="18" y1="6" x2="18" y2="18"/></svg>GPU
+            </span>
+            <span style="color:rgba(91,196,229,.3);font-size:.9rem">·</span>
+            <span style="font-family:'Russo One',sans-serif;font-size:.9rem;color:#6b7fa3;padding:0 .5rem">RAM</span>
+            <span style="color:rgba(91,196,229,.3);font-size:.9rem">·</span>
+            <span style="display:inline-flex;align-items:center;font-family:'Russo One',sans-serif;font-size:.9rem;color:#5BC4E5;border:1px solid rgba(91,196,229,.25);padding:.25rem .8rem;border-radius:2px;background:rgba(91,196,229,.04);box-shadow:0 0 10px rgba(91,196,229,.08)">BUILDS ÉPICOS</span>
+            <span style="color:rgba(91,196,229,.3);font-size:.9rem">·</span>
+            <span style="font-family:'Russo One',sans-serif;font-size:.9rem;color:#6b7fa3;padding:0 .5rem">EL SALVADOR</span>
+            <span style="color:rgba(91,196,229,.3);font-size:.9rem">·</span>
+            <span style="font-family:'Russo One',sans-serif;font-size:.9rem;color:#6b7fa3;padding:0 .5rem">GAMING</span>
+            <span style="color:rgba(91,196,229,.3);font-size:.9rem">·</span>
+            <span style="display:inline-flex;align-items:center;font-family:'Russo One',sans-serif;font-size:.9rem;color:#5BC4E5;border:1px solid rgba(91,196,229,.25);padding:.25rem .8rem;border-radius:2px;background:rgba(91,196,229,.04);box-shadow:0 0 10px rgba(91,196,229,.08)">ALMACENAMIENTO</span>
+            <span style="color:rgba(91,196,229,.3);font-size:.9rem">·</span>
+            <!-- duplicate -->
+            <span style="font-family:'Russo One',sans-serif;font-size:.9rem;color:#6b7fa3;padding:0 .5rem">MERO</span>
+            <span style="color:rgba(91,196,229,.3);font-size:.9rem">·</span>
+            <span style="display:inline-flex;align-items:center;gap:.4rem;font-family:'Russo One',sans-serif;font-size:.9rem;color:#5BC4E5;border:1px solid rgba(91,196,229,.25);padding:.25rem .8rem;border-radius:2px;background:rgba(91,196,229,.04)">CPU</span>
+            <span style="color:rgba(91,196,229,.3);font-size:.9rem">·</span>
+            <span style="display:inline-flex;align-items:center;gap:.4rem;font-family:'Russo One',sans-serif;font-size:.9rem;color:#5BC4E5;border:1px solid rgba(91,196,229,.25);padding:.25rem .8rem;border-radius:2px;background:rgba(91,196,229,.04)">GPU</span>
+            <span style="color:rgba(91,196,229,.3);font-size:.9rem">·</span>
+            <span style="font-family:'Russo One',sans-serif;font-size:.9rem;color:#6b7fa3;padding:0 .5rem">RAM</span>
+            <span style="color:rgba(91,196,229,.3);font-size:.9rem">·</span>
+          </div>
+          <!-- Row 2 reverse -->
+          <div style="display:flex;gap:.75rem;white-space:nowrap;animation:mqr 24s linear infinite;width:max-content">
+            <span style="font-family:'Russo One',sans-serif;font-size:.9rem;color:#6b7fa3;padding:0 .5rem">ARMA TU RIG</span>
+            <span style="color:rgba(91,196,229,.3)">·</span>
+            <span style="display:inline-flex;align-items:center;font-family:'Russo One',sans-serif;font-size:.9rem;color:#5BC4E5;border:1px solid rgba(91,196,229,.25);padding:.25rem .8rem;border-radius:2px;background:rgba(91,196,229,.04);box-shadow:0 0 10px rgba(91,196,229,.08)">REFRIGERACIÓN</span>
+            <span style="color:rgba(91,196,229,.3)">·</span>
+            <span style="font-family:'Russo One',sans-serif;font-size:.9rem;color:#6b7fa3;padding:0 .5rem">GAMER</span>
+            <span style="color:rgba(91,196,229,.3)">·</span>
+            <span style="font-family:'Russo One',sans-serif;font-size:.9rem;color:#6b7fa3;padding:0 .5rem">FUENTE</span>
+            <span style="color:rgba(91,196,229,.3)">·</span>
+            <span style="display:inline-flex;align-items:center;font-family:'Russo One',sans-serif;font-size:.9rem;color:#5BC4E5;border:1px solid rgba(91,196,229,.25);padding:.25rem .8rem;border-radius:2px;background:rgba(91,196,229,.04);box-shadow:0 0 10px rgba(91,196,229,.08)">BUILT DIFFERENT</span>
+            <span style="color:rgba(91,196,229,.3)">·</span>
+            <span style="font-family:'Russo One',sans-serif;font-size:.9rem;color:#6b7fa3;padding:0 .5rem">MOTHERBOARD</span>
+            <span style="color:rgba(91,196,229,.3)">·</span>
+            <span style="display:inline-flex;align-items:center;font-family:'Russo One',sans-serif;font-size:.9rem;color:#5BC4E5;border:1px solid rgba(91,196,229,.25);padding:.25rem .8rem;border-radius:2px;background:rgba(91,196,229,.04);box-shadow:0 0 10px rgba(91,196,229,.08)">PRO GAMING</span>
+            <span style="color:rgba(91,196,229,.3)">·</span>
+            <span style="font-family:'Russo One',sans-serif;font-size:.9rem;color:#6b7fa3;padding:0 .5rem">ARMA TU RIG</span>
+            <span style="color:rgba(91,196,229,.3)">·</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Angled slash-separated — diagonal cut tags</h3>
+      <p>Items use the existing clip-path design language (diagonal cuts). Accent items filled with primary color. The separator becomes a diagonal slash. More aggressive, more on-brand.</p>
+      <div class="mockup" style="margin-top:.75rem">
+        <div class="mockup-header">Marquee — Option B</div>
+        <div class="mockup-body" style="background:#080710;padding:1.1rem 0;overflow:hidden">
+          <div style="display:flex;gap:.5rem;align-items:center;white-space:nowrap;margin-bottom:.7rem;animation:mq 20s linear infinite;width:max-content">
+            <span style="font-family:'Russo One',sans-serif;font-size:.85rem;color:#6b7fa3;padding:0 .4rem">MERO</span>
+            <span style="color:rgba(91,196,229,.2);font-size:1.1rem;font-weight:300">/</span>
+            <span style="display:inline-flex;align-items:center;font-family:'Russo One',sans-serif;font-size:.82rem;color:#0C0A14;background:#5BC4E5;padding:.28rem .85rem;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);font-weight:700;letter-spacing:.06em">CPU</span>
+            <span style="color:rgba(91,196,229,.2);font-size:1.1rem;font-weight:300">/</span>
+            <span style="display:inline-flex;align-items:center;font-family:'Russo One',sans-serif;font-size:.82rem;color:#0C0A14;background:#5BC4E5;padding:.28rem .85rem;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);font-weight:700;letter-spacing:.06em">GPU</span>
+            <span style="color:rgba(91,196,229,.2);font-size:1.1rem;font-weight:300">/</span>
+            <span style="font-family:'Russo One',sans-serif;font-size:.85rem;color:#6b7fa3;padding:0 .4rem">RAM</span>
+            <span style="color:rgba(91,196,229,.2);font-size:1.1rem;font-weight:300">/</span>
+            <span style="display:inline-flex;align-items:center;font-family:'Russo One',sans-serif;font-size:.82rem;color:#5BC4E5;border:1px solid rgba(91,196,229,.3);padding:.28rem .85rem;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%)">BUILDS ÉPICOS</span>
+            <span style="color:rgba(91,196,229,.2);font-size:1.1rem;font-weight:300">/</span>
+            <span style="font-family:'Russo One',sans-serif;font-size:.85rem;color:#6b7fa3;padding:0 .4rem">EL SALVADOR</span>
+            <span style="color:rgba(91,196,229,.2);font-size:1.1rem;font-weight:300">/</span>
+            <span style="display:inline-flex;align-items:center;font-family:'Russo One',sans-serif;font-size:.82rem;color:#0C0A14;background:#5BC4E5;padding:.28rem .85rem;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);font-weight:700">GAMING</span>
+            <span style="color:rgba(91,196,229,.2);font-size:1.1rem;font-weight:300">/</span>
+            <span style="font-family:'Russo One',sans-serif;font-size:.85rem;color:#6b7fa3;padding:0 .4rem">COMPONENTES</span>
+            <span style="color:rgba(91,196,229,.2);font-size:1.1rem;font-weight:300">/</span>
+          </div>
+          <div style="display:flex;gap:.5rem;align-items:center;white-space:nowrap;animation:mqr 26s linear infinite;width:max-content">
+            <span style="display:inline-flex;align-items:center;font-family:'Russo One',sans-serif;font-size:.82rem;color:#5BC4E5;border:1px solid rgba(91,196,229,.3);padding:.28rem .85rem;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%)">ARMA TU RIG</span>
+            <span style="color:rgba(91,196,229,.2);font-size:1.1rem">/</span>
+            <span style="font-family:'Russo One',sans-serif;font-size:.85rem;color:#6b7fa3;padding:0 .4rem">REFRIGERACIÓN</span>
+            <span style="color:rgba(91,196,229,.2);font-size:1.1rem">/</span>
+            <span style="display:inline-flex;align-items:center;font-family:'Russo One',sans-serif;font-size:.82rem;color:#0C0A14;background:#5BC4E5;padding:.28rem .85rem;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);font-weight:700">BUILT DIFFERENT</span>
+            <span style="color:rgba(91,196,229,.2);font-size:1.1rem">/</span>
+            <span style="font-family:'Russo One',sans-serif;font-size:.85rem;color:#6b7fa3;padding:0 .4rem">MOTHERBOARD</span>
+            <span style="color:rgba(91,196,229,.2);font-size:1.1rem">/</span>
+            <span style="display:inline-flex;align-items:center;font-family:'Russo One',sans-serif;font-size:.82rem;color:#5BC4E5;border:1px solid rgba(91,196,229,.3);padding:.28rem .85rem;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%)">PRO GAMING</span>
+            <span style="color:rgba(91,196,229,.2);font-size:1.1rem">/</span>
+            <span style="font-family:'Russo One',sans-serif;font-size:.85rem;color:#6b7fa3;padding:0 .4rem">FUENTE</span>
+            <span style="color:rgba(91,196,229,.2);font-size:1.1rem">/</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Gradient fade edges + larger text + hover pause</h3>
+      <p>Keep the exact same card style as today but: bigger type, edge fade masks (fade to transparent left/right), and the scroll pauses on hover. Small changes, big improvement in polish.</p>
+      <div class="mockup" style="margin-top:.75rem">
+        <div class="mockup-header">Marquee — Option C</div>
+        <div class="mockup-body" style="background:#080710;padding:1.1rem 0;overflow:hidden;position:relative">
+          <!-- fade masks -->
+          <div style="position:absolute;left:0;top:0;bottom:0;width:80px;background:linear-gradient(90deg,#080710,transparent);z-index:2;pointer-events:none"></div>
+          <div style="position:absolute;right:0;top:0;bottom:0;width:80px;background:linear-gradient(270deg,#080710,transparent);z-index:2;pointer-events:none"></div>
+          <div style="display:flex;gap:1.4rem;white-space:nowrap;margin-bottom:.7rem;animation:mq 20s linear infinite;width:max-content">
+            <span style="font-family:'Russo One',sans-serif;font-size:1.1rem;color:#E2E8F0">MERO <span style="color:rgba(91,196,229,.5)">·</span></span>
+            <span style="font-family:'Russo One',sans-serif;font-size:1.1rem;color:#5BC4E5;text-shadow:0 0 12px rgba(91,196,229,.35)">CPU</span>
+            <span style="font-family:'Russo One',sans-serif;font-size:1.1rem;color:#E2E8F0"><span style="color:rgba(91,196,229,.5)">·</span> GPU <span style="color:rgba(91,196,229,.5)">·</span></span>
+            <span style="font-family:'Russo One',sans-serif;font-size:1.1rem;color:#E2E8F0">RAM <span style="color:rgba(91,196,229,.5)">·</span></span>
+            <span style="font-family:'Russo One',sans-serif;font-size:1.1rem;color:#5BC4E5;text-shadow:0 0 12px rgba(91,196,229,.35)">BUILDS ÉPICOS</span>
+            <span style="font-family:'Russo One',sans-serif;font-size:1.1rem;color:#E2E8F0"><span style="color:rgba(91,196,229,.5)">·</span> EL SALVADOR <span style="color:rgba(91,196,229,.5)">·</span></span>
+            <span style="font-family:'Russo One',sans-serif;font-size:1.1rem;color:#E2E8F0">GAMING <span style="color:rgba(91,196,229,.5)">·</span></span>
+            <span style="font-family:'Russo One',sans-serif;font-size:1.1rem;color:#5BC4E5;text-shadow:0 0 12px rgba(91,196,229,.35)">ALMACENAMIENTO</span>
+            <span style="font-family:'Russo One',sans-serif;font-size:1.1rem;color:#E2E8F0"><span style="color:rgba(91,196,229,.5)">·</span> COMPONENTES <span style="color:rgba(91,196,229,.5)">·</span></span>
+            <!-- dup -->
+            <span style="font-family:'Russo One',sans-serif;font-size:1.1rem;color:#E2E8F0">MERO <span style="color:rgba(91,196,229,.5)">·</span></span>
+            <span style="font-family:'Russo One',sans-serif;font-size:1.1rem;color:#5BC4E5;text-shadow:0 0 12px rgba(91,196,229,.35)">CPU</span>
+            <span style="font-family:'Russo One',sans-serif;font-size:1.1rem;color:#E2E8F0"><span style="color:rgba(91,196,229,.5)">·</span> GPU <span style="color:rgba(91,196,229,.5)">·</span></span>
+          </div>
+          <div style="display:flex;gap:1.4rem;white-space:nowrap;animation:mqr 26s linear infinite;width:max-content">
+            <span style="font-family:'Russo One',sans-serif;font-size:1.1rem;color:#E2E8F0"><span style="color:rgba(91,196,229,.5)">·</span> ARMA TU RIG <span style="color:rgba(91,196,229,.5)">·</span></span>
+            <span style="font-family:'Russo One',sans-serif;font-size:1.1rem;color:#5BC4E5;text-shadow:0 0 12px rgba(91,196,229,.35)">REFRIGERACIÓN</span>
+            <span style="font-family:'Russo One',sans-serif;font-size:1.1rem;color:#E2E8F0"><span style="color:rgba(91,196,229,.5)">·</span> GAMER <span style="color:rgba(91,196,229,.5)">·</span></span>
+            <span style="font-family:'Russo One',sans-serif;font-size:1.1rem;color:#E2E8F0">FUENTE <span style="color:rgba(91,196,229,.5)">·</span></span>
+            <span style="font-family:'Russo One',sans-serif;font-size:1.1rem;color:#5BC4E5;text-shadow:0 0 12px rgba(91,196,229,.35)">BUILT DIFFERENT</span>
+            <span style="font-family:'Russo One',sans-serif;font-size:1.1rem;color:#E2E8F0"><span style="color:rgba(91,196,229,.5)">·</span> MOTHERBOARD <span style="color:rgba(91,196,229,.5)">·</span></span>
+            <span style="font-family:'Russo One',sans-serif;font-size:1.1rem;color:#5BC4E5;text-shadow:0 0 12px rgba(91,196,229,.35)">PRO GAMING</span>
+            <span style="font-family:'Russo One',sans-serif;font-size:1.1rem;color:#E2E8F0"><span style="color:rgba(91,196,229,.5)">·</span> ARMA TU RIG <span style="color:rgba(91,196,229,.5)">·</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+@keyframes mq  { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+@keyframes mqr { from{transform:translateX(-50%)} to{transform:translateX(0)} }
+</style>

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arma Tu Rig — Design Options</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Russo+One&display=swap');
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0C0A14; --bg2: #100D1C;
+    --primary: #5BC4E5; --hot: #F43F5E;
+    --text: #E2E8F0; --dim: #6b7fa3;
+    --fh: 'Russo One', sans-serif; --fu: 'Chakra Petch', monospace;
+  }
+  body { background: #090710; color: var(--text); font-family: var(--fu); padding: 2rem; }
+
+  .page-title { font-family: var(--fh); font-size: 1rem; color: var(--primary); text-align: center; margin-bottom: .3rem; letter-spacing: .15em; text-transform: uppercase; }
+  .page-sub { text-align: center; font-size: .68rem; color: var(--dim); letter-spacing: .08em; margin-bottom: 2.5rem; }
+
+  .options-wrap { display: flex; flex-direction: column; gap: 2.5rem; max-width: 960px; margin: 0 auto; }
+
+  .opt { border: 1px solid rgba(91,196,229,.12); border-radius: 2px; overflow: hidden; cursor: pointer; transition: border-color .25s; position: relative; }
+  .opt:hover { border-color: rgba(91,196,229,.3); }
+  .opt.selected { border-color: var(--primary); box-shadow: 0 0 24px rgba(91,196,229,.12); }
+  .opt.selected::after { content: '✓ SELECTED'; position: absolute; top: .7rem; right: .7rem; font-size: .55rem; letter-spacing: .2em; color: var(--primary); background: rgba(91,196,229,.1); border: 1px solid rgba(91,196,229,.3); padding: .22rem .55rem; }
+
+  .opt-label { background: rgba(91,196,229,.05); border-bottom: 1px solid rgba(91,196,229,.1); padding: .6rem 1.2rem; display: flex; align-items: center; gap: 1rem; }
+  .opt-letter { font-family: var(--fh); font-size: 1rem; color: var(--primary); }
+  .opt-name { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: var(--text); font-weight: 600; }
+  .opt-desc { font-size: .6rem; color: var(--dim); margin-left: auto; max-width: 340px; text-align: right; line-height: 1.5; }
+
+  .opt-preview { padding: 1.5rem 1.5rem 2rem; background: var(--bg2); pointer-events: none; user-select: none; }
+
+  /* ── SHARED label ── */
+  .preview-note { font-size: .56rem; color: var(--dim); letter-spacing: .1em; margin-bottom: 1rem; }
+  .preview-note span { color: rgba(91,196,229,.5); }
+
+
+  /* ════════════════════════════════════════════════
+     OPTION A — BIOS POST STEPS
+     Vertical step list, each row = one component
+     Left: step number + icon + label
+     Right: install log line
+     Active = full row lights up
+  ════════════════════════════════════════════════ */
+  .a-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; }
+
+  .a-steps { display: flex; flex-direction: column; gap: .4rem; }
+
+  .a-step {
+    display: flex; align-items: center; gap: 1rem;
+    padding: .7rem 1rem;
+    border: 1px solid rgba(91,196,229,.1);
+    background: var(--bg);
+    position: relative; overflow: hidden;
+    clip-path: polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,6px 100%,0 calc(100% - 6px));
+  }
+  /* active state */
+  .a-step.on { border-color: rgba(91,196,229,.4); background: rgba(91,196,229,.04); }
+  .a-step.on::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+    background: var(--primary); box-shadow: 0 0 8px var(--primary);
+  }
+
+  .a-num { font-family: var(--fh); font-size: .55rem; color: rgba(91,196,229,.25); min-width: 1.4rem; }
+  .a-step.on .a-num { color: rgba(91,196,229,.5); }
+
+  .a-icon { width: 28px; height: 28px; color: rgba(91,196,229,.25); flex-shrink: 0; transition: color .3s; }
+  .a-step.on .a-icon { color: var(--primary); filter: drop-shadow(0 0 4px rgba(91,196,229,.5)); }
+
+  .a-label { font-family: var(--fh); font-size: .75rem; color: var(--dim); flex: 1; }
+  .a-step.on .a-label { color: var(--text); }
+
+  .a-status { font-size: .52rem; letter-spacing: .12em; color: rgba(91,196,229,.25); }
+  .a-step.on .a-status { color: #00ff88; }
+
+  /* Right: terminal output */
+  .a-terminal {
+    background: rgba(7,8,26,.8); border: 1px solid rgba(91,196,229,.12);
+    padding: 1.1rem 1.2rem;
+    clip-path: polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));
+  }
+  .a-term-header { font-size: .55rem; letter-spacing: .2em; color: rgba(91,196,229,.3); margin-bottom: .8rem; }
+  .a-term-line { font-size: .68rem; color: var(--dim); line-height: 2; }
+  .a-term-line.done { color: var(--primary); }
+  .a-term-line.done::before { content: '● '; color: #00ff88; }
+  .a-term-line.pending::before { content: '○ '; color: rgba(91,196,229,.2); }
+  .a-term-cursor { font-size: .62rem; color: rgba(91,196,229,.4); animation: blink 1s step-end infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* ════════════════════════════════════════════════
+     OPTION B — SLOT GRID, ENHANCED
+     3×2 grid with bigger slots, dramatic active glow,
+     hexagonal corner cuts on chassis
+  ════════════════════════════════════════════════ */
+  .b-wrap { display: grid; grid-template-columns: 1fr 240px; gap: 1.5rem; align-items: start; }
+
+  .b-chassis {
+    border: 1px solid rgba(91,196,229,.18);
+    background: rgba(91,196,229,.015);
+    clip-path: polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));
+    padding: 1.5rem;
+    box-shadow: 0 0 40px rgba(91,196,229,.08), inset 0 0 30px rgba(91,196,229,.03);
+  }
+
+  .b-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; margin-bottom: 1.2rem; }
+
+  .b-slot {
+    display: flex; flex-direction: column; align-items: center; gap: .5rem;
+    padding: 1.1rem .8rem;
+    border: 1px solid rgba(91,196,229,.1);
+    background: var(--bg);
+    position: relative; overflow: hidden;
+    clip-path: polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,6px 100%,0 calc(100% - 6px));
+  }
+  .b-slot.on {
+    border-color: var(--primary);
+    background: rgba(91,196,229,.06);
+    box-shadow: 0 0 20px rgba(91,196,229,.2), inset 0 0 20px rgba(91,196,229,.04);
+  }
+  .b-slot.on::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 40%, rgba(91,196,229,.12) 0%, transparent 65%);
+  }
+  .b-icon { width: 36px; height: 36px; color: rgba(91,196,229,.2); position: relative; z-index: 1; }
+  .b-slot.on .b-icon { color: var(--primary); filter: drop-shadow(0 0 6px rgba(91,196,229,.6)); }
+  .b-lbl { font-size: .58rem; letter-spacing: .2em; text-transform: uppercase; color: var(--dim); position: relative; z-index: 1; }
+  .b-slot.on .b-lbl { color: var(--primary); }
+
+  .b-readout {
+    padding: .9rem 1.1rem; border-top: 1px solid rgba(91,196,229,.1);
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    opacity: 1;
+  }
+  .b-readout-lbl { font-size: .62rem; color: var(--primary); letter-spacing: .15em; }
+  .b-cta {
+    font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--bg); background: var(--primary); padding: .45rem 1.1rem;
+    clip-path: polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);
+  }
+
+  .b-log {
+    background: rgba(7,8,26,.8); border: 1px solid rgba(91,196,229,.1);
+    clip-path: polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));
+    padding: 1rem 1.1rem;
+  }
+  .b-log-hdr { font-size: .52rem; letter-spacing: .2em; color: rgba(91,196,229,.3); margin-bottom: .6rem; }
+  .b-log-txt { font-size: .7rem; color: var(--primary); line-height: 1.7; }
+
+
+  /* ════════════════════════════════════════════════
+     OPTION C — FEATURED INSTALL (1 big + 5 mini)
+     Large center display shows the "active" component
+     Mini slots around it show installed/pending
+  ════════════════════════════════════════════════ */
+  .c-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: center; }
+
+  .c-featured {
+    border: 1px solid rgba(91,196,229,.3);
+    background: rgba(91,196,229,.04);
+    clip-path: polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));
+    padding: 2rem;
+    display: flex; flex-direction: column; align-items: center; gap: 1rem;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(91,196,229,.1), inset 0 0 30px rgba(91,196,229,.04);
+    position: relative;
+  }
+  .c-featured::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    box-shadow: 0 0 12px var(--primary);
+  }
+
+  .c-installing { font-size: .55rem; letter-spacing: .22em; color: rgba(91,196,229,.4); text-transform: uppercase; }
+  .c-big-icon { width: 72px; height: 72px; color: var(--primary); filter: drop-shadow(0 0 16px rgba(91,196,229,.5)); }
+  .c-big-name { font-family: var(--fh); font-size: 1.6rem; letter-spacing: .04em; }
+  .c-big-sub { font-size: .62rem; color: var(--dim); letter-spacing: .15em; text-transform: uppercase; }
+  .c-progress { width: 100%; height: 2px; background: rgba(91,196,229,.1); position: relative; overflow: hidden; }
+  .c-progress-fill { height: 100%; width: 60%; background: var(--primary); box-shadow: 0 0 8px var(--primary); }
+  .c-pct { font-size: .55rem; color: rgba(91,196,229,.4); letter-spacing: .12em; }
+
+  .c-right { display: flex; flex-direction: column; gap: .75rem; }
+
+  .c-mini {
+    display: flex; align-items: center; gap: .75rem;
+    padding: .55rem .8rem;
+    border: 1px solid rgba(91,196,229,.08);
+    background: var(--bg);
+    clip-path: polygon(0 0,calc(100% - 5px) 0,100% 5px,100% 100%,5px 100%,0 calc(100% - 5px));
+  }
+  .c-mini.done { border-color: rgba(91,196,229,.25); background: rgba(91,196,229,.03); }
+  .c-mini.active { border-color: var(--primary); background: rgba(91,196,229,.06); box-shadow: 0 0 12px rgba(91,196,229,.15); }
+
+  .c-mini-icon { width: 22px; height: 22px; color: rgba(91,196,229,.2); flex-shrink: 0; }
+  .c-mini.done .c-mini-icon { color: rgba(91,196,229,.5); }
+  .c-mini.active .c-mini-icon { color: var(--primary); }
+
+  .c-mini-name { font-family: var(--fh); font-size: .72rem; color: var(--dim); flex: 1; }
+  .c-mini.done .c-mini-name { color: var(--text); }
+  .c-mini.active .c-mini-name { color: var(--primary); }
+
+  .c-mini-badge { font-size: .48rem; letter-spacing: .12em; color: rgba(91,196,229,.35); }
+  .c-mini.done .c-mini-badge { color: #00ff88; }
+  .c-mini.active .c-mini-badge { color: var(--primary); }
+
+</style>
+</head>
+<body>
+
+<div class="page-title">Arma Tu Rig — Visual Options</div>
+<div class="page-sub">Scroll animation stays in all options — these show the visual treatment. Shown mid-animation (3 of 6 installed).</div>
+
+<div class="options-wrap">
+
+  <!-- ── OPTION A: BIOS POST STEPS ── -->
+  <div class="opt" onclick="this.classList.toggle('selected')">
+    <div class="opt-label">
+      <span class="opt-letter">A</span>
+      <span class="opt-name">BIOS POST List</span>
+      <span class="opt-desc">Vertical step rows — each component is a line that activates. Left-bar accent on active. Terminal output on the right.</span>
+    </div>
+    <div class="opt-preview">
+      <div class="preview-note">Shown at step 3/6 — <span>CPU, Cooling, RAM installed</span></div>
+      <div class="a-wrap">
+        <div class="a-steps">
+
+          <div class="a-step on">
+            <span class="a-num">01</span>
+            <svg class="a-icon" viewBox="0 0 40 40" fill="none"><rect x="10" y="10" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="15" y="15" width="10" height="10" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="6" y1="15" x2="10" y2="15" stroke="currentColor" stroke-width="1.5"/><line x1="6" y1="20" x2="10" y2="20" stroke="currentColor" stroke-width="1.5"/><line x1="30" y1="20" x2="34" y2="20" stroke="currentColor" stroke-width="1.5"/></svg>
+            <span class="a-label">CPU</span>
+            <span class="a-status">OK</span>
+          </div>
+
+          <div class="a-step on">
+            <span class="a-num">02</span>
+            <svg class="a-icon" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="10" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="4" stroke="currentColor" stroke-width="1.5"/><line x1="20" y1="6" x2="20" y2="13" stroke="currentColor" stroke-width="1.5"/><line x1="20" y1="27" x2="20" y2="34" stroke="currentColor" stroke-width="1.5"/></svg>
+            <span class="a-label">Cooling</span>
+            <span class="a-status">OK</span>
+          </div>
+
+          <div class="a-step on">
+            <span class="a-num">03</span>
+            <svg class="a-icon" viewBox="0 0 40 40" fill="none"><rect x="12" y="8" width="6" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="22" y="8" width="6" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="13.5" y="12" width="3" height="3" rx="0.5" fill="currentColor" opacity="0.6"/><rect x="13.5" y="18" width="3" height="3" rx="0.5" fill="currentColor" opacity="0.6"/></svg>
+            <span class="a-label">RAM</span>
+            <span class="a-status">OK</span>
+          </div>
+
+          <div class="a-step">
+            <span class="a-num">04</span>
+            <svg class="a-icon" viewBox="0 0 40 40" fill="none"><rect x="7" y="12" width="26" height="16" rx="3" stroke="currentColor" stroke-width="1.5"/><circle cx="27" cy="20" r="4" stroke="currentColor" stroke-width="1.5"/><line x1="12" y1="17" x2="20" y2="17" stroke="currentColor" stroke-width="1.5"/></svg>
+            <span class="a-label">SSD</span>
+            <span class="a-status">—</span>
+          </div>
+
+          <div class="a-step">
+            <span class="a-num">05</span>
+            <svg class="a-icon" viewBox="0 0 40 40" fill="none"><rect x="5" y="13" width="30" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="17" width="7" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="20" y="17" width="7" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
+            <span class="a-label">GPU</span>
+            <span class="a-status">—</span>
+          </div>
+
+          <div class="a-step">
+            <span class="a-num">06</span>
+            <svg class="a-icon" viewBox="0 0 40 40" fill="none"><rect x="5" y="11" width="30" height="18" rx="3" stroke="currentColor" stroke-width="1.5"/><line x1="10" y1="18" x2="30" y2="18" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/></svg>
+            <span class="a-label">PSU</span>
+            <span class="a-status">—</span>
+          </div>
+
+        </div>
+
+        <div class="a-terminal">
+          <div class="a-term-header">// BOOT LOG</div>
+          <div class="a-term-line done">Procesador instalado</div>
+          <div class="a-term-line done">Refrigeración lista</div>
+          <div class="a-term-line done">RAM sincronizada</div>
+          <div class="a-term-line pending">SSD montado</div>
+          <div class="a-term-line pending">GPU encendida</div>
+          <div class="a-term-line pending">PSU conectada</div>
+          <div class="a-term-cursor">█ _</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── OPTION B: SLOT GRID ENHANCED ── -->
+  <div class="opt" onclick="this.classList.toggle('selected')">
+    <div class="opt-label">
+      <span class="opt-letter">B</span>
+      <span class="opt-name">Slot Grid — Enhanced</span>
+      <span class="opt-desc">3×2 grid (like current) but dramatically improved — full border glow, radial fill, large icons, terminal sidebar.</span>
+    </div>
+    <div class="opt-preview">
+      <div class="preview-note">Shown at step 3/6 — <span>CPU, Cooling, RAM installed</span></div>
+      <div class="b-wrap">
+        <div class="b-chassis">
+          <div class="b-slots">
+
+            <div class="b-slot on">
+              <svg class="b-icon" viewBox="0 0 40 40" fill="none"><rect x="10" y="10" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="15" y="15" width="10" height="10" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="6" y1="15" x2="10" y2="15" stroke="currentColor" stroke-width="1.5"/><line x1="6" y1="20" x2="10" y2="20" stroke="currentColor" stroke-width="1.5"/><line x1="30" y1="20" x2="34" y2="20" stroke="currentColor" stroke-width="1.5"/></svg>
+              <span class="b-lbl">CPU</span>
+            </div>
+
+            <div class="b-slot on">
+              <svg class="b-icon" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="10" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="4" stroke="currentColor" stroke-width="1.5"/><line x1="20" y1="6" x2="20" y2="13" stroke="currentColor" stroke-width="1.5"/><line x1="20" y1="27" x2="20" y2="34" stroke="currentColor" stroke-width="1.5"/></svg>
+              <span class="b-lbl">Cooling</span>
+            </div>
+
+            <div class="b-slot on">
+              <svg class="b-icon" viewBox="0 0 40 40" fill="none"><rect x="12" y="8" width="6" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="22" y="8" width="6" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="13.5" y="12" width="3" height="3" rx="0.5" fill="currentColor" opacity="0.6"/><rect x="13.5" y="18" width="3" height="3" rx="0.5" fill="currentColor" opacity="0.6"/></svg>
+              <span class="b-lbl">RAM</span>
+            </div>
+
+            <div class="b-slot">
+              <svg class="b-icon" viewBox="0 0 40 40" fill="none"><rect x="7" y="12" width="26" height="16" rx="3" stroke="currentColor" stroke-width="1.5"/><circle cx="27" cy="20" r="4" stroke="currentColor" stroke-width="1.5"/><line x1="12" y1="17" x2="20" y2="17" stroke="currentColor" stroke-width="1.5"/></svg>
+              <span class="b-lbl">SSD</span>
+            </div>
+
+            <div class="b-slot">
+              <svg class="b-icon" viewBox="0 0 40 40" fill="none"><rect x="5" y="13" width="30" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="17" width="7" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="20" y="17" width="7" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
+              <span class="b-lbl">GPU</span>
+            </div>
+
+            <div class="b-slot">
+              <svg class="b-icon" viewBox="0 0 40 40" fill="none"><rect x="5" y="11" width="30" height="18" rx="3" stroke="currentColor" stroke-width="1.5"/><line x1="10" y1="18" x2="30" y2="18" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/></svg>
+              <span class="b-lbl">PSU</span>
+            </div>
+
+          </div>
+          <div class="b-readout">
+            <span class="b-readout-lbl">// INSTALANDO...</span>
+            <span class="b-cta" style="opacity:.3">Cotizá tu build →</span>
+          </div>
+        </div>
+
+        <div class="b-log">
+          <div class="b-log-hdr">// TERMINAL</div>
+          <div class="b-log-txt">// RAM sincronizada.<br>// Esperando SSD...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── OPTION C: FEATURED INSTALL ── -->
+  <div class="opt" onclick="this.classList.toggle('selected')">
+    <div class="opt-label">
+      <span class="opt-letter">C</span>
+      <span class="opt-name">Featured Install</span>
+      <span class="opt-desc">Big center display for the active component + progress bar. Right sidebar shows all 6 as mini rows (done / active / pending).</span>
+    </div>
+    <div class="opt-preview">
+      <div class="preview-note">Shown installing <span>SSD (step 4/6)</span></div>
+      <div class="c-wrap">
+
+        <div class="c-featured">
+          <div class="c-installing">// INSTALANDO</div>
+          <svg class="c-big-icon" viewBox="0 0 40 40" fill="none"><rect x="7" y="12" width="26" height="16" rx="3" stroke="currentColor" stroke-width="1.5"/><circle cx="27" cy="20" r="4" stroke="currentColor" stroke-width="1.5"/><line x1="12" y1="17" x2="20" y2="17" stroke="currentColor" stroke-width="1.5"/><line x1="12" y1="20" x2="18" y2="20" stroke="currentColor" stroke-width="1.5"/><line x1="12" y1="23" x2="20" y2="23" stroke="currentColor" stroke-width="1.5"/></svg>
+          <div class="c-big-name">SSD</div>
+          <div class="c-big-sub">Almacenamiento</div>
+          <div class="c-progress"><div class="c-progress-fill"></div></div>
+          <div class="c-pct">60%</div>
+        </div>
+
+        <div class="c-right">
+          <div class="c-mini done">
+            <svg class="c-mini-icon" viewBox="0 0 40 40" fill="none"><rect x="10" y="10" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="15" y="15" width="10" height="10" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+            <span class="c-mini-name">CPU</span>
+            <span class="c-mini-badge">DONE</span>
+          </div>
+          <div class="c-mini done">
+            <svg class="c-mini-icon" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="10" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="4" stroke="currentColor" stroke-width="1.5"/></svg>
+            <span class="c-mini-name">Cooling</span>
+            <span class="c-mini-badge">DONE</span>
+          </div>
+          <div class="c-mini done">
+            <svg class="c-mini-icon" viewBox="0 0 40 40" fill="none"><rect x="12" y="8" width="6" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="22" y="8" width="6" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/></svg>
+            <span class="c-mini-name">RAM</span>
+            <span class="c-mini-badge">DONE</span>
+          </div>
+          <div class="c-mini active">
+            <svg class="c-mini-icon" viewBox="0 0 40 40" fill="none"><rect x="7" y="12" width="26" height="16" rx="3" stroke="currentColor" stroke-width="1.5"/><circle cx="27" cy="20" r="4" stroke="currentColor" stroke-width="1.5"/></svg>
+            <span class="c-mini-name">SSD</span>
+            <span class="c-mini-badge">INSTALANDO</span>
+          </div>
+          <div class="c-mini">
+            <svg class="c-mini-icon" viewBox="0 0 40 40" fill="none"><rect x="5" y="13" width="30" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="17" width="7" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
+            <span class="c-mini-name">GPU</span>
+            <span class="c-mini-badge">—</span>
+          </div>
+          <div class="c-mini">
+            <svg class="c-mini-icon" viewBox="0 0 40 40" fill="none"><rect x="5" y="11" width="30" height="18" rx="3" stroke="currentColor" stroke-width="1.5"/><line x1="10" y1="18" x2="30" y2="18" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/></svg>
+            <span class="c-mini-name">PSU</span>
+            <span class="c-mini-badge">—</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      document.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'))
+      opt.classList.add('selected')
+    })
+  })
+</script>
+</body>
+</html>

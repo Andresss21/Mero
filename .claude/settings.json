@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p ~/.claude/skills)",
+      "Bash(cp -r \"c:/Users/Andres/Documents/Github/Proyectos Personales/Mero/.claude/skills/ui-ux-pro-max\" ~/.claude/skills/)",
+      "Read(//c/Users/Andres/.claude/skills/ui-ux-pro-max/**)",
+      "Read(//c/Users/Andres/.claude/**)",
+      "Bash(npm install:*)",
+      "Bash(timeout 8 npm run dev -- --port 5173)",
+      "Bash(bash .superpowers/scripts/start-server.sh --project-dir \"c:\\\\Users\\\\Andres\\\\Documents\\\\Github\\\\Proyectos Personales\\\\Mero\\\\Mero\")",
+      "Bash(bash \"C:\\\\Users\\\\Andres\\\\.claude\\\\plugins\\\\cache\\\\superpowers-marketplace\\\\superpowers\\\\5.0.7\\\\skills\\\\brainstorming\\\\scripts\\\\start-server.sh\" --project-dir \"c:\\\\Users\\\\Andres\\\\Documents\\\\Github\\\\Proyectos Personales\\\\Mero\\\\Mero\")",
+      "Read(//c/Users/Andres/Documents/Github/Proyectos/ Personales/Mero/Mero/.worktrees/vite-restructure/src/sections/arma-rig/**)",
+      "Read(//c/Users/Andres/Documents/Github/Proyectos/ Personales/Mero/Mero/.worktrees/vite-restructure/src/**)",
+      "Bash(node -e ':*)",
+      "Bash(npm run:*)"
+    ]
+  }
+}

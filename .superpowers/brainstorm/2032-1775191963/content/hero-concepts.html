@@ -1,0 +1,119 @@
+<h2>Hero Section — Redesign Concepts</h2>
+<p class="subtitle">Same design language. Different emphasis and layout. Which direction feels most like Mero?</p>
+
+<div class="options">
+
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Statement + Spec — "We Know Hardware"</h3>
+      <p>Lead with a bold claim about price integrity — Mero's core differentiator. Add a live "specs" readout alongside the headline, like a hardware monitor showing key stats (products in stock, delivery time, etc.) in a terminal-style panel.</p>
+      <div class="mockup" style="margin-top:1rem">
+        <div class="mockup-header">Hero — Concept A</div>
+        <div class="mockup-body" style="background:#0A0A1A;padding:2rem;font-family:monospace;min-height:220px;position:relative;overflow:hidden">
+          <!-- grid bg -->
+          <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(91,196,229,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(91,196,229,.03) 1px,transparent 1px);background-size:44px 44px;pointer-events:none"></div>
+          <div style="position:relative;z-index:2;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center">
+            <div>
+              <div style="font-size:.6rem;letter-spacing:.22em;color:#5BC4E5;margin-bottom:.75rem;text-transform:uppercase">— Precios justos. Sin excusas.</div>
+              <div style="font-family:'Russo One',sans-serif;font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.08;color:#E2E8F0;margin-bottom:.75rem">
+                El hardware que <span style="color:#5BC4E5;text-shadow:0 0 20px rgba(91,196,229,.4)">querés</span><br>al precio que <span style="color:#5BC4E5">merece</span>
+              </div>
+              <div style="font-size:.78rem;color:#6b7fa3;margin-bottom:1.25rem;line-height:1.6">PC components. El Salvador. Entrega en 48h.</div>
+              <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+                <div style="background:#5BC4E5;color:#0A0A1A;padding:.5rem 1.25rem;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%)">Cotizar por WhatsApp</div>
+                <div style="border:1px solid rgba(91,196,229,.35);color:#5BC4E5;padding:.5rem 1.25rem;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%)">Ver Catálogo →</div>
+              </div>
+            </div>
+            <!-- terminal panel -->
+            <div style="border:1px solid rgba(91,196,229,.2);background:rgba(91,196,229,.03);padding:1rem;min-width:180px;font-size:.62rem;color:#5BC4E5;line-height:2">
+              <div style="color:rgba(91,196,229,.5);margin-bottom:.5rem;letter-spacing:.12em">// SYSTEM STATUS</div>
+              <div><span style="color:#6b7fa3">STOCK</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#00ff88">ONLINE</span></div>
+              <div><span style="color:#6b7fa3">PRODUCTOS</span> &nbsp;<span>12</span></div>
+              <div><span style="color:#6b7fa3">ENTREGA</span> &nbsp;&nbsp;&nbsp;<span>48H</span></div>
+              <div><span style="color:#6b7fa3">PRECIO</span> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#5BC4E5">JUSTO</span></div>
+              <div style="margin-top:.5rem;height:1px;background:rgba(91,196,229,.15)"></div>
+              <div style="margin-top:.5rem;color:rgba(91,196,229,.4);animation:blink 1s infinite">█ READY_</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pros-cons" style="margin-top:.75rem">
+        <div class="pros"><h4>Strengths</h4><ul><li>Communicates price integrity immediately</li><li>Terminal panel signals PC credibility</li><li>Dual CTA — WhatsApp + catalog</li></ul></div>
+        <div class="cons"><h4>Trade-offs</h4><ul><li>More copy-heavy</li><li>Terminal stats need to stay updated</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Product-first — Featured drop hero</h3>
+      <p>Put a hero product front and center. Headline is short and punchy. The product image (GPU, CPU) dominates the right half — retro-futurism HUD overlay with specs. CTA goes straight to WhatsApp.</p>
+      <div class="mockup" style="margin-top:1rem">
+        <div class="mockup-header">Hero — Concept B</div>
+        <div class="mockup-body" style="background:#0A0A1A;padding:2rem;min-height:220px;position:relative;overflow:hidden">
+          <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(91,196,229,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(91,196,229,.03) 1px,transparent 1px);background-size:44px 44px;pointer-events:none"></div>
+          <div style="position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center">
+            <div>
+              <div style="font-size:.6rem;letter-spacing:.22em;color:#5BC4E5;margin-bottom:.75rem;text-transform:uppercase">— Drop actual</div>
+              <div style="font-family:'Russo One',sans-serif;font-size:clamp(1.6rem,3.5vw,2.2rem);line-height:1.08;color:#E2E8F0;margin-bottom:.6rem">
+                RTX 4080 Super<br><span style="color:#F43F5E;font-size:.7em">$749</span>
+              </div>
+              <div style="font-size:.72rem;color:#6b7fa3;margin-bottom:1.25rem;line-height:1.6">16GB GDDR6X · El precio más justo del mercado</div>
+              <div style="background:#5BC4E5;color:#0A0A1A;padding:.5rem 1.25rem;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);display:inline-block">Quiero ésta →</div>
+            </div>
+            <!-- product mockup -->
+            <div style="border:1px solid rgba(91,196,229,.2);background:#050512;aspect-ratio:1;display:flex;align-items:center;justify-content:center;position:relative;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px))">
+              <div style="color:rgba(91,196,229,.15);font-size:3rem;font-family:monospace">GPU</div>
+              <div style="position:absolute;top:.5rem;left:.5rem;font-size:.55rem;color:#5BC4E5;letter-spacing:.1em">[ FEATURED ]</div>
+              <div style="position:absolute;bottom:.5rem;right:.5rem;font-size:.55rem;color:rgba(91,196,229,.5)">STOCK: 3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pros-cons" style="margin-top:.75rem">
+        <div class="pros"><h4>Strengths</h4><ul><li>High conversion intent — product + price immediately</li><li>Changes with catalog rotation — always fresh</li><li>Very direct</li></ul></div>
+        <div class="cons"><h4>Trade-offs</h4><ul><li>Requires manual update each catalog rotation</li><li>Less brand storytelling</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Cinematic brand — full viewport with layered depth</h3>
+      <p>Full-viewport hero. Headline split across two lines with the second line in primary color. Background gets a large abstract GPU/motherboard silhouette (CSS-drawn, no images). Scroll-triggered parallax on the layers. Single CTA — WhatsApp.</p>
+      <div class="mockup" style="margin-top:1rem">
+        <div class="mockup-header">Hero — Concept C</div>
+        <div class="mockup-body" style="background:#0A0A1A;padding:2rem;min-height:220px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center">
+          <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(91,196,229,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(91,196,229,.035) 1px,transparent 1px);background-size:55px 55px;pointer-events:none"></div>
+          <!-- bg text -->
+          <div style="position:absolute;right:-1rem;top:50%;transform:translateY(-50%);font-family:'Russo One',sans-serif;font-size:8rem;color:transparent;-webkit-text-stroke:1px rgba(91,196,229,.04);user-select:none;line-height:1">MERO</div>
+          <!-- content -->
+          <div style="position:relative;z-index:2;max-width:600px">
+            <div style="font-size:.6rem;letter-spacing:.22em;color:#5BC4E5;margin-bottom:.75rem;text-transform:uppercase;display:flex;align-items:center;gap:.5rem"><span style="display:block;width:22px;height:1px;background:#5BC4E5"></span>PC Components · El Salvador</div>
+            <div style="font-family:'Russo One',sans-serif;font-size:clamp(2rem,5vw,3.2rem);line-height:1.04;margin-bottom:1rem">
+              <span style="color:#E2E8F0;display:block">Construido para</span>
+              <span style="color:#5BC4E5;text-shadow:0 0 40px rgba(91,196,229,.4);display:block">los que saben.</span>
+            </div>
+            <div style="font-size:.8rem;color:#6b7fa3;margin-bottom:1.5rem;max-width:420px;line-height:1.7">Hardware seleccionado. Precios verificados. Sin inventario falso.</div>
+            <div style="display:flex;gap:.75rem;align-items:center;flex-wrap:wrap">
+              <div style="background:#5BC4E5;color:#0A0A1A;padding:.55rem 1.5rem;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%)">Hablar con Mero</div>
+              <div style="font-size:.7rem;color:rgba(91,196,229,.5);letter-spacing:.12em">↓ VER PRODUCTOS</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pros-cons" style="margin-top:.75rem">
+        <div class="pros"><h4>Strengths</h4><ul><li>Strong brand voice — "los que saben" speaks directly to ICP</li><li>Timeless — doesn't depend on current stock</li><li>Most visually cinematic</li></ul></div>
+        <div class="cons"><h4>Trade-offs</h4><ul><li>Lower immediate conversion intent vs B</li><li>No product visible above the fold</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+</style>

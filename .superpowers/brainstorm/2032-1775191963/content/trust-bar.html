@@ -1,0 +1,200 @@
+<h2>Trust Bar — Reinvented</h2>
+<p class="subtitle">Three concepts that go beyond "icons + text". All animated, all on-brand.</p>
+
+<div class="options">
+
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Benchmark bars — hardware review style</h3>
+      <p>Mero's differentiators displayed as benchmark bars — like a GPU review site. Each bar animates to its value on scroll entry. Instantly readable to the ICP.</p>
+      <div class="mockup" style="margin-top:.75rem">
+        <div class="mockup-header">Trust Bar — Benchmarks</div>
+        <div class="mockup-body" style="background:#0C0A14;border-top:1px solid rgba(91,196,229,.1);border-bottom:1px solid rgba(91,196,229,.1);padding:2rem 2.5rem">
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem 3rem">
+
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:.4rem">
+                <span style="font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#E2E8F0">Precio vs mercado local</span>
+                <span style="font-size:.62rem;color:#00ff88;font-weight:700">MEJOR</span>
+              </div>
+              <div style="height:6px;background:rgba(255,255,255,.06);border-radius:0;position:relative;overflow:hidden">
+                <div id="bar1" style="height:100%;width:0%;background:linear-gradient(90deg,#3BA8CC,#5BC4E5);box-shadow:0 0 8px rgba(91,196,229,.5);transition:width 1.2s cubic-bezier(.22,1,.36,1)"></div>
+              </div>
+              <div style="font-size:.58rem;color:#6b7fa3;margin-top:.3rem">Verificado semanalmente contra competencia SV</div>
+            </div>
+
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:.4rem">
+                <span style="font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#E2E8F0">Tiempo de entrega</span>
+                <span style="font-size:.62rem;color:#5BC4E5;font-weight:700">48H</span>
+              </div>
+              <div style="height:6px;background:rgba(255,255,255,.06);position:relative;overflow:hidden">
+                <div id="bar2" style="height:100%;width:0%;background:linear-gradient(90deg,#3BA8CC,#5BC4E5);box-shadow:0 0 8px rgba(91,196,229,.5);transition:width 1.4s .2s cubic-bezier(.22,1,.36,1)"></div>
+              </div>
+              <div style="font-size:.58rem;color:#6b7fa3;margin-top:.3rem">San Salvador y zonas aledañas</div>
+            </div>
+
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:.4rem">
+                <span style="font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#E2E8F0">Stock real disponible</span>
+                <span style="font-size:.62rem;color:#5BC4E5;font-weight:700">100%</span>
+              </div>
+              <div style="height:6px;background:rgba(255,255,255,.06);position:relative;overflow:hidden">
+                <div id="bar3" style="height:100%;width:0%;background:linear-gradient(90deg,#5BC4E5,#5BC4E5);box-shadow:0 0 8px rgba(91,196,229,.5);transition:width 1.3s .1s cubic-bezier(.22,1,.36,1)"></div>
+              </div>
+              <div style="font-size:.58rem;color:#6b7fa3;margin-top:.3rem">Sin pre-ventas. Sin promesas vacías.</div>
+            </div>
+
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:.4rem">
+                <span style="font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#E2E8F0">Respuesta WhatsApp</span>
+                <span style="font-size:.62rem;color:#5BC4E5;font-weight:700">&lt; 1H</span>
+              </div>
+              <div style="height:6px;background:rgba(255,255,255,.06);position:relative;overflow:hidden">
+                <div id="bar4" style="height:100%;width:0%;background:linear-gradient(90deg,#3BA8CC,#5BC4E5);box-shadow:0 0 8px rgba(91,196,229,.5);transition:width 1.5s .3s cubic-bezier(.22,1,.36,1)"></div>
+              </div>
+              <div style="font-size:.58rem;color:#6b7fa3;margin-top:.3rem">Persona real. Sin bots.</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Live terminal feed — scrolling data stream</h3>
+      <p>A full-width terminal that auto-types Mero's differentiators as system log entries. Feels like a live feed. Loops continuously. Completely unique.</p>
+      <div class="mockup" style="margin-top:.75rem">
+        <div class="mockup-header">Trust Bar — Terminal Feed</div>
+        <div class="mockup-body" style="background:#080710;border-top:1px solid rgba(91,196,229,.12);border-bottom:1px solid rgba(91,196,229,.12);padding:1rem 2rem;font-family:monospace;font-size:.65rem;line-height:2;overflow:hidden;min-height:130px;position:relative">
+          <div id="terminal-feed" style="color:#5BC4E5"></div>
+          <div style="position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(transparent,#080710);pointer-events:none"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Stat counter cards — numbers animate up on scroll</h3>
+      <p>4 large numbers that count up when visible. Each paired with a sharp label and a one-liner. Cinematic, high-impact, easy to scan.</p>
+      <div class="mockup" style="margin-top:.75rem">
+        <div class="mockup-header">Trust Bar — Stat Counters</div>
+        <div class="mockup-body" style="background:#0C0A14;border-top:1px solid rgba(91,196,229,.1);border-bottom:1px solid rgba(91,196,229,.1);padding:1.75rem 2rem">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0">
+
+            <div style="padding:0 1.5rem 0 0;border-right:1px solid rgba(91,196,229,.08)">
+              <div style="font-family:'Russo One',sans-serif;font-size:2.4rem;color:#5BC4E5;text-shadow:0 0 24px rgba(91,196,229,.35);line-height:1" id="cnt1">48</div>
+              <div style="font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#E2E8F0;margin:.3rem 0 .2rem">Horas</div>
+              <div style="font-size:.62rem;color:#6b7fa3;line-height:1.5">Entrega desde que confirmas</div>
+            </div>
+
+            <div style="padding:0 1.5rem;border-right:1px solid rgba(91,196,229,.08)">
+              <div style="font-family:'Russo One',sans-serif;font-size:2.4rem;color:#5BC4E5;text-shadow:0 0 24px rgba(91,196,229,.35);line-height:1" id="cnt2">0</div>
+              <div style="font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#E2E8F0;margin:.3rem 0 .2rem">Inventario falso</div>
+              <div style="font-size:.62rem;color:#6b7fa3;line-height:1.5">Si está aquí, existe</div>
+            </div>
+
+            <div style="padding:0 1.5rem;border-right:1px solid rgba(91,196,229,.08)">
+              <div style="display:flex;align-items:baseline;gap:.2rem">
+                <div style="font-family:'Russo One',sans-serif;font-size:2.4rem;color:#5BC4E5;text-shadow:0 0 24px rgba(91,196,229,.35);line-height:1" id="cnt3">100</div>
+                <div style="font-family:'Russo One',sans-serif;font-size:1.2rem;color:#5BC4E5;opacity:.6">%</div>
+              </div>
+              <div style="font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#E2E8F0;margin:.3rem 0 .2rem">Precio verificado</div>
+              <div style="font-size:.62rem;color:#6b7fa3;line-height:1.5">Comparado vs mercado SV</div>
+            </div>
+
+            <div style="padding:0 0 0 1.5rem">
+              <div style="font-family:'Russo One',sans-serif;font-size:2.4rem;color:#5BC4E5;text-shadow:0 0 24px rgba(91,196,229,.35);line-height:1" id="cnt4">1</div>
+              <div style="font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#E2E8F0;margin:.3rem 0 .2rem">Persona real</div>
+              <div style="font-size:.62rem;color:#6b7fa3;line-height:1.5">Sin bots. Sin tickets. WhatsApp directo.</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="d" onclick="toggleSelect(this)">
+    <div class="letter">D</div>
+    <div class="content">
+      <h3>Comparison table — Mero vs typical reseller</h3>
+      <p>A compact side-by-side table. Left column: "Tienda típica". Right column: "Mero". Checkmarks and X's. Brutal and honest. Makes the ICP immediately understand the difference.</p>
+      <div class="mockup" style="margin-top:.75rem">
+        <div class="mockup-header">Trust Bar — Comparison</div>
+        <div class="mockup-body" style="background:#0C0A14;border-top:1px solid rgba(91,196,229,.1);border-bottom:1px solid rgba(91,196,229,.1);padding:1.5rem 2rem">
+          <div style="display:grid;grid-template-columns:1fr auto auto;gap:0;font-size:.65rem;max-width:600px;margin:0 auto">
+            <!-- header -->
+            <div style="padding:.4rem 0;border-bottom:1px solid rgba(91,196,229,.15);color:rgba(91,196,229,.4);font-size:.55rem;letter-spacing:.14em;text-transform:uppercase"></div>
+            <div style="padding:.4rem 1.5rem;border-bottom:1px solid rgba(91,196,229,.15);color:#6b7fa3;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;text-align:center">Típico</div>
+            <div style="padding:.4rem 1.5rem;border-bottom:1px solid rgba(91,196,229,.15);color:#5BC4E5;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;text-align:center">Mero</div>
+            <!-- rows -->
+            <div style="padding:.55rem 0;border-bottom:1px solid rgba(255,255,255,.04);color:#E2E8F0">Precio verificado vs mercado</div>
+            <div style="padding:.55rem 1.5rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:#F43F5E">✕</div>
+            <div style="padding:.55rem 1.5rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:#00ff88">✓</div>
+
+            <div style="padding:.55rem 0;border-bottom:1px solid rgba(255,255,255,.04);color:#E2E8F0">Stock real (no pre-venta)</div>
+            <div style="padding:.55rem 1.5rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:#F43F5E">✕</div>
+            <div style="padding:.55rem 1.5rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:#00ff88">✓</div>
+
+            <div style="padding:.55rem 0;border-bottom:1px solid rgba(255,255,255,.04);color:#E2E8F0">Entrega en 48h</div>
+            <div style="padding:.55rem 1.5rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:#F43F5E">✕</div>
+            <div style="padding:.55rem 1.5rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:#00ff88">✓</div>
+
+            <div style="padding:.55rem 0;color:#E2E8F0">Persona real en WhatsApp</div>
+            <div style="padding:.55rem 1.5rem;text-align:center;color:#F43F5E">✕</div>
+            <div style="padding:.55rem 1.5rem;text-align:center;color:#00ff88">✓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Animate benchmark bars
+setTimeout(() => {
+  const b = [['bar1',92],['bar2',85],['bar3',100],['bar4',95]];
+  b.forEach(([id,w]) => { const el = document.getElementById(id); if(el) el.style.width = w+'%'; });
+}, 400);
+
+// Terminal feed
+const lines = [
+  {type:'ok',  text:'PRECIO_CHECK &nbsp;&nbsp;&nbsp;Comparando vs mercado local...'},
+  {type:'ok',  text:'PRECIO_CHECK &nbsp;&nbsp;&nbsp;Mero está por debajo del promedio SV &nbsp;&nbsp;[PASS]'},
+  {type:'ok',  text:'STOCK_VERIFY &nbsp;&nbsp;Verificando disponibilidad real...'},
+  {type:'ok',  text:'STOCK_VERIFY &nbsp;&nbsp;12 productos confirmados con distribuidor &nbsp;[PASS]'},
+  {type:'info',text:'ENTREGA_EST &nbsp;&nbsp;&nbsp;Calculando tiempo de entrega...'},
+  {type:'ok',  text:'ENTREGA_EST &nbsp;&nbsp;&nbsp;San Salvador: 48h &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[48H]'},
+  {type:'info',text:'WHATSAPP &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Chequeando disponibilidad del equipo...'},
+  {type:'ok',  text:'WHATSAPP &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;En línea. Respuesta &lt; 1 hora &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[LIVE]'},
+  {type:'ok',  text:'SYSTEM &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Todo verificado. Mero listo. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[OK]'},
+];
+const feed = document.getElementById('terminal-feed');
+if (feed) {
+  let i = 0;
+  function addLine() {
+    if (i >= lines.length) { i = 0; feed.innerHTML = ''; }
+    const l = lines[i++];
+    const color = l.type === 'ok' ? '#5BC4E5' : 'rgba(91,196,229,.5)';
+    const ts = new Date().toLocaleTimeString('en',{hour12:false});
+    const div = document.createElement('div');
+    div.style.cssText = `color:${color};white-space:nowrap;overflow:hidden;width:0;animation:expand .4s forwards`;
+    div.innerHTML = `<span style="color:rgba(91,196,229,.3)">[${ts}]</span> ${l.text}`;
+    feed.appendChild(div);
+    if (feed.children.length > 6) feed.removeChild(feed.firstChild);
+    setTimeout(addLine, 900);
+  }
+  addLine();
+}
+</script>
+<style>
+@keyframes expand { from{width:0;opacity:0} to{width:100%;opacity:1} }
+</style>

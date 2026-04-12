@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Categorías — Design Options</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Russo+One&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0C0A14;
+    --bg2: #100D1C;
+    --primary: #5BC4E5;
+    --hot: #F43F5E;
+    --text: #E2E8F0;
+    --dim: #6b7fa3;
+    --fh: 'Russo One', sans-serif;
+    --fu: 'Chakra Petch', monospace;
+  }
+
+  body {
+    background: #090710;
+    color: var(--text);
+    font-family: var(--fu);
+    padding: 2rem;
+    min-height: 100vh;
+  }
+
+  .page-title {
+    font-family: var(--fh);
+    font-size: 1.1rem;
+    color: var(--primary);
+    text-align: center;
+    margin-bottom: .4rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+  }
+  .page-sub {
+    text-align: center;
+    font-size: .7rem;
+    color: var(--dim);
+    letter-spacing: .1em;
+    margin-bottom: 2.5rem;
+  }
+
+  .options-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* ── OPTION CARD WRAPPER ── */
+  .opt {
+    border: 1px solid rgba(91,196,229,.12);
+    border-radius: 2px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color .25s, box-shadow .25s;
+    position: relative;
+  }
+  .opt:hover { border-color: rgba(91,196,229,.4); box-shadow: 0 0 30px rgba(91,196,229,.08); }
+  .opt.selected { border-color: var(--primary); box-shadow: 0 0 30px rgba(91,196,229,.2); }
+  .opt.selected::after {
+    content: '✓ SELECTED';
+    position: absolute; top: .7rem; right: .7rem;
+    font-size: .58rem; letter-spacing: .2em; font-weight: 700;
+    color: var(--primary); background: rgba(91,196,229,.1);
+    border: 1px solid rgba(91,196,229,.3);
+    padding: .25rem .6rem;
+  }
+
+  .opt-label {
+    background: rgba(91,196,229,.06);
+    border-bottom: 1px solid rgba(91,196,229,.1);
+    padding: .6rem 1.2rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .opt-letter {
+    font-family: var(--fh); font-size: 1.1rem; color: var(--primary);
+  }
+  .opt-name {
+    font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; color: var(--text);
+    font-weight: 600;
+  }
+  .opt-desc {
+    font-size: .62rem; color: var(--dim); margin-left: auto;
+  }
+
+  .opt-preview {
+    padding: 1.5rem;
+    background: var(--bg2);
+    pointer-events: none;
+    user-select: none;
+  }
+
+
+  /* ══════════════════════════════
+     OPTION A: TALL MODULE CARDS
+  ══════════════════════════════ */
+  .a-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: .75rem;
+  }
+
+  .a-card {
+    background: var(--bg);
+    border: 1px solid rgba(91,196,229,.15);
+    border-top: 2px solid rgba(91,196,229,.5);
+    clip-path: polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,0 100%);
+    padding: 1.1rem .8rem .9rem;
+    display: flex; flex-direction: column; align-items: center;
+    gap: .6rem; position: relative; overflow: hidden;
+  }
+  .a-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    opacity: .6;
+  }
+
+  .a-code {
+    font-size: .46rem; letter-spacing: .2em; color: rgba(91,196,229,.35);
+    align-self: flex-start;
+  }
+
+  .a-icon {
+    width: 44px; height: 44px; opacity: .7;
+  }
+
+  .a-name {
+    font-family: var(--fh); font-size: .75rem; color: var(--text);
+    text-align: center; letter-spacing: .05em;
+  }
+  .a-slug {
+    font-size: .5rem; letter-spacing: .15em; color: var(--dim);
+    text-transform: uppercase; text-align: center;
+  }
+
+  .a-bar {
+    width: 100%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(91,196,229,.2), transparent);
+  }
+
+  .a-count {
+    font-size: .48rem; color: rgba(91,196,229,.5); letter-spacing: .12em;
+  }
+
+
+  /* ══════════════════════════════
+     OPTION B: DIAGNOSTIC ROWS
+  ══════════════════════════════ */
+  .b-list { display: flex; flex-direction: column; gap: .5rem; }
+
+  .b-row {
+    display: flex; align-items: center; gap: 1.2rem;
+    padding: .75rem 1rem;
+    background: var(--bg);
+    border: 1px solid rgba(91,196,229,.1);
+    border-left: 3px solid rgba(91,196,229,.4);
+    position: relative; overflow: hidden;
+  }
+
+  .b-num {
+    font-family: var(--fh); font-size: .55rem; color: rgba(91,196,229,.3);
+    min-width: 1.4rem;
+  }
+
+  .b-icon { width: 32px; height: 32px; opacity: .6; flex-shrink: 0; }
+
+  .b-info { flex: 1; }
+  .b-name { font-family: var(--fh); font-size: .9rem; line-height: 1.1; }
+  .b-slug { font-size: .55rem; color: var(--dim); letter-spacing: .15em; text-transform: uppercase; }
+
+  .b-meter-wrap {
+    display: flex; align-items: center; gap: .7rem;
+    flex-shrink: 0;
+  }
+  .b-meter {
+    width: 90px; height: 3px;
+    background: rgba(91,196,229,.1);
+    border-radius: 2px; overflow: hidden;
+  }
+  .b-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), rgba(91,196,229,.4));
+    box-shadow: 0 0 6px var(--primary);
+  }
+  .b-fill.hot { background: linear-gradient(90deg, var(--hot), rgba(244,63,94,.4)); box-shadow: 0 0 6px var(--hot); }
+
+  .b-pct { font-size: .55rem; color: var(--dim); min-width: 2rem; text-align: right; }
+
+  .b-arrow { font-size: .8rem; color: rgba(91,196,229,.3); flex-shrink: 0; }
+
+
+  /* ══════════════════════════════
+     OPTION C: HOVER-REVEAL TILES
+  ══════════════════════════════ */
+  .c-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .75rem;
+  }
+
+  .c-card {
+    background: var(--bg);
+    border: 1px solid rgba(91,196,229,.1);
+    clip-path: polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+    padding: 1.5rem 1.2rem 1.2rem;
+    display: flex; flex-direction: column; align-items: center; gap: .7rem;
+    position: relative; overflow: hidden;
+  }
+  /* Featured GPU card */
+  .c-card.feat {
+    border-color: rgba(244,63,94,.25);
+    grid-column: span 1;
+  }
+  .c-card.feat::before {
+    content: '★ POPULAR';
+    position: absolute; top: .6rem; right: 0;
+    font-size: .46rem; letter-spacing: .15em; font-weight: 700;
+    color: #fff; background: var(--hot);
+    padding: .2rem .55rem .2rem .55rem;
+    clip-path: polygon(6px 0,100% 0,100% 100%,0 100%);
+  }
+
+  .c-icon-wrap {
+    width: 58px; height: 58px;
+    background: rgba(91,196,229,.04);
+    border: 1px solid rgba(91,196,229,.1);
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .c-card.feat .c-icon-wrap {
+    background: rgba(244,63,94,.04);
+    border-color: rgba(244,63,94,.15);
+  }
+  .c-icon { width: 36px; height: 36px; opacity: .75; }
+
+  .c-name { font-family: var(--fh); font-size: 1rem; letter-spacing: .04em; }
+  .c-card.feat .c-name { color: var(--primary); }
+
+  .c-slug { font-size: .55rem; color: var(--dim); letter-spacing: .18em; text-transform: uppercase; }
+
+  .c-sep { width: 100%; height: 1px; background: rgba(91,196,229,.08); }
+
+  .c-count { font-size: .56rem; color: rgba(91,196,229,.5); }
+
+  .c-cta {
+    font-size: .56rem; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--primary); background: none; border: 1px solid rgba(91,196,229,.2);
+    padding: .3rem .8rem;
+    clip-path: polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);
+  }
+
+</style>
+</head>
+<body>
+
+<div class="page-title">Categorías — 3 Design Directions</div>
+<div class="page-sub">Click a section to select your preferred direction</div>
+
+<div class="options-wrap">
+
+  <!-- ── OPTION A ── -->
+  <div class="opt" onclick="this.classList.toggle('selected')">
+    <div class="opt-label">
+      <span class="opt-letter">A</span>
+      <span class="opt-name">Tall Module Cards</span>
+      <span class="opt-desc">6 vertical tiles in a single row — icon-first, numbered, terminal top bar</span>
+    </div>
+    <div class="opt-preview">
+      <div class="a-grid">
+
+        <!-- CPU -->
+        <div class="a-card">
+          <span class="a-code">MOD.001</span>
+          <svg class="a-icon" viewBox="0 0 120 120" fill="none"><rect x="30" y="30" width="60" height="60" rx="6" stroke="#5BC4E5" stroke-width="2.5"/><rect x="44" y="44" width="32" height="32" rx="3" fill="none" stroke="#5BC4E5" stroke-width="2"/><line x1="20" y1="45" x2="30" y2="45" stroke="#5BC4E5" stroke-width="2"/><line x1="20" y1="57" x2="30" y2="57" stroke="#5BC4E5" stroke-width="2"/><line x1="20" y1="69" x2="30" y2="69" stroke="#5BC4E5" stroke-width="2"/><line x1="90" y1="45" x2="100" y2="45" stroke="#5BC4E5" stroke-width="2"/><line x1="90" y1="57" x2="100" y2="57" stroke="#5BC4E5" stroke-width="2"/><line x1="90" y1="69" x2="100" y2="69" stroke="#5BC4E5" stroke-width="2"/><line x1="45" y1="20" x2="45" y2="30" stroke="#5BC4E5" stroke-width="2"/><line x1="57" y1="20" x2="57" y2="30" stroke="#5BC4E5" stroke-width="2"/><line x1="69" y1="20" x2="69" y2="30" stroke="#5BC4E5" stroke-width="2"/><line x1="45" y1="90" x2="45" y2="100" stroke="#5BC4E5" stroke-width="2"/><line x1="57" y1="90" x2="57" y2="100" stroke="#5BC4E5" stroke-width="2"/><line x1="69" y1="90" x2="69" y2="100" stroke="#5BC4E5" stroke-width="2"/></svg>
+          <div class="a-name">CPU</div>
+          <div class="a-slug">Procesadores</div>
+          <div class="a-bar"></div>
+          <div class="a-count">120+ modelos</div>
+        </div>
+
+        <!-- GPU -->
+        <div class="a-card">
+          <span class="a-code">MOD.002</span>
+          <svg class="a-icon" viewBox="0 0 120 120" fill="none"><rect x="15" y="38" width="90" height="44" rx="6" stroke="#5BC4E5" stroke-width="2.5"/><rect x="28" y="50" width="22" height="20" rx="3" stroke="#5BC4E5" stroke-width="2"/><rect x="58" y="50" width="22" height="20" rx="3" stroke="#5BC4E5" stroke-width="2"/><line x1="30" y1="82" x2="30" y2="96" stroke="#5BC4E5" stroke-width="2"/><line x1="46" y1="82" x2="46" y2="96" stroke="#5BC4E5" stroke-width="2"/><line x1="62" y1="82" x2="62" y2="96" stroke="#5BC4E5" stroke-width="2"/><line x1="78" y1="82" x2="78" y2="96" stroke="#5BC4E5" stroke-width="2"/><circle cx="93" cy="60" r="7" stroke="#5BC4E5" stroke-width="2"/></svg>
+          <div class="a-name">GPU</div>
+          <div class="a-slug">Tarjetas Gráficas</div>
+          <div class="a-bar"></div>
+          <div class="a-count">85+ modelos</div>
+        </div>
+
+        <!-- RAM -->
+        <div class="a-card">
+          <span class="a-code">MOD.003</span>
+          <svg class="a-icon" viewBox="0 0 120 120" fill="none"><rect x="35" y="22" width="18" height="76" rx="4" stroke="#5BC4E5" stroke-width="2.5"/><rect x="67" y="22" width="18" height="76" rx="4" stroke="#5BC4E5" stroke-width="2.5"/><rect x="39" y="30" width="10" height="8" rx="2" fill="#5BC4E5" opacity="0.6"/><rect x="39" y="44" width="10" height="8" rx="2" fill="#5BC4E5" opacity="0.6"/><rect x="71" y="30" width="10" height="8" rx="2" fill="#5BC4E5" opacity="0.6"/><rect x="71" y="44" width="10" height="8" rx="2" fill="#5BC4E5" opacity="0.6"/></svg>
+          <div class="a-name">RAM</div>
+          <div class="a-slug">Memoria</div>
+          <div class="a-bar"></div>
+          <div class="a-count">60+ kits</div>
+        </div>
+
+        <!-- SSD -->
+        <div class="a-card">
+          <span class="a-code">MOD.004</span>
+          <svg class="a-icon" viewBox="0 0 120 120" fill="none"><rect x="20" y="30" width="80" height="60" rx="8" stroke="#5BC4E5" stroke-width="2.5"/><circle cx="88" cy="60" r="14" stroke="#5BC4E5" stroke-width="2"/><circle cx="88" cy="60" r="5" fill="#5BC4E5" opacity="0.5"/><line x1="30" y1="46" x2="62" y2="46" stroke="#5BC4E5" stroke-width="2"/><line x1="30" y1="56" x2="56" y2="56" stroke="#5BC4E5" stroke-width="2"/><line x1="30" y1="66" x2="62" y2="66" stroke="#5BC4E5" stroke-width="2"/></svg>
+          <div class="a-name">SSD</div>
+          <div class="a-slug">Almacenamiento</div>
+          <div class="a-bar"></div>
+          <div class="a-count">70+ opciones</div>
+        </div>
+
+        <!-- Cooling -->
+        <div class="a-card">
+          <span class="a-code">MOD.005</span>
+          <svg class="a-icon" viewBox="0 0 120 120" fill="none"><circle cx="60" cy="60" r="28" stroke="#5BC4E5" stroke-width="2.5"/><circle cx="60" cy="60" r="10" stroke="#5BC4E5" stroke-width="2"/><line x1="60" y1="22" x2="60" y2="42" stroke="#5BC4E5" stroke-width="2"/><line x1="60" y1="78" x2="60" y2="98" stroke="#5BC4E5" stroke-width="2"/><line x1="22" y1="60" x2="42" y2="60" stroke="#5BC4E5" stroke-width="2"/><line x1="78" y1="60" x2="98" y2="60" stroke="#5BC4E5" stroke-width="2"/></svg>
+          <div class="a-name">Cooling</div>
+          <div class="a-slug">Refrigeración</div>
+          <div class="a-bar"></div>
+          <div class="a-count">40+ soluciones</div>
+        </div>
+
+        <!-- PSU -->
+        <div class="a-card">
+          <span class="a-code">MOD.006</span>
+          <svg class="a-icon" viewBox="0 0 120 120" fill="none"><rect x="15" y="35" width="90" height="50" rx="8" stroke="#5BC4E5" stroke-width="2.5"/><line x1="30" y1="50" x2="90" y2="50" stroke="#5BC4E5" stroke-width="1.5" stroke-dasharray="5 3"/><line x1="30" y1="60" x2="70" y2="60" stroke="#5BC4E5" stroke-width="1.5" stroke-dasharray="5 3"/><line x1="30" y1="70" x2="80" y2="70" stroke="#5BC4E5" stroke-width="1.5" stroke-dasharray="5 3"/><circle cx="87" cy="78" r="8" stroke="#5BC4E5" stroke-width="2"/><circle cx="87" cy="78" r="3" fill="#5BC4E5" opacity="0.6"/></svg>
+          <div class="a-name">PSU</div>
+          <div class="a-slug">Fuente de Poder</div>
+          <div class="a-bar"></div>
+          <div class="a-count">30+ modelos</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── OPTION B ── -->
+  <div class="opt" onclick="this.classList.toggle('selected')">
+    <div class="opt-label">
+      <span class="opt-letter">B</span>
+      <span class="opt-name">Diagnostic Rows</span>
+      <span class="opt-desc">Horizontal list with a demand/activity meter — "system scan" readout feel</span>
+    </div>
+    <div class="opt-preview">
+      <div class="b-list">
+
+        <div class="b-row">
+          <span class="b-num">01</span>
+          <svg class="b-icon" viewBox="0 0 120 120" fill="none"><rect x="30" y="30" width="60" height="60" rx="6" stroke="#5BC4E5" stroke-width="2.5"/><rect x="44" y="44" width="32" height="32" rx="3" fill="none" stroke="#5BC4E5" stroke-width="2"/><line x1="20" y1="45" x2="30" y2="45" stroke="#5BC4E5" stroke-width="2"/><line x1="20" y1="57" x2="30" y2="57" stroke="#5BC4E5" stroke-width="2"/><line x1="20" y1="69" x2="30" y2="69" stroke="#5BC4E5" stroke-width="2"/><line x1="90" y1="45" x2="100" y2="45" stroke="#5BC4E5" stroke-width="2"/><line x1="90" y1="57" x2="100" y2="57" stroke="#5BC4E5" stroke-width="2"/><line x1="90" y1="69" x2="100" y2="69" stroke="#5BC4E5" stroke-width="2"/><line x1="45" y1="20" x2="45" y2="30" stroke="#5BC4E5" stroke-width="2"/><line x1="69" y1="20" x2="69" y2="30" stroke="#5BC4E5" stroke-width="2"/><line x1="45" y1="90" x2="45" y2="100" stroke="#5BC4E5" stroke-width="2"/></svg>
+          <div class="b-info"><div class="b-name">CPU</div><div class="b-slug">Procesadores · 120+ modelos</div></div>
+          <div class="b-meter-wrap">
+            <div class="b-meter"><div class="b-fill" style="width:88%"></div></div>
+            <span class="b-pct">88%</span>
+          </div>
+          <span class="b-arrow">→</span>
+        </div>
+
+        <div class="b-row" style="border-left-color: var(--hot);">
+          <span class="b-num">02</span>
+          <svg class="b-icon" viewBox="0 0 120 120" fill="none"><rect x="15" y="38" width="90" height="44" rx="6" stroke="#5BC4E5" stroke-width="2.5"/><rect x="28" y="50" width="22" height="20" rx="3" stroke="#5BC4E5" stroke-width="2"/><rect x="58" y="50" width="22" height="20" rx="3" stroke="#5BC4E5" stroke-width="2"/><line x1="30" y1="82" x2="30" y2="96" stroke="#5BC4E5" stroke-width="2"/><line x1="62" y1="82" x2="62" y2="96" stroke="#5BC4E5" stroke-width="2"/><circle cx="93" cy="60" r="7" stroke="#5BC4E5" stroke-width="2"/></svg>
+          <div class="b-info"><div class="b-name" style="color:#F43F5E">GPU</div><div class="b-slug">Tarjetas Gráficas · 85+ modelos</div></div>
+          <div class="b-meter-wrap">
+            <div class="b-meter"><div class="b-fill hot" style="width:96%"></div></div>
+            <span class="b-pct" style="color:var(--hot)">96%</span>
+          </div>
+          <span class="b-arrow" style="color:var(--hot)">→</span>
+        </div>
+
+        <div class="b-row">
+          <span class="b-num">03</span>
+          <svg class="b-icon" viewBox="0 0 120 120" fill="none"><rect x="35" y="22" width="18" height="76" rx="4" stroke="#5BC4E5" stroke-width="2.5"/><rect x="67" y="22" width="18" height="76" rx="4" stroke="#5BC4E5" stroke-width="2.5"/><rect x="39" y="30" width="10" height="8" rx="2" fill="#5BC4E5" opacity="0.6"/><rect x="71" y="30" width="10" height="8" rx="2" fill="#5BC4E5" opacity="0.6"/></svg>
+          <div class="b-info"><div class="b-name">RAM</div><div class="b-slug">Memoria · 60+ kits</div></div>
+          <div class="b-meter-wrap">
+            <div class="b-meter"><div class="b-fill" style="width:72%"></div></div>
+            <span class="b-pct">72%</span>
+          </div>
+          <span class="b-arrow">→</span>
+        </div>
+
+        <div class="b-row">
+          <span class="b-num">04</span>
+          <svg class="b-icon" viewBox="0 0 120 120" fill="none"><rect x="20" y="30" width="80" height="60" rx="8" stroke="#5BC4E5" stroke-width="2.5"/><circle cx="88" cy="60" r="14" stroke="#5BC4E5" stroke-width="2"/><circle cx="88" cy="60" r="5" fill="#5BC4E5" opacity="0.5"/><line x1="30" y1="46" x2="62" y2="46" stroke="#5BC4E5" stroke-width="2"/></svg>
+          <div class="b-info"><div class="b-name">SSD</div><div class="b-slug">Almacenamiento · 70+ opciones</div></div>
+          <div class="b-meter-wrap">
+            <div class="b-meter"><div class="b-fill" style="width:65%"></div></div>
+            <span class="b-pct">65%</span>
+          </div>
+          <span class="b-arrow">→</span>
+        </div>
+
+        <div class="b-row">
+          <span class="b-num">05</span>
+          <svg class="b-icon" viewBox="0 0 120 120" fill="none"><circle cx="60" cy="60" r="28" stroke="#5BC4E5" stroke-width="2.5"/><circle cx="60" cy="60" r="10" stroke="#5BC4E5" stroke-width="2"/><line x1="60" y1="22" x2="60" y2="42" stroke="#5BC4E5" stroke-width="2"/><line x1="22" y1="60" x2="42" y2="60" stroke="#5BC4E5" stroke-width="2"/></svg>
+          <div class="b-info"><div class="b-name">Cooling</div><div class="b-slug">Refrigeración · 40+ soluciones</div></div>
+          <div class="b-meter-wrap">
+            <div class="b-meter"><div class="b-fill" style="width:48%"></div></div>
+            <span class="b-pct">48%</span>
+          </div>
+          <span class="b-arrow">→</span>
+        </div>
+
+        <div class="b-row">
+          <span class="b-num">06</span>
+          <svg class="b-icon" viewBox="0 0 120 120" fill="none"><rect x="15" y="35" width="90" height="50" rx="8" stroke="#5BC4E5" stroke-width="2.5"/><line x1="30" y1="50" x2="90" y2="50" stroke="#5BC4E5" stroke-width="1.5" stroke-dasharray="5 3"/><circle cx="87" cy="78" r="8" stroke="#5BC4E5" stroke-width="2"/><circle cx="87" cy="78" r="3" fill="#5BC4E5" opacity="0.6"/></svg>
+          <div class="b-info"><div class="b-name">PSU</div><div class="b-slug">Fuentes de Poder · 30+ modelos</div></div>
+          <div class="b-meter-wrap">
+            <div class="b-meter"><div class="b-fill" style="width:40%"></div></div>
+            <span class="b-pct">40%</span>
+          </div>
+          <span class="b-arrow">→</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── OPTION C ── -->
+  <div class="opt" onclick="this.classList.toggle('selected')">
+    <div class="opt-label">
+      <span class="opt-letter">C</span>
+      <span class="opt-name">Icon Tiles Grid</span>
+      <span class="opt-desc">3×2 grid, centered icon in a framed box, GPU featured — clean, scannable</span>
+    </div>
+    <div class="opt-preview">
+      <div class="c-grid">
+
+        <div class="c-card">
+          <div class="c-icon-wrap">
+            <svg class="c-icon" viewBox="0 0 120 120" fill="none"><rect x="30" y="30" width="60" height="60" rx="6" stroke="#5BC4E5" stroke-width="2.5"/><rect x="44" y="44" width="32" height="32" rx="3" fill="none" stroke="#5BC4E5" stroke-width="2"/><line x1="20" y1="45" x2="30" y2="45" stroke="#5BC4E5" stroke-width="2"/><line x1="20" y1="57" x2="30" y2="57" stroke="#5BC4E5" stroke-width="2"/><line x1="20" y1="69" x2="30" y2="69" stroke="#5BC4E5" stroke-width="2"/><line x1="90" y1="45" x2="100" y2="45" stroke="#5BC4E5" stroke-width="2"/><line x1="90" y1="57" x2="100" y2="57" stroke="#5BC4E5" stroke-width="2"/><line x1="90" y1="69" x2="100" y2="69" stroke="#5BC4E5" stroke-width="2"/><line x1="45" y1="20" x2="45" y2="30" stroke="#5BC4E5" stroke-width="2"/><line x1="57" y1="20" x2="57" y2="30" stroke="#5BC4E5" stroke-width="2"/><line x1="69" y1="20" x2="69" y2="30" stroke="#5BC4E5" stroke-width="2"/><line x1="45" y1="90" x2="45" y2="100" stroke="#5BC4E5" stroke-width="2"/><line x1="57" y1="90" x2="57" y2="100" stroke="#5BC4E5" stroke-width="2"/><line x1="69" y1="90" x2="69" y2="100" stroke="#5BC4E5" stroke-width="2"/></svg>
+          </div>
+          <div class="c-name">CPU</div>
+          <div class="c-slug">Procesadores</div>
+          <div class="c-sep"></div>
+          <div class="c-count">120+ modelos disponibles</div>
+          <div class="c-cta">Explorar →</div>
+        </div>
+
+        <div class="c-card feat">
+          <div class="c-icon-wrap" style="background:rgba(244,63,94,.06);border-color:rgba(244,63,94,.2)">
+            <svg class="c-icon" viewBox="0 0 120 120" fill="none"><rect x="15" y="38" width="90" height="44" rx="6" stroke="#F43F5E" stroke-width="2.5"/><rect x="28" y="50" width="22" height="20" rx="3" stroke="#F43F5E" stroke-width="2"/><rect x="58" y="50" width="22" height="20" rx="3" stroke="#F43F5E" stroke-width="2"/><line x1="30" y1="82" x2="30" y2="96" stroke="#F43F5E" stroke-width="2"/><line x1="46" y1="82" x2="46" y2="96" stroke="#F43F5E" stroke-width="2"/><line x1="62" y1="82" x2="62" y2="96" stroke="#F43F5E" stroke-width="2"/><line x1="78" y1="82" x2="78" y2="96" stroke="#F43F5E" stroke-width="2"/><circle cx="93" cy="60" r="7" stroke="#F43F5E" stroke-width="2"/></svg>
+          </div>
+          <div class="c-name">GPU</div>
+          <div class="c-slug">Tarjetas Gráficas</div>
+          <div class="c-sep" style="background:rgba(244,63,94,.12)"></div>
+          <div class="c-count">85+ modelos disponibles</div>
+          <div class="c-cta" style="border-color:rgba(244,63,94,.3);color:var(--hot)">Explorar →</div>
+        </div>
+
+        <div class="c-card">
+          <div class="c-icon-wrap">
+            <svg class="c-icon" viewBox="0 0 120 120" fill="none"><rect x="35" y="22" width="18" height="76" rx="4" stroke="#5BC4E5" stroke-width="2.5"/><rect x="67" y="22" width="18" height="76" rx="4" stroke="#5BC4E5" stroke-width="2.5"/><rect x="39" y="30" width="10" height="8" rx="2" fill="#5BC4E5" opacity="0.6"/><rect x="39" y="44" width="10" height="8" rx="2" fill="#5BC4E5" opacity="0.6"/><rect x="39" y="58" width="10" height="8" rx="2" fill="#5BC4E5" opacity="0.6"/><rect x="71" y="30" width="10" height="8" rx="2" fill="#5BC4E5" opacity="0.6"/><rect x="71" y="44" width="10" height="8" rx="2" fill="#5BC4E5" opacity="0.6"/><rect x="71" y="58" width="10" height="8" rx="2" fill="#5BC4E5" opacity="0.6"/></svg>
+          </div>
+          <div class="c-name">RAM</div>
+          <div class="c-slug">Memoria</div>
+          <div class="c-sep"></div>
+          <div class="c-count">60+ kits disponibles</div>
+          <div class="c-cta">Explorar →</div>
+        </div>
+
+        <div class="c-card">
+          <div class="c-icon-wrap">
+            <svg class="c-icon" viewBox="0 0 120 120" fill="none"><rect x="20" y="30" width="80" height="60" rx="8" stroke="#5BC4E5" stroke-width="2.5"/><circle cx="88" cy="60" r="14" stroke="#5BC4E5" stroke-width="2"/><circle cx="88" cy="60" r="5" fill="#5BC4E5" opacity="0.5"/><line x1="30" y1="46" x2="62" y2="46" stroke="#5BC4E5" stroke-width="2"/><line x1="30" y1="56" x2="56" y2="56" stroke="#5BC4E5" stroke-width="2"/><line x1="30" y1="66" x2="62" y2="66" stroke="#5BC4E5" stroke-width="2"/></svg>
+          </div>
+          <div class="c-name">SSD</div>
+          <div class="c-slug">Almacenamiento</div>
+          <div class="c-sep"></div>
+          <div class="c-count">70+ opciones disponibles</div>
+          <div class="c-cta">Explorar →</div>
+        </div>
+
+        <div class="c-card">
+          <div class="c-icon-wrap">
+            <svg class="c-icon" viewBox="0 0 120 120" fill="none"><circle cx="60" cy="60" r="28" stroke="#5BC4E5" stroke-width="2.5"/><circle cx="60" cy="60" r="10" stroke="#5BC4E5" stroke-width="2"/><line x1="60" y1="22" x2="60" y2="42" stroke="#5BC4E5" stroke-width="2"/><line x1="60" y1="78" x2="60" y2="98" stroke="#5BC4E5" stroke-width="2"/><line x1="22" y1="60" x2="42" y2="60" stroke="#5BC4E5" stroke-width="2"/><line x1="78" y1="60" x2="98" y2="60" stroke="#5BC4E5" stroke-width="2"/></svg>
+          </div>
+          <div class="c-name">Cooling</div>
+          <div class="c-slug">Refrigeración</div>
+          <div class="c-sep"></div>
+          <div class="c-count">40+ soluciones disponibles</div>
+          <div class="c-cta">Explorar →</div>
+        </div>
+
+        <div class="c-card">
+          <div class="c-icon-wrap">
+            <svg class="c-icon" viewBox="0 0 120 120" fill="none"><rect x="15" y="35" width="90" height="50" rx="8" stroke="#5BC4E5" stroke-width="2.5"/><line x1="30" y1="50" x2="90" y2="50" stroke="#5BC4E5" stroke-width="1.5" stroke-dasharray="5 3"/><line x1="30" y1="60" x2="70" y2="60" stroke="#5BC4E5" stroke-width="1.5" stroke-dasharray="5 3"/><line x1="30" y1="70" x2="80" y2="70" stroke="#5BC4E5" stroke-width="1.5" stroke-dasharray="5 3"/><circle cx="87" cy="78" r="8" stroke="#5BC4E5" stroke-width="2"/><circle cx="87" cy="78" r="3" fill="#5BC4E5" opacity="0.6"/></svg>
+          </div>
+          <div class="c-name">PSU</div>
+          <div class="c-slug">Fuentes de Poder</div>
+          <div class="c-sep"></div>
+          <div class="c-count">30+ modelos disponibles</div>
+          <div class="c-cta">Explorar →</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      document.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'))
+      opt.classList.add('selected')
+    })
+  })
+</script>
+
+</body>
+</html>
